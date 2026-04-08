@@ -2,11 +2,17 @@
 
 A desktop application for mechanic shops to manage customers, vehicles, repair orders, labor/parts tracking, and invoicing. Built with Windows Forms and C#.
 
-**Status:** In Development — Core design complete, implementing API integration and authentication.
+**Status:** In Development — VIN lookup API complete, authentication in progress.
 
 ---
 
 ## Features
+
+### Completed
+- **VIN Lookup API Integration** — Auto-populate vehicle make, model, and year from NHTSA database
+  - Enter 17-character VIN → Click "Lookup" → Fields auto-fill
+  - Error handling for invalid VINs, network issues, and missing data
+  - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
 
 ### Current (Design Phase)
 - Customer & vehicle management
@@ -17,7 +23,6 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 - Role-based access (Service Advisor, Mechanic, Shop Owner)
 
 ### In Progress
-- **Vehicle API Integration** — Auto-populate vehicle details (make, model, year) from VIN using NHTSA public API
 - **Authentication** — Login/logout with session management and failed attempt limits
 
 ### Planned
@@ -29,16 +34,26 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 
 ---
 
-## Technology Stack
+## API Integration
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | Windows Forms (.NET) |
-| Language | C# |
-| Data Storage | JSON (current) / SQL Server (planned) |
-| API | NHTSA Vehicle API (REST, JSON) |
-| Authentication | Custom role-based session management |
+### Endpoint Used
+- GET https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json
 
----
+### How It Works
+1. User enters a 17-character VIN in the Vehicle Form
+2. Clicks "Lookup VIN" button
+3. Application sends GET request to NHTSA API
+4. JSON response is parsed to extract Make, Model, and Year
+5. Form fields are automatically populated
 
-## Architecture Overview
+### Example Response
+```json
+{
+  "Results": [
+    {
+      "Make": "HONDA",
+      "Model": "ACCORD",
+      "ModelYear": "2003"
+    }
+  ]
+}
