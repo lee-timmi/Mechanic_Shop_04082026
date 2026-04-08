@@ -1,55 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Script.Serialization;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace MechanicShopSystem.Helpers
 {
+    public class VehicleInfo
+    {
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public string Year { get; set; }
+    }
+
     public class VehicleApiService
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        public async Task<List<string>> GetAllMakes()
+        // The ONLY method you need
+        public async Task<VehicleInfo> GetVehicleByVIN(string vin)
         {
+            // Thimmy GOAL 00 : Validate VIN input
+            if (string.IsNullOrWhiteSpace(vin) || vin.Length != 17)
+            {
+                throw new ArgumentException("VIN must be exactly 17 characters");
+            }
+
             try
             {
-                string url = "https://vpic.nhtsa.dot.gov/api/vehicles/GetAllMakes?format=json";
+                // Thimmy GOAL 01 : GET request to NHTSA API
+                string url = $"https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{vin}?format=json";
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
 
-                if (response.IsSuccessStatusCode)
+                // Check if the response is successful
+                if (!response.IsSuccessStatusCode)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    return ParseMakesFromJson(json);
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new Exception("API rate limit exceeded. Please wait a moment.");
+                    }
+                    
+                    else if ((int)response.StatusCode == 429)
+                    {
+                        throw new Exception("API endpoint not found. Please try again later.");
+                    }
+                    else
+                    {
+                        throw new Exception($"API error: {response.StatusCode}");
+                    }
                 }
-                return new List<string>();
+                   
+               
+                // Thimmy GOAL 02 : Parse JSON to C# object
+                string json = await response.Content.ReadAsStringAsync();
+                var serializer = new JavaScriptSerializer();
+                dynamic result = serializer.Deserialize<dynamic>(json);
+
+                // Check if we got JSON data and if it contains the expected "Results" array
+                if (result?["Results"] == null || result["Results"].Length == 0)
+                {
+                    return null; // No data found for this VIN
+                }
+
+
+                if (result["Results"] != null && result["Results"].Length > 0)
+                {
+                    dynamic vehicle = result["Results"][0];
+
+                    // Thimmy GOAL 03 : POPULATE: Map to VehicleInfo
+                    return new VehicleInfo 
+                    {
+                        Make = vehicle["Make"] ?? "",
+                        Model = vehicle["Model"] ?? "",
+                        Year = vehicle["ModelYear"] ?? ""
+                    };
+                }
+                return null;
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Network error: Cannot reach API. {ex.Message}");
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new Exception($"JSON parsing error: {ex.Message}");
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show($"API Error: {ex.Message}");
-                return new List<string>();
+                throw new Exception($"Unexpected error: {ex.Message}");
             }
-        }
-
-        private List<string> ParseMakesFromJson(string json)
-        {
-            var makes = new List<string>();
-            var serializer = new JavaScriptSerializer();
-
-            // Deserialize to a dynamic object
-            dynamic result = serializer.Deserialize<dynamic>(json);
-
-            foreach (var item in result["Results"])
-            {
-                string makeName = item["Make_Name"];
-                if (!string.IsNullOrEmpty(makeName))
-                {
-                    makes.Add(makeName);
-                }
-            }
-
-            return makes;
         }
     }
 }
