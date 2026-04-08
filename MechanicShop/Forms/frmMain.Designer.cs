@@ -40,7 +40,7 @@
             // 
             this.lboMakes.FormattingEnabled = true;
             this.lboMakes.ItemHeight = 20;
-            this.lboMakes.Location = new System.Drawing.Point(59, 203);
+            this.lboMakes.Location = new System.Drawing.Point(59, 175);
             this.lboMakes.Name = "lboMakes";
             this.lboMakes.Size = new System.Drawing.Size(443, 224);
             this.lboMakes.TabIndex = 0;
@@ -59,7 +59,7 @@
             // 
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(423, 164);
+            this.lblStatus.Location = new System.Drawing.Point(54, 412);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(79, 29);
             this.lblStatus.TabIndex = 2;
@@ -69,7 +69,7 @@
             // 
             this.lblAvailableMakes.AutoSize = true;
             this.lblAvailableMakes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAvailableMakes.Location = new System.Drawing.Point(54, 164);
+            this.lblAvailableMakes.Location = new System.Drawing.Point(54, 143);
             this.lblAvailableMakes.Name = "lblAvailableMakes";
             this.lblAvailableMakes.Size = new System.Drawing.Size(188, 29);
             this.lblAvailableMakes.TabIndex = 3;
