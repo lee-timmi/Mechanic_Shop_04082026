@@ -17,7 +17,7 @@ namespace MechanicShop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmVehicle());
+            Application.Run(new frmLogIn());
         }
     }
 }
