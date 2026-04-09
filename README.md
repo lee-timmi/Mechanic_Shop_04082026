@@ -8,6 +8,25 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 
 ## Features
 
+### Current (Design Phase)
+- Customer & vehicle management
+- Repair order lifecycle (create, update, close)
+- Labor and parts line items with automatic cost calculation
+- Mechanic assignment and performance tracking
+- Service type templates for quick data entry
+- Role-based access (Service Advisor, Mechanic, Shop Owner)
+
+### In Progress
+- **Authentication** — Login form complete (Edwin). Next: roles, session, attempt limits.
+
+### Planned
+- Appointment scheduling
+- Inventory management
+- Customer portal
+- Payment processing
+- Reporting dashboard
+
+---
 ### Completed (Thimmy)
 - **VIN Lookup API Integration** — Auto-populate vehicle make, model, and year from NHTSA database
   - Enter 17-character VIN → Click "Lookup" → Fields auto-fill
@@ -27,26 +46,6 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 - [ ] Failed login attempt limits
 - [ ] Role-based access control
 - [ ] Database user storage (currently hardcoded)
-
----
-
-### Current (Design Phase)
-- Customer & vehicle management
-- Repair order lifecycle (create, update, close)
-- Labor and parts line items with automatic cost calculation
-- Mechanic assignment and performance tracking
-- Service type templates for quick data entry
-- Role-based access (Service Advisor, Mechanic, Shop Owner)
-
-### In Progress
-- **Authentication** — Login form complete (Edwin). Next: roles, session, attempt limits.
-
-### Planned
-- Appointment scheduling
-- Inventory management
-- Customer portal
-- Payment processing
-- Reporting dashboard
 
 ---
 
@@ -73,8 +72,3 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
     }
   ]
 }
-
-### Test Credentials
-| Username | Password |
-|----------|----------|
-| admin | shop123 |
