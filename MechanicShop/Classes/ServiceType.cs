@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MechanicShop.Models
+namespace MechanicShop.Classes
 {
     public class ServiceType
     {
