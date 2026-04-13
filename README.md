@@ -2,7 +2,7 @@
 
 A desktop application for mechanic shops to manage customers, vehicles, repair orders, labor/parts tracking, and invoicing. Built with Windows Forms and C#.
 
-**Status:** Core functionality complete — VIN lookup, authentication, and main forms implemented.
+**Status:** Core functionality complete — VIN lookup, authentication, repair orders, and database integration.
 
 ---
 
@@ -13,14 +13,18 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
   - Enter 17-character VIN → Click "Lookup" → Fields auto-fill
   - Error handling for invalid VINs, network issues, and missing data
   - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
+- **Complete Repair Order System**
+  - Create, edit, and view repair orders
+  - Add labor line items (description, hours, hourly rate)
+  - Add parts line items (part name, quantity, unit cost)
+  - Automatic cost calculation (labor total, parts total, grand total)
+  - Status tracking: Pending, In Progress, Completed, Invoiced
+  - Customer complaint field
+- **Repair Order Search** — Filter by customer name, date range, and status
 - **Main Form Dashboard** — Navigation menu with role-based access
-  - Background image support
-  - Menu buttons: Customers, Vehicles, Repairs, Mechanics, Reports, Admin
-  - Logout functionality with proper session cleanup
 - **Customer Management** — Add, edit, delete customers
 - **Vehicle Management** — Add, edit vehicles with VIN lookup
-- **Repair Order Form** — In progress (labor/parts tracking, cost calculation)
-- **Project Structure** — Reorganized from `Models/` to `Classes/` folder, added `Services/` layer
+- **Database Integration** — Microsoft Access backend with full CRUD operations
 
 ### Completed (Edwin)
 - Login form with username/password validation
