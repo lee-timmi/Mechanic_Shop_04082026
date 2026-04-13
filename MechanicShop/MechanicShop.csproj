@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MechanicShop.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,6 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Customer.cs" />
+    <Compile Include="Classes\LaborLineItem.cs" />
+    <Compile Include="Classes\Mechanic.cs" />
+    <Compile Include="Classes\PartsLineItem.cs" />
+    <Compile Include="Classes\RepairOrder.cs" />
+    <Compile Include="Classes\ServiceType.cs" />
+    <Compile Include="Classes\User.cs" />
+    <Compile Include="Classes\Vehicle.cs" />
+    <Compile Include="Forms\frmCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCustomer.Designer.cs">
+      <DependentUpon>frmCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmLogIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,44 +76,53 @@
     <Compile Include="Forms\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmRepairOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRepairOrder.Designer.cs">
+      <DependentUpon>frmRepairOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmVehicle.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmVehicle.Designer.cs">
       <DependentUpon>frmVehicle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\UserSession.cs" />
     <Compile Include="Helper\VehicleAPIService.cs" />
-    <Compile Include="Models\LaborLineItem.cs" />
-    <Compile Include="Models\Mechanic.cs" />
-    <Compile Include="Models\PartsLineItem.cs" />
-    <Compile Include="Models\RepairOrder.cs" />
-    <Compile Include="Models\ServiceType.cs" />
-    <Compile Include="Models\Vehicle.cs" />
-    <Compile Include="Models\Customer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuthServices.cs" />
+    <Compile Include="Services\UserServices.cs" />
+    <EmbeddedResource Include="Forms\frmCustomer.resx">
+      <DependentUpon>frmCustomer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmLogIn.resx">
       <DependentUpon>frmLogIn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRepairOrder.resx">
+      <DependentUpon>frmRepairOrder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmVehicle.resx">
       <DependentUpon>frmVehicle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -107,7 +133,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\Models.txt" />
+    <Content Include="Classes\Classes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />

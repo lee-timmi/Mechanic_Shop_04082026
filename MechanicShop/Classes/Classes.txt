@@ -1,0 +1,39 @@
+﻿
+This folder will hold components from our UML diagram.
+	Classes:
+		1. Mechanic
+		2. Customer
+		3. Vehicle
+		4. RepairOrder
+		5. LaborLineItem
+		6. PartLineItem
+		7. ServiceType
+
+
+[X] Customer.cs
+     [X] Properties (Id, FirstName, LastName, Phone, Address, Email)
+     [X] Navigation properties (Vehicles List, RepairOrders List)
+     [X] Methods: AddVehicle(), GetVehicles(), GetRepairHistory()
+
+[X] Vehicle.cs
+     [X] Properties (Id, VIN, Make, Model, Year, Color, LicensePlate, CurrentMileage)
+     [X] Methods: AddRepairOrder(), GetRepairHistory(), UpdateMileage(), GetTotalMaintenanceCost()
+
+[X] RepairOrder.cs
+     [X] Properties (Id, DateOpened, DateClosed, Status, MileageAtService, TotalCost)
+     [X] Navigation properties (LaborLineItems List, PartsLineItems List)
+     [X] Methods: AddLaborLineItem(), AddPartsLineItem(), CalculateTotalCost(), Close(), GetLaborTotal(), GetPartsTotal()
+
+[X] LaborLineItem.cs
+     [X] Properties (Id, Description, Hours, HourlyRate, LaborCost)
+     [X] Methods: CalculateLaborCost(), AssignMechanic(), UpdateHours()
+
+[X] PartsLineItem.cs
+     [X] Properties (Id, PartName, Quantity, UnitCost, TotalCost)
+     [X] Methods: CalculateTotalCost(), UpdateQuantity(), UpdateUnitCost()
+
+[X] Mechanic.cs
+     [X] Properties (Id, FirstName, LastName, HourlyRate)
+     [X] Methods: GetAssignedLaborItems(), GetTotalLaborValue()
+
+[X] ServiceType.cs (Optional)

@@ -41,7 +41,7 @@
             // lblTitle
             // 
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(54, 29);
+            this.lblTitle.Location = new System.Drawing.Point(30, 36);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(233, 37);
@@ -53,7 +53,7 @@
             // 
             this.lblUsername.AutoSize = true;
             this.lblUsername.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblUsername.Location = new System.Drawing.Point(56, 86);
+            this.lblUsername.Location = new System.Drawing.Point(32, 93);
             this.lblUsername.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.Size = new System.Drawing.Size(78, 20);
@@ -64,7 +64,7 @@
             // 
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.lblPassword.Location = new System.Drawing.Point(58, 123);
+            this.lblPassword.Location = new System.Drawing.Point(34, 130);
             this.lblPassword.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(73, 20);
@@ -74,7 +74,7 @@
             // txtUsername
             // 
             this.txtUsername.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtUsername.Location = new System.Drawing.Point(135, 83);
+            this.txtUsername.Location = new System.Drawing.Point(111, 90);
             this.txtUsername.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(127, 27);
@@ -83,7 +83,7 @@
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtPassword.Location = new System.Drawing.Point(135, 121);
+            this.txtPassword.Location = new System.Drawing.Point(111, 128);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(127, 27);
@@ -93,7 +93,7 @@
             // btnLogin
             // 
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnLogin.Location = new System.Drawing.Point(74, 174);
+            this.btnLogin.Location = new System.Drawing.Point(50, 181);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(60, 25);
@@ -105,7 +105,7 @@
             // btnClear
             // 
             this.btnClear.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnClear.Location = new System.Drawing.Point(149, 174);
+            this.btnClear.Location = new System.Drawing.Point(125, 181);
             this.btnClear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(60, 25);
@@ -118,7 +118,7 @@
             // 
             this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnExit.Location = new System.Drawing.Point(223, 174);
+            this.btnExit.Location = new System.Drawing.Point(199, 181);
             this.btnExit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(60, 25);
@@ -143,7 +143,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(337, 255);
+            this.ClientSize = new System.Drawing.Size(326, 255);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnClear);
@@ -160,7 +160,6 @@
             this.Name = "frmLogIn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Log In";
-            this.Load += new System.EventHandler(this.frmLogIn_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

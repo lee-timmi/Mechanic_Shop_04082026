@@ -18,6 +18,7 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 
 ### In Progress
 - **Authentication** — Login form complete (Edwin). Next: roles, session, attempt limits.
+- **FORM DESIGNING** - Currently working on Main Form and Repair Order Form.
 
 ### Planned
 - Appointment scheduling
@@ -32,6 +33,10 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
   - Enter 17-character VIN → Click "Lookup" → Fields auto-fill
   - Error handling for invalid VINs, network issues, and missing data
   - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
+
+- **FORM DESIGN** - Added and designed Main Form + Repair Order Form
+  - Main Form design is finished. No controls are defined yet...
+  - Designed Repair Order Form halfway, still working.
 
 ---
 

@@ -17,7 +17,21 @@ namespace MechanicShop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmLogIn());
+
+            while (true)
+            {
+                using (frmLogIn LogInForm =  new frmLogIn())
+                {
+                    if (LogInForm.ShowDialog() == DialogResult.OK)
+                    {
+                        Application.Run(new frmMain());
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
 }
