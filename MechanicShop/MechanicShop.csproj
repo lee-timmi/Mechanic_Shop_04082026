@@ -36,6 +36,7 @@
     <StartupObject>MechanicShop.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -88,6 +89,7 @@
     <Compile Include="Forms\frmVehicle.Designer.cs">
       <DependentUpon>frmVehicle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\DBHelper.cs" />
     <Compile Include="Helper\UserSession.cs" />
     <Compile Include="Helper\VehicleAPIService.cs" />
     <Compile Include="Program.cs" />
@@ -134,6 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Classes\Classes.txt" />
+    <Content Include="MechanicShopDB.accdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />

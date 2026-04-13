@@ -25,6 +25,10 @@ namespace MechanicShop.Classes
         public Vehicle Vehicle { get; set; }
         public List<LaborLineItem> LaborLineItems { get; set; } = new List<LaborLineItem>();
         public List<PartsLineItem> PartsLineItems { get; set; } = new List<PartsLineItem>();
+        public int RepairOrderID { get; internal set; }
+        public string CustomerComplaint { get; internal set; }
+        public string CustomerName { get; internal set; }
+        public string VehicleDisplay { get; internal set; }
 
         // Constructor
         public RepairOrder()

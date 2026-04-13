@@ -89,6 +89,7 @@
             this.gboOptions.Controls.Add(this.btnRepairOrders);
             this.gboOptions.Controls.Add(this.btnVehicles);
             this.gboOptions.Controls.Add(this.btnCustomers);
+            this.gboOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gboOptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
             this.gboOptions.Location = new System.Drawing.Point(42, 122);
             this.gboOptions.Margin = new System.Windows.Forms.Padding(2);

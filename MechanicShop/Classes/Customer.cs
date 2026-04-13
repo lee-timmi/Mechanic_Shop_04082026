@@ -19,6 +19,7 @@ namespace MechanicShop.Classes
         // Navigation property
         public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
         public List<RepairOrder> RepairOrders { get; set; } = new List<RepairOrder>();
+        public int CustomerID { get; internal set; }
 
 
         // Methods
