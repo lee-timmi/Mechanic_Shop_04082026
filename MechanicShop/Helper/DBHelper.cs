@@ -68,6 +68,36 @@ namespace MechanicShop.Helper
             }
         }
 
+        public void UpdateCustomer(Customer customer)
+        {
+            string query = "UPDATE Customers SET FirstName = @FirstName, LastName = @LastName, Phone = @Phone, Email = @Email, Address = @Address WHERE CustomerID = @CustomerID";
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (OleDbCommand cmd = new OleDbCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", customer.LastName);
+                cmd.Parameters.AddWithValue("@Phone", (object)customer.PhoneNumber ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@Email", (object)customer.Email ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@Address", (object)customer.Address ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@CustomerID", customer.CustomerID);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteCustomer(int customerId)
+        {
+            string query = "DELETE FROM Customers WHERE CustomerID = @CustomerID";
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (OleDbCommand cmd = new OleDbCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@CustomerID", customerId);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
         // Vehicles
         public List<Vehicle> GetVehiclesByCustomerId(int customerId)
         {
