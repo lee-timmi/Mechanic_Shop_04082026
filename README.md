@@ -22,9 +22,16 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
   - Customer complaint field
 - **Repair Order Search** — Filter by customer name, date range, and status
 - **Main Form Dashboard** — Navigation menu with role-based access
-- **Customer Management** — Add, edit, delete customers
+- **Customer Management** — Full CRUD operations with ListView interface
+  - Add, edit, delete customers
+  - Search customers by name, phone, or email
+  - ListView display with Name, Phone, Email columns
+  - Real-time validation and error handling
 - **Vehicle Management** — Add, edit vehicles with VIN lookup
 - **Database Integration** — Microsoft Access backend with full CRUD operations
+  - `DBHelper.cs` with GetAllCustomers, AddCustomer, UpdateCustomer, DeleteCustomer
+  - Parameterized queries for SQL injection protection
+  - Customers table with proper schema
 
 ### Completed (Edwin)
 - Login form with username/password validation
@@ -40,8 +47,9 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 - Login flow with while-loop for logout → login cycle
 
 ### In Progress
-- **Repair Order Form** — Labor line items, parts line items, automatic totals
-- **Data Persistence** — JSON storage for customers, vehicles, repair orders
+- **VIN Lookup API Integration** — Auto-populate vehicle details from NHTSA database
+- **Vehicle Management** — Add, edit vehicles with VIN lookup
+- **Repair Order System** — Labor/parts tracking and cost calculation
 
 ### Planned
 - Invoice generation
