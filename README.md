@@ -9,29 +9,38 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 ## Features
 
 ### Completed (Thimmy)
-- **VIN Lookup API Integration** — Auto-populate vehicle make, model, and year from NHTSA database
-  - Enter 17-character VIN → Click "Lookup" → Fields auto-fill
-  - Error handling for invalid VINs, network issues, and missing data
-  - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
-- **Complete Repair Order System**
-  - Create, edit, and view repair orders
-  - Add labor line items (description, hours, hourly rate)
-  - Add parts line items (part name, quantity, unit cost)
-  - Automatic cost calculation (labor total, parts total, grand total)
-  - Status tracking: Pending, In Progress, Completed, Invoiced
-  - Customer complaint field
-- **Repair Order Search** — Filter by customer name, date range, and status
-- **Main Form Dashboard** — Navigation menu with role-based access
 - **Customer Management** — Full CRUD operations with ListView interface
   - Add, edit, delete customers
   - Search customers by name, phone, or email
   - ListView display with Name, Phone, Email columns
   - Real-time validation and error handling
+  - Customer selection enables "Add Vehicle" button
+
 - **Vehicle Management** — Add, edit vehicles with VIN lookup
+  - Link vehicles to specific customers via Customer dropdown
+  - VIN Lookup API Integration (NHTSA)
+    - Enter 17-character VIN → Click "Lookup" → Auto-fills Make, Model, Year
+    - Error handling for invalid VINs, network issues, and missing data
+    - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
+
+- **Repair Order System** — Complete repair order management
+  - Create repair orders for customer vehicles
+  - Customer dropdown (displays customer names)
+  - Vehicle dropdown (auto-filtered by selected customer)
+  - Current mileage auto-loads when vehicle selected
+  - Add labor line items (description, hours, hourly rate)
+  - Add parts line items (part name, quantity, unit cost)
+  - Automatic cost calculation (labor total, parts total, grand total)
+  - Status tracking: Pending, In Progress, Completed, Invoiced
+  - Customer complaint field
+
 - **Database Integration** — Microsoft Access backend with full CRUD operations
-  - `DBHelper.cs` with GetAllCustomers, AddCustomer, UpdateCustomer, DeleteCustomer
+  - `DBHelper.cs` with complete CRUD for Customers, Vehicles, Repair Orders
+  - Transaction support for repair order saving
   - Parameterized queries for SQL injection protection
-  - Customers table with proper schema
+
+- **Main Form Dashboard** — Navigation menu with role-based access
+- **Class Models** — Customer, Vehicle, RepairOrder, LaborLineItem, PartsLineItem, User
 
 ### Completed (Edwin)
 - Login form with username/password validation
