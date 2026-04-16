@@ -9,34 +9,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MechanicShop.Classes;
-using MechanicShopSystem.Helpers;
+using MechanicShop.Helper;
+using MehcnicShop.Helper;
+using System.Net.Http;
 
 namespace MechanicShop.Forms
 {
     public partial class frmVehicle : Form
     {
         VehicleApiService _vehicleAPI;
+        private int customerID;
 
         public frmVehicle()
         {
             InitializeComponent();
+            // Initialize the API service so the field is not null when used
             _vehicleAPI = new VehicleApiService();
+        }
 
-            // Make/Model/Year auto-fill from API
-            txtMake.ReadOnly = true;
-            txtModel.ReadOnly = true;
-            txtYear.ReadOnly = true;
-
-            // Status Label for API feedback
-            lblStatus.Text = "Ready. Enter VIN and Lookup.";
-            lblStatus.ForeColor = Color.Gray;
+        public frmVehicle(int customerID)
+        {
+            InitializeComponent();
+            this.customerID = customerID;
+            // Initialize the API service so the field is not null when used
+            _vehicleAPI = new VehicleApiService();
+            LoadCustomerInfo();
         }
 
         private async void btnVINLookup_Click(object sender, EventArgs e)
         {
+            // Normalize and validate VIN before any network call
             string vin = txtVIN.Text.Trim().ToUpper();
 
-            // Validation for VIN
             if (vin.Length != 17)
             {
                 lblStatus.Text = "Invalid VIN. Must be 17 characters.";
@@ -44,20 +48,18 @@ namespace MechanicShop.Forms
                 return;
             }
 
-            // Clear previous status
+            // Clear previous values and set loading state
             ClearVehicleFields();
-
-            // Loading status
             btnVINLookup.Enabled = false;
             lblStatus.Text = "Looking up VIN...";
             lblStatus.ForeColor = Color.Blue;
 
             try
             {
-                // Call the API to get vehicle details
+                // Use the initialized field (avoid creating a local unused service)
                 var vehicle = await _vehicleAPI.GetVehicleByVIN(vin);
 
-                if (!string.IsNullOrEmpty(vehicle.Make))
+                if (vehicle != null && !string.IsNullOrEmpty(vehicle.Make))
                 {
                     txtMake.Text = vehicle.Make;
                     txtModel.Text = vehicle.Model;
@@ -69,8 +71,7 @@ namespace MechanicShop.Forms
                 {
                     lblStatus.Text = "No details found for this VIN.";
                     lblStatus.ForeColor = Color.Orange;
-
-                    // Optionally, allow manual entry if API fails
+                    // Allow manual entry
                     txtMake.ReadOnly = false;
                     txtModel.ReadOnly = false;
                     txtYear.ReadOnly = false;
@@ -81,7 +82,6 @@ namespace MechanicShop.Forms
                 lblStatus.Text = "Error fetching vehicle details.";
                 lblStatus.ForeColor = Color.Red;
                 MessageBox.Show("An error occurred while fetching vehicle details: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Allow manual entry on error
                 txtMake.ReadOnly = false;
                 txtModel.ReadOnly = false;
                 txtYear.ReadOnly = false;
@@ -107,21 +107,21 @@ namespace MechanicShop.Forms
         private void btnSave_Click(object sender, EventArgs e)
         {
             // Validation for required fields
-            if (!string.IsNullOrWhiteSpace(txtMake.Text))
+            if (string.IsNullOrWhiteSpace(txtMake.Text))
             {
                 MessageBox.Show("Make is required. Please enter the vehicle make.", "Validation Error");
                 txtMake.Focus();
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(txtModel.Text))
+            if (string.IsNullOrWhiteSpace(txtModel.Text))
             {
                 MessageBox.Show("Model is required. Please enter the vehicle make.", "Validation Error");
                 txtModel.Focus();
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(txtVIN.Text))
+            if (string.IsNullOrWhiteSpace(txtVIN.Text))
             {
                 MessageBox.Show("VIN is required. Please enter the vehicle make.", "Validation Error");
                 txtVIN.Focus();
@@ -131,14 +131,19 @@ namespace MechanicShop.Forms
             // Creating vehicle obj
             var vehicle = new Vehicle
             {
+                CustomerID = customerID,
                 VIN = txtVIN.Text.Trim().ToUpper(),
                 Make = txtMake.Text.Trim(),
                 Model = txtModel.Text.Trim(),
                 Year = int.TryParse(txtYear.Text, out int year) ? year : 0,
                 LicensePlate = txtLicensePlate.Text.Trim().ToUpper(),
-                CurrentMileage = int.TryParse(txtCurrentMileage.Text, out int mileage) ? mileage : 0
+                CurrentMileage = (int)nudCurrentMileage.Value
             };
 
+            DBHelper dbHelper = new DBHelper();
+            dbHelper.AddVehicle(vehicle);
+
+            MessageBox.Show("Vehicle added successfully!");
             DialogResult = DialogResult.OK;
             Close();
 
@@ -148,6 +153,18 @@ namespace MechanicShop.Forms
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        // Load customer info for display
+        private void LoadCustomerInfo()
+        {
+            var dbHelper = new DBHelper();
+            var customer = dbHelper.GetCustomerById(customerID);
+            if (customer != null)
+            {
+                lblCustomer.Text = $"Adding Vehicle for: {customer.FirstName} {customer.LastName}";
+            }
+
         }
     }
 }

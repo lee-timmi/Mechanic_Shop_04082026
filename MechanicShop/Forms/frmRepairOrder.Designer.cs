@@ -73,21 +73,18 @@
             // 
             this.gboLabor.Controls.Add(this.btnAddLabor);
             this.gboLabor.Controls.Add(this.dgvLaborItems);
-            this.gboLabor.Location = new System.Drawing.Point(8, 114);
-            this.gboLabor.Margin = new System.Windows.Forms.Padding(2);
+            this.gboLabor.Location = new System.Drawing.Point(12, 175);
             this.gboLabor.Name = "gboLabor";
-            this.gboLabor.Padding = new System.Windows.Forms.Padding(2);
-            this.gboLabor.Size = new System.Drawing.Size(453, 172);
+            this.gboLabor.Size = new System.Drawing.Size(680, 265);
             this.gboLabor.TabIndex = 4;
             this.gboLabor.TabStop = false;
             this.gboLabor.Text = "Labor";
             // 
             // btnAddLabor
             // 
-            this.btnAddLabor.Location = new System.Drawing.Point(361, 149);
-            this.btnAddLabor.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAddLabor.Location = new System.Drawing.Point(542, 229);
             this.btnAddLabor.Name = "btnAddLabor";
-            this.btnAddLabor.Size = new System.Drawing.Size(71, 20);
+            this.btnAddLabor.Size = new System.Drawing.Size(106, 31);
             this.btnAddLabor.TabIndex = 6;
             this.btnAddLabor.Text = "Add Labor";
             this.btnAddLabor.UseVisualStyleBackColor = true;
@@ -96,12 +93,11 @@
             // dgvLaborItems
             // 
             this.dgvLaborItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLaborItems.Location = new System.Drawing.Point(11, 16);
-            this.dgvLaborItems.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvLaborItems.Location = new System.Drawing.Point(16, 25);
             this.dgvLaborItems.Name = "dgvLaborItems";
             this.dgvLaborItems.RowHeadersWidth = 62;
             this.dgvLaborItems.RowTemplate.Height = 28;
-            this.dgvLaborItems.Size = new System.Drawing.Size(428, 129);
+            this.dgvLaborItems.Size = new System.Drawing.Size(642, 198);
             this.dgvLaborItems.TabIndex = 0;
             // 
             // gboOrderInformation
@@ -118,122 +114,118 @@
             this.gboOrderInformation.Controls.Add(this.cboStatus);
             this.gboOrderInformation.Controls.Add(this.cboVehicle);
             this.gboOrderInformation.Controls.Add(this.cboCustomer);
-            this.gboOrderInformation.Location = new System.Drawing.Point(8, 7);
-            this.gboOrderInformation.Margin = new System.Windows.Forms.Padding(2);
+            this.gboOrderInformation.Location = new System.Drawing.Point(12, 11);
             this.gboOrderInformation.Name = "gboOrderInformation";
-            this.gboOrderInformation.Padding = new System.Windows.Forms.Padding(2);
-            this.gboOrderInformation.Size = new System.Drawing.Size(453, 103);
+            this.gboOrderInformation.Size = new System.Drawing.Size(680, 158);
             this.gboOrderInformation.TabIndex = 5;
             this.gboOrderInformation.TabStop = false;
             this.gboOrderInformation.Text = "Order Information";
             // 
             // nudMileage
             // 
-            this.nudMileage.Location = new System.Drawing.Point(67, 72);
+            this.nudMileage.Location = new System.Drawing.Point(100, 111);
+            this.nudMileage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nudMileage.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.nudMileage.Name = "nudMileage";
-            this.nudMileage.Size = new System.Drawing.Size(66, 20);
+            this.nudMileage.Size = new System.Drawing.Size(99, 26);
             this.nudMileage.TabIndex = 19;
             // 
             // dtpDate
             // 
-            this.dtpDate.Location = new System.Drawing.Point(266, 52);
+            this.dtpDate.Location = new System.Drawing.Point(399, 80);
+            this.dtpDate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dtpDate.Name = "dtpDate";
-            this.dtpDate.Size = new System.Drawing.Size(182, 20);
+            this.dtpDate.Size = new System.Drawing.Size(271, 26);
             this.dtpDate.TabIndex = 18;
             // 
             // lblDate
             // 
             this.lblDate.AutoSize = true;
-            this.lblDate.Location = new System.Drawing.Point(229, 52);
-            this.lblDate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDate.Location = new System.Drawing.Point(344, 80);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(33, 13);
+            this.lblDate.Size = new System.Drawing.Size(48, 20);
             this.lblDate.TabIndex = 17;
             this.lblDate.Text = "Date:";
             // 
             // txtOrderNum
             // 
-            this.txtOrderNum.Location = new System.Drawing.Point(265, 30);
-            this.txtOrderNum.Margin = new System.Windows.Forms.Padding(2);
+            this.txtOrderNum.Location = new System.Drawing.Point(398, 46);
             this.txtOrderNum.Name = "txtOrderNum";
-            this.txtOrderNum.Size = new System.Drawing.Size(128, 20);
+            this.txtOrderNum.Size = new System.Drawing.Size(190, 26);
             this.txtOrderNum.TabIndex = 16;
             // 
             // lblOrderNum
             // 
             this.lblOrderNum.AutoSize = true;
-            this.lblOrderNum.Location = new System.Drawing.Point(217, 32);
-            this.lblOrderNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblOrderNum.Location = new System.Drawing.Point(326, 49);
             this.lblOrderNum.Name = "lblOrderNum";
-            this.lblOrderNum.Size = new System.Drawing.Size(46, 13);
+            this.lblOrderNum.Size = new System.Drawing.Size(66, 20);
             this.lblOrderNum.TabIndex = 15;
             this.lblOrderNum.Text = "Order #:";
             // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(222, 71);
-            this.lblStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStatus.Location = new System.Drawing.Point(333, 109);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(40, 13);
+            this.lblStatus.Size = new System.Drawing.Size(60, 20);
             this.lblStatus.TabIndex = 14;
             this.lblStatus.Text = "Status:";
             // 
             // lblMileage
             // 
             this.lblMileage.AutoSize = true;
-            this.lblMileage.Location = new System.Drawing.Point(18, 74);
-            this.lblMileage.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblMileage.Location = new System.Drawing.Point(27, 114);
             this.lblMileage.Name = "lblMileage";
-            this.lblMileage.Size = new System.Drawing.Size(47, 13);
+            this.lblMileage.Size = new System.Drawing.Size(68, 20);
             this.lblMileage.TabIndex = 13;
             this.lblMileage.Text = "Mileage:";
             // 
             // lblVehicle
             // 
             this.lblVehicle.AutoSize = true;
-            this.lblVehicle.Location = new System.Drawing.Point(20, 52);
-            this.lblVehicle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblVehicle.Location = new System.Drawing.Point(30, 80);
             this.lblVehicle.Name = "lblVehicle";
-            this.lblVehicle.Size = new System.Drawing.Size(45, 13);
+            this.lblVehicle.Size = new System.Drawing.Size(65, 20);
             this.lblVehicle.TabIndex = 12;
             this.lblVehicle.Text = "Vehicle:";
             // 
             // lblCustomer
             // 
             this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Location = new System.Drawing.Point(11, 30);
-            this.lblCustomer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCustomer.Location = new System.Drawing.Point(16, 46);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(54, 13);
+            this.lblCustomer.Size = new System.Drawing.Size(82, 20);
             this.lblCustomer.TabIndex = 11;
             this.lblCustomer.Text = "Customer:";
             // 
             // cboStatus
             // 
             this.cboStatus.FormattingEnabled = true;
-            this.cboStatus.Location = new System.Drawing.Point(266, 69);
-            this.cboStatus.Margin = new System.Windows.Forms.Padding(2);
+            this.cboStatus.Location = new System.Drawing.Point(399, 106);
             this.cboStatus.Name = "cboStatus";
-            this.cboStatus.Size = new System.Drawing.Size(81, 21);
+            this.cboStatus.Size = new System.Drawing.Size(120, 28);
             this.cboStatus.TabIndex = 7;
             // 
             // cboVehicle
             // 
             this.cboVehicle.FormattingEnabled = true;
-            this.cboVehicle.Location = new System.Drawing.Point(67, 50);
-            this.cboVehicle.Margin = new System.Windows.Forms.Padding(2);
+            this.cboVehicle.Location = new System.Drawing.Point(100, 77);
             this.cboVehicle.Name = "cboVehicle";
-            this.cboVehicle.Size = new System.Drawing.Size(135, 21);
+            this.cboVehicle.Size = new System.Drawing.Size(200, 28);
             this.cboVehicle.TabIndex = 5;
+            this.cboVehicle.SelectedIndexChanged += new System.EventHandler(this.cboVehicle_SelectedIndexChanged);
             // 
             // cboCustomer
             // 
             this.cboCustomer.FormattingEnabled = true;
-            this.cboCustomer.Location = new System.Drawing.Point(67, 28);
-            this.cboCustomer.Margin = new System.Windows.Forms.Padding(2);
+            this.cboCustomer.Location = new System.Drawing.Point(100, 43);
             this.cboCustomer.Name = "cboCustomer";
-            this.cboCustomer.Size = new System.Drawing.Size(135, 21);
+            this.cboCustomer.Size = new System.Drawing.Size(200, 28);
             this.cboCustomer.TabIndex = 4;
             this.cboCustomer.SelectedIndexChanged += new System.EventHandler(this.cboCustomer_SelectedIndexChanged);
             // 
@@ -241,21 +233,18 @@
             // 
             this.gboParts.Controls.Add(this.btnAddParts);
             this.gboParts.Controls.Add(this.dgvPartsItem);
-            this.gboParts.Location = new System.Drawing.Point(8, 291);
-            this.gboParts.Margin = new System.Windows.Forms.Padding(2);
+            this.gboParts.Location = new System.Drawing.Point(12, 448);
             this.gboParts.Name = "gboParts";
-            this.gboParts.Padding = new System.Windows.Forms.Padding(2);
-            this.gboParts.Size = new System.Drawing.Size(453, 172);
+            this.gboParts.Size = new System.Drawing.Size(680, 265);
             this.gboParts.TabIndex = 5;
             this.gboParts.TabStop = false;
             this.gboParts.Text = "Parts";
             // 
             // btnAddParts
             // 
-            this.btnAddParts.Location = new System.Drawing.Point(361, 149);
-            this.btnAddParts.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAddParts.Location = new System.Drawing.Point(542, 229);
             this.btnAddParts.Name = "btnAddParts";
-            this.btnAddParts.Size = new System.Drawing.Size(71, 20);
+            this.btnAddParts.Size = new System.Drawing.Size(106, 31);
             this.btnAddParts.TabIndex = 7;
             this.btnAddParts.Text = "Add Parts";
             this.btnAddParts.UseVisualStyleBackColor = true;
@@ -264,12 +253,11 @@
             // dgvPartsItem
             // 
             this.dgvPartsItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPartsItem.Location = new System.Drawing.Point(11, 16);
-            this.dgvPartsItem.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvPartsItem.Location = new System.Drawing.Point(16, 25);
             this.dgvPartsItem.Name = "dgvPartsItem";
             this.dgvPartsItem.RowHeadersWidth = 62;
             this.dgvPartsItem.RowTemplate.Height = 28;
-            this.dgvPartsItem.Size = new System.Drawing.Size(428, 129);
+            this.dgvPartsItem.Size = new System.Drawing.Size(642, 198);
             this.dgvPartsItem.TabIndex = 0;
             // 
             // gboCostInformation
@@ -282,55 +270,48 @@
             this.gboCostInformation.Controls.Add(this.lblGrandTotal);
             this.gboCostInformation.Controls.Add(this.lblPartsTotal);
             this.gboCostInformation.Controls.Add(this.lblLaborTotal);
-            this.gboCostInformation.Location = new System.Drawing.Point(8, 467);
-            this.gboCostInformation.Margin = new System.Windows.Forms.Padding(2);
+            this.gboCostInformation.Location = new System.Drawing.Point(12, 718);
             this.gboCostInformation.Name = "gboCostInformation";
-            this.gboCostInformation.Padding = new System.Windows.Forms.Padding(2);
-            this.gboCostInformation.Size = new System.Drawing.Size(455, 150);
+            this.gboCostInformation.Size = new System.Drawing.Size(682, 231);
             this.gboCostInformation.TabIndex = 6;
             this.gboCostInformation.TabStop = false;
             this.gboCostInformation.Text = "Cost Information";
             // 
             // txtFeedback
             // 
-            this.txtFeedback.Location = new System.Drawing.Point(135, 82);
-            this.txtFeedback.Margin = new System.Windows.Forms.Padding(2);
+            this.txtFeedback.Location = new System.Drawing.Point(202, 126);
             this.txtFeedback.Multiline = true;
             this.txtFeedback.Name = "txtFeedback";
-            this.txtFeedback.Size = new System.Drawing.Size(296, 66);
+            this.txtFeedback.Size = new System.Drawing.Size(442, 99);
             this.txtFeedback.TabIndex = 7;
             // 
             // txtGrandTotal
             // 
-            this.txtGrandTotal.Location = new System.Drawing.Point(103, 47);
-            this.txtGrandTotal.Margin = new System.Windows.Forms.Padding(2);
+            this.txtGrandTotal.Location = new System.Drawing.Point(154, 72);
             this.txtGrandTotal.Name = "txtGrandTotal";
-            this.txtGrandTotal.Size = new System.Drawing.Size(99, 20);
+            this.txtGrandTotal.Size = new System.Drawing.Size(146, 26);
             this.txtGrandTotal.TabIndex = 6;
             // 
             // txtPartsTotal
             // 
-            this.txtPartsTotal.Location = new System.Drawing.Point(312, 21);
-            this.txtPartsTotal.Margin = new System.Windows.Forms.Padding(2);
+            this.txtPartsTotal.Location = new System.Drawing.Point(468, 32);
             this.txtPartsTotal.Name = "txtPartsTotal";
-            this.txtPartsTotal.Size = new System.Drawing.Size(99, 20);
+            this.txtPartsTotal.Size = new System.Drawing.Size(146, 26);
             this.txtPartsTotal.TabIndex = 5;
             // 
             // txtLaborTotal
             // 
-            this.txtLaborTotal.Location = new System.Drawing.Point(93, 23);
-            this.txtLaborTotal.Margin = new System.Windows.Forms.Padding(2);
+            this.txtLaborTotal.Location = new System.Drawing.Point(140, 35);
             this.txtLaborTotal.Name = "txtLaborTotal";
-            this.txtLaborTotal.Size = new System.Drawing.Size(99, 20);
+            this.txtLaborTotal.Size = new System.Drawing.Size(146, 26);
             this.txtLaborTotal.TabIndex = 4;
             // 
             // lblFeedback
             // 
             this.lblFeedback.AutoSize = true;
-            this.lblFeedback.Location = new System.Drawing.Point(27, 84);
-            this.lblFeedback.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblFeedback.Location = new System.Drawing.Point(40, 129);
             this.lblFeedback.Name = "lblFeedback";
-            this.lblFeedback.Size = new System.Drawing.Size(106, 13);
+            this.lblFeedback.Size = new System.Drawing.Size(157, 20);
             this.lblFeedback.TabIndex = 3;
             this.lblFeedback.Text = "Feedback (Optional):";
             // 
@@ -338,39 +319,35 @@
             // 
             this.lblGrandTotal.AutoSize = true;
             this.lblGrandTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGrandTotal.Location = new System.Drawing.Point(27, 49);
-            this.lblGrandTotal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblGrandTotal.Location = new System.Drawing.Point(40, 75);
             this.lblGrandTotal.Name = "lblGrandTotal";
-            this.lblGrandTotal.Size = new System.Drawing.Size(78, 13);
+            this.lblGrandTotal.Size = new System.Drawing.Size(109, 20);
             this.lblGrandTotal.TabIndex = 2;
             this.lblGrandTotal.Text = "Grand Total:";
             // 
             // lblPartsTotal
             // 
             this.lblPartsTotal.AutoSize = true;
-            this.lblPartsTotal.Location = new System.Drawing.Point(249, 23);
-            this.lblPartsTotal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPartsTotal.Location = new System.Drawing.Point(374, 35);
             this.lblPartsTotal.Name = "lblPartsTotal";
-            this.lblPartsTotal.Size = new System.Drawing.Size(61, 13);
+            this.lblPartsTotal.Size = new System.Drawing.Size(89, 20);
             this.lblPartsTotal.TabIndex = 1;
             this.lblPartsTotal.Text = "Parts Total:";
             // 
             // lblLaborTotal
             // 
             this.lblLaborTotal.AutoSize = true;
-            this.lblLaborTotal.Location = new System.Drawing.Point(27, 23);
-            this.lblLaborTotal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblLaborTotal.Location = new System.Drawing.Point(40, 35);
             this.lblLaborTotal.Name = "lblLaborTotal";
-            this.lblLaborTotal.Size = new System.Drawing.Size(64, 13);
+            this.lblLaborTotal.Size = new System.Drawing.Size(93, 20);
             this.lblLaborTotal.TabIndex = 0;
             this.lblLaborTotal.Text = "Labor Total:";
             // 
             // btnSubmitOrder
             // 
-            this.btnSubmitOrder.Location = new System.Drawing.Point(49, 643);
-            this.btnSubmitOrder.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSubmitOrder.Location = new System.Drawing.Point(74, 989);
             this.btnSubmitOrder.Name = "btnSubmitOrder";
-            this.btnSubmitOrder.Size = new System.Drawing.Size(87, 23);
+            this.btnSubmitOrder.Size = new System.Drawing.Size(130, 35);
             this.btnSubmitOrder.TabIndex = 7;
             this.btnSubmitOrder.Text = "Submit Order";
             this.btnSubmitOrder.UseVisualStyleBackColor = true;
@@ -378,30 +355,27 @@
             // 
             // btnCloseOrder
             // 
-            this.btnCloseOrder.Location = new System.Drawing.Point(139, 643);
-            this.btnCloseOrder.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCloseOrder.Location = new System.Drawing.Point(208, 989);
             this.btnCloseOrder.Name = "btnCloseOrder";
-            this.btnCloseOrder.Size = new System.Drawing.Size(83, 23);
+            this.btnCloseOrder.Size = new System.Drawing.Size(124, 35);
             this.btnCloseOrder.TabIndex = 8;
             this.btnCloseOrder.Text = "Close Order";
             this.btnCloseOrder.UseVisualStyleBackColor = true;
             // 
             // btnGenerateInvoice
             // 
-            this.btnGenerateInvoice.Location = new System.Drawing.Point(226, 643);
-            this.btnGenerateInvoice.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGenerateInvoice.Location = new System.Drawing.Point(339, 989);
             this.btnGenerateInvoice.Name = "btnGenerateInvoice";
-            this.btnGenerateInvoice.Size = new System.Drawing.Size(104, 23);
+            this.btnGenerateInvoice.Size = new System.Drawing.Size(156, 35);
             this.btnGenerateInvoice.TabIndex = 9;
             this.btnGenerateInvoice.Text = "Generate Invoice";
             this.btnGenerateInvoice.UseVisualStyleBackColor = true;
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(334, 643);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClose.Location = new System.Drawing.Point(501, 989);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(67, 23);
+            this.btnClose.Size = new System.Drawing.Size(100, 35);
             this.btnClose.TabIndex = 10;
             this.btnClose.Text = "Cancel";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -409,9 +383,9 @@
             // 
             // frmRepairOrder
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 681);
+            this.ClientSize = new System.Drawing.Size(706, 1048);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnGenerateInvoice);
             this.Controls.Add(this.btnCloseOrder);
@@ -420,7 +394,6 @@
             this.Controls.Add(this.gboParts);
             this.Controls.Add(this.gboOrderInformation);
             this.Controls.Add(this.gboLabor);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmRepairOrder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mechanic Shop - REPAIR ORDER";

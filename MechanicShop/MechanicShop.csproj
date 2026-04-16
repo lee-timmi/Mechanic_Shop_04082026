@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Classes\Classes.txt" />
+    <None Include="Helper\Future Improvements" />
     <Content Include="MechanicShopDB.accdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

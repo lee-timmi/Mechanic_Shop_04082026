@@ -14,7 +14,8 @@ namespace MechanicShop.Classes
         public string Model { get; set; }
         public int Year { get; set; }
         public string LicensePlate { get; set; }
-        public double CurrentMileage { get; set; }
+        public int CurrentMileage { get; set; }
+        public string DisplayName => $"{Year} {Make} {Model} - {LicensePlate}";
 
         // Navigation properties
         public List<RepairOrder> RepairOrders { get; set; } = new List<RepairOrder>();

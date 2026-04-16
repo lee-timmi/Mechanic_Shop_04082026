@@ -100,6 +100,7 @@ namespace MechanicShop.Forms
             selectedCustomer = null;
             isEditMode = false;
             btnSave.Text = "Add Customer";
+            btnAddVehicle.Enabled = false;
             this.Text = "Customer Management - Add Mode";
         }
 
@@ -172,16 +173,25 @@ namespace MechanicShop.Forms
 
         private void lvCustomerList_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (lvCustomerList.SelectedIndices.Count > 0)
             {
-                selectedCustomer = (Customer)lvCustomerList.SelectedItems[0].Tag;
-                LoadCustomerToForm(selectedCustomer);
-                isEditMode = true;
-                btnSave.Text = "Update Customer";
+
+                ListViewItem selectedItem = lvCustomerList.SelectedItems[0];
+
+                if (selectedItem != null)
+                {
+                    selectedCustomer = (Customer)lvCustomerList.SelectedItems[0].Tag;
+                    LoadCustomerToForm(selectedCustomer);
+                    isEditMode = true;
+                    btnSave.Text = "Update Customer";
+
+                    btnAddVehicle.Enabled = true;
+                }
             }
             else
             {
-                MessageBox.Show("No customer selected.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ClearEntryForm();
             }
         }
 
@@ -193,29 +203,6 @@ namespace MechanicShop.Forms
             btnSave.Text = "Add Customer";
             txtFirstName.Focus();
 
-        }
-
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            if (lvCustomerList.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Please select a customer to edit.", "No Selection",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            ListViewItem selectedItem = lvCustomerList.SelectedItems[0];
-            if (selectedItem.Tag == null)
-            {
-                MessageBox.Show("Error: Customer data not found.", "Error");
-                return;
-            }
-
-            selectedCustomer = (Customer)selectedItem.Tag;
-            LoadCustomerToForm(selectedCustomer);
-            isEditMode = true;
-            btnSave.Text = "Update Customer";
-            txtFirstName.Focus();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -279,6 +266,35 @@ namespace MechanicShop.Forms
         {
             txtSearch.Clear();
             RefreshCustomerList();
+        }
+
+        private void btnAddVehicle_Click(object sender, EventArgs e)
+        {
+            if (selectedCustomer == null)
+            {
+                MessageBox.Show("Please select a customer to add a vehicle for.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            frmVehicle vehicleForm = new frmVehicle(selectedCustomer.CustomerID);
+            if (vehicleForm.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("Vehicle added successfully.", "Success");
+            }
+        }
+
+        private void btnRepair_Click(object sender, EventArgs e)
+        {
+            if (selectedCustomer == null)
+            {
+                MessageBox.Show("Please select a customer first");
+                return;
+            }
+
+            // Open Repair Order & pass customerID
+            frmRepairOrder orderForm = new frmRepairOrder(customerId: selectedCustomer.CustomerID);
+            orderForm.ShowDialog();
+
         }
     }
 }

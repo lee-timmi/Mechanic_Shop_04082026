@@ -1,0 +1,6 @@
+﻿For the upcoming future, try to sort out the DB HELPER class.
+	- It violates the single responsibility principle, and it is a mess.
+	- It also violates the open-closed principle, and it is a mess.
+	- It also violates the Interface Segregation princple, and it is a mess.
+
+	- Solution: Create a new class for each responsibility, and make sure that each class has a single responsibility.

@@ -37,18 +37,38 @@ namespace MechanicShop.Forms
         }
 
         // Constructor for editing existing RepairOrder
-        public frmRepairOrder(int repairOrderId)
+        public frmRepairOrder(int? repairOrderId = null, int? vehicleId = null,
+                                int? customerId = null)
         {
             InitializeComponent();
             DBHelper = new DBHelper();
             RepairOrder = new RepairOrder();
             LaborLineItems = new List<LaborLineItem>();
             PartsLineItems = new List<PartsLineItem>();
-            LoadRepairOrderForEditing(repairOrderId);
-            LoadCustomers(); // future methods
-            SetupForm(); // future methods
-            this.Text = "Edit Repair Order";
 
+            if (repairOrderId.HasValue)
+            {
+                LoadRepairOrderForEditing(repairOrderId.Value);
+                LoadCustomers();
+                SetupForm();
+                this.Text = "Edit Repair Order";
+            }
+            else if (vehicleId.HasValue)
+            {
+                LoadVehicleAndCustomer(vehicleId.Value);
+                SetupForm();
+            }
+            else if (customerId.HasValue)
+            {
+                LoadCustomerForRepair(customerId.Value);
+                SetupForm();
+            }
+            else
+            {
+                // Fallback to default initialization
+                LoadCustomers();
+                SetupForm();
+            }
         }
 
         // Methods
@@ -65,7 +85,7 @@ namespace MechanicShop.Forms
             // Load customers from the database and populate a combo box
             var customers = DBHelper.GetAllCustomers();
             cboCustomer.DataSource = customers;
-            cboCustomer.DisplayMember = "Name";
+            cboCustomer.DisplayMember = "FullName";
             cboCustomer.ValueMember = "CustomerId";
         }
         private void LoadRepairOrderForEditing(int repairOrderId)
@@ -94,16 +114,97 @@ namespace MechanicShop.Forms
             }
         }
 
+        private void LoadVehicleAndCustomer(int vehicleId)
+        {
+            // Get Vehicle
+            Vehicle vehicle = DBHelper.GetVehicleById(vehicleId);
+
+            if (vehicle != null)
+            {
+                Customer customer = DBHelper.GetCustomerById(vehicle.CustomerID);
+
+                if (customer != null)
+                {
+                    // Store ID
+                    RepairOrder.CustomerId = customer.CustomerID;
+                    RepairOrder.VehicleId = vehicleId;
+
+                    // Find and select within dropdown
+                    var customers = DBHelper.GetAllCustomers();
+                    cboCustomer.DataSource = customers;
+                    cboCustomer.DisplayMember = "FullName";
+                    cboCustomer.ValueMember = "CustomerID";
+                    cboCustomer.SelectedValue = customer.CustomerID;
+
+                    // Load vehicle for this customer
+                    var vehicles = DBHelper.GetVehiclesByCustomer(customer.CustomerID);
+                    cboVehicle.DataSource = vehicles;
+                    cboVehicle.DisplayMember = "DisplayName";
+                    cboVehicle.ValueMember = "vehicleId";
+                    cboVehicle.SelectedValue = vehicleId;
+                    cboVehicle.Enabled = true;
+
+                    nudMileage.Value = (decimal)vehicle.CurrentMileage;
+                    nudMileage.ReadOnly = true;
+                    nudMileage.Enabled = false;
+
+                    cboCustomer.Enabled = false;
+                    cboVehicle.Enabled = false;
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("No Vehicle Found.");
+            }
+        }
+
+        private void LoadCustomerForRepair(int customerId)
+        {
+            Customer customer = DBHelper.GetCustomerById(customerId);
+
+            if (customer != null)
+            {
+                RepairOrder.CustomerId = customer.CustomerID;
+
+                var customers = DBHelper.GetAllCustomers();
+                cboCustomer.DataSource = customers;
+                cboCustomer.DisplayMember = "FullName";
+                cboCustomer.ValueMember = "CustomerID";
+
+                cboCustomer.SelectedValue = customer.CustomerID;
+
+                cboCustomer.Enabled = false;
+
+                LoadVehiclesForCustomer(customer.CustomerID);
+            }
+        }
+
+        private void LoadVehiclesForCustomer(int customerId)
+        {
+            var vehicles = DBHelper.GetVehiclesByCustomer(customerId);
+            cboVehicle.DataSource = vehicles;
+            cboVehicle.DisplayMember = "DisplayName";
+            cboVehicle.ValueMember = "VehicleID";
+            cboVehicle.Enabled = vehicles.Any();
+
+            // If there are vehicles, select first one and load its mileage
+            if (vehicles.Count > 0)
+            {
+                cboVehicle.SelectedIndex = 0;
+            }
+        }
+
         // Event Handlers
         private void cboCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboCustomer.SelectedValue != null)
             {
                 Customer selected = (Customer)cboCustomer.SelectedItem;
-                var vehicles = DBHelper.GetVehiclesByCustomerId(selected.CustomerID);
+                var vehicles = DBHelper.GetVehiclesByCustomer(selected.CustomerID);
                 cboVehicle.DataSource = vehicles;
                 cboVehicle.DisplayMember = "DisplayName";
-                cboVehicle.ValueMember = "VehicleId";
+                cboVehicle.ValueMember = "VehicleID";
                 cboVehicle.Enabled = vehicles.Any();
             }
         }
@@ -231,6 +332,15 @@ namespace MechanicShop.Forms
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void cboVehicle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboVehicle.SelectedItem != null)
+            {
+                Vehicle selected = (Vehicle)cboVehicle.SelectedItem;
+                nudMileage.Value = selected.CurrentMileage;
+            }
         }
     }
 }

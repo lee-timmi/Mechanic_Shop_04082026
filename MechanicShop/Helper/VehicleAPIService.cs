@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Script.Serialization;
 using System.Threading.Tasks;
 
-namespace MechanicShopSystem.Helpers
+namespace MehcnicShop.Helper
 {
     public class VehicleInfo
     {
