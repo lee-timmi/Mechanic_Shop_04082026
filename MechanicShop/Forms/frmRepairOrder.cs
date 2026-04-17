@@ -79,6 +79,9 @@ namespace MechanicShop.Forms
             dtpDate.Value = DateTime.Now;
             cboStatus.Items.AddRange(new string[] { "Pending", "In Progress", "Completed", "Invoiced" });
             cboStatus.SelectedIndex = 0; // Default to "Pending"
+            txtOrderNum.Text = GenerateOrderNumber();
+            txtOrderNum.ReadOnly = true;
+            txtOrderNum.BackColor = System.Drawing.SystemColors.Control;
         }
         private void LoadCustomers()
         {
@@ -193,6 +196,14 @@ namespace MechanicShop.Forms
             {
                 cboVehicle.SelectedIndex = 0;
             }
+        }
+
+        public string GenerateOrderNumber()
+        {
+            // Our format will be similar to RO-2026-0001
+            string year = DateTime.Now.Year.ToString();
+            int nextNum = DBHelper.GetNextOrderNumber(year);
+            return $"RO-{year}-{nextNum:D4}";
         }
 
         // Event Handlers
@@ -312,6 +323,7 @@ namespace MechanicShop.Forms
             RepairOrder.MileageAtService = (int)nudMileage.Value;
             RepairOrder.RepairStatus = cboStatus.Text;
             RepairOrder.CustomerComplaint = txtFeedback.Text;
+            RepairOrder.OrderNumber = txtOrderNum.Text;
 
             if (editingRepairOrderItemId == 0)
             {
@@ -341,6 +353,115 @@ namespace MechanicShop.Forms
                 Vehicle selected = (Vehicle)cboVehicle.SelectedItem;
                 nudMileage.Value = selected.CurrentMileage;
             }
+        }
+        private void btnRemoveParts_Click(object sender, EventArgs e)
+        { 
+            if (dgvPartsItem.CurrentRow != null)
+            {
+                int index = dgvPartsItem.CurrentRow.Index;
+                PartsLineItems.RemoveAt(index);
+                RefreshPartsGrid();
+                CalculateTotals();
+            }
+
+            dgvPartsItem.Refresh();
+        }
+
+        private void btnRemoveLabor_Click(object sender, EventArgs e)
+        {
+            if (dgvLaborItems.CurrentRow != null)
+            {
+                int index = dgvLaborItems.CurrentRow.Index;
+                LaborLineItems.RemoveAt(index);
+                RefreshLaborGrid();
+                CalculateTotals();
+            }
+        }
+
+        // === Labor Item Event Handlers ====
+        private void btnOilChange_Click(object sender, EventArgs e)
+        {
+            var laborItem = new LaborLineItem
+            {
+                LaborLineItemId = nextLaborLineItemId++,
+                LaborDescription = "Oil Change",
+                LaborHours = 1.0m,
+                LaborHourlyRate = 80.00m
+            };
+            LaborLineItems.Add(laborItem);
+            RefreshLaborGrid();
+            CalculateTotals();
+        }
+
+        private void btnBrakePad_Click(object sender, EventArgs e)
+        {
+            var laborItem = new LaborLineItem
+            {
+                LaborLineItemId = nextLaborLineItemId++,
+                LaborDescription = "Brake Pad Replacement",
+                LaborHours = 2.0m,
+                LaborHourlyRate = 95.00m
+            };
+            LaborLineItems.Add(laborItem);
+            RefreshLaborGrid();
+            CalculateTotals();
+        }
+
+        private void btnTireRotation_Click(object sender, EventArgs e)
+        {
+            var laborItem = new LaborLineItem
+            {
+                LaborLineItemId = nextLaborLineItemId++,
+                LaborDescription = "Tire Rotation",
+                LaborHours = 0.5m,
+                LaborHourlyRate = 80.00m
+            };
+            LaborLineItems.Add(laborItem);
+            RefreshLaborGrid();
+            CalculateTotals();
+        }
+
+        private void btnDiagnostic_Click(object sender, EventArgs e)
+        {
+            var laborItem = new LaborLineItem
+            {
+                LaborLineItemId = nextLaborLineItemId++,
+                LaborDescription = "Diagnostics",
+                LaborHours = 1.5m,
+                LaborHourlyRate = 120.00m
+            };
+            LaborLineItems.Add(laborItem);
+            RefreshLaborGrid();
+            CalculateTotals();
+        }
+        
+        // ==== Parts Item Event Handler ====
+        private void btnAirFilter_Click(object sender, EventArgs e)
+        {
+            var partItem = new PartsLineItem
+            {
+                PartsLineItemId = nextPartsLineItemId++,
+                PartName = "Air Filter",
+                Quantity = 1,
+                UnitCost = 18.50m
+            };
+            PartsLineItems.Add(partItem);
+            RefreshPartsGrid();
+            CalculateTotals();
+        }
+
+        private void btnOilFilter_Click(object sender, EventArgs e)
+        {
+            var partItem = new PartsLineItem
+            {
+                PartsLineItemId = nextPartsLineItemId++,
+                PartName = "Oil Filter",
+                Quantity = 1,
+                UnitCost = 12.99m
+            };
+            PartsLineItems.Add(partItem);
+            RefreshPartsGrid();
+            CalculateTotals();
         }
     }
 }

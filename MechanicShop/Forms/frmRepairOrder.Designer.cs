@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.gboLabor = new System.Windows.Forms.GroupBox();
+            this.btnRemoveLabor = new System.Windows.Forms.Button();
+            this.btnDiagnostic = new System.Windows.Forms.Button();
+            this.btnTireRotation = new System.Windows.Forms.Button();
+            this.btnBrakePad = new System.Windows.Forms.Button();
+            this.btnOilChange = new System.Windows.Forms.Button();
             this.btnAddLabor = new System.Windows.Forms.Button();
             this.dgvLaborItems = new System.Windows.Forms.DataGridView();
             this.gboOrderInformation = new System.Windows.Forms.GroupBox();
@@ -45,6 +50,9 @@
             this.cboVehicle = new System.Windows.Forms.ComboBox();
             this.cboCustomer = new System.Windows.Forms.ComboBox();
             this.gboParts = new System.Windows.Forms.GroupBox();
+            this.btnRemoveParts = new System.Windows.Forms.Button();
+            this.btnOilFilter = new System.Windows.Forms.Button();
+            this.btnAirFilter = new System.Windows.Forms.Button();
             this.btnAddParts = new System.Windows.Forms.Button();
             this.dgvPartsItem = new System.Windows.Forms.DataGridView();
             this.gboCostInformation = new System.Windows.Forms.GroupBox();
@@ -71,20 +79,75 @@
             // 
             // gboLabor
             // 
+            this.gboLabor.Controls.Add(this.btnRemoveLabor);
+            this.gboLabor.Controls.Add(this.btnDiagnostic);
+            this.gboLabor.Controls.Add(this.btnTireRotation);
+            this.gboLabor.Controls.Add(this.btnBrakePad);
+            this.gboLabor.Controls.Add(this.btnOilChange);
             this.gboLabor.Controls.Add(this.btnAddLabor);
             this.gboLabor.Controls.Add(this.dgvLaborItems);
             this.gboLabor.Location = new System.Drawing.Point(12, 175);
             this.gboLabor.Name = "gboLabor";
-            this.gboLabor.Size = new System.Drawing.Size(680, 265);
+            this.gboLabor.Size = new System.Drawing.Size(680, 318);
             this.gboLabor.TabIndex = 4;
             this.gboLabor.TabStop = false;
             this.gboLabor.Text = "Labor";
             // 
+            // btnRemoveLabor
+            // 
+            this.btnRemoveLabor.Location = new System.Drawing.Point(325, 260);
+            this.btnRemoveLabor.Name = "btnRemoveLabor";
+            this.btnRemoveLabor.Size = new System.Drawing.Size(128, 42);
+            this.btnRemoveLabor.TabIndex = 15;
+            this.btnRemoveLabor.Text = "Remove Labor";
+            this.btnRemoveLabor.UseVisualStyleBackColor = true;
+            this.btnRemoveLabor.Click += new System.EventHandler(this.btnRemoveLabor_Click);
+            // 
+            // btnDiagnostic
+            // 
+            this.btnDiagnostic.Location = new System.Drawing.Point(443, 212);
+            this.btnDiagnostic.Name = "btnDiagnostic";
+            this.btnDiagnostic.Size = new System.Drawing.Size(103, 42);
+            this.btnDiagnostic.TabIndex = 14;
+            this.btnDiagnostic.Text = "Diagnostics";
+            this.btnDiagnostic.UseVisualStyleBackColor = true;
+            this.btnDiagnostic.Click += new System.EventHandler(this.btnDiagnostic_Click);
+            // 
+            // btnTireRotation
+            // 
+            this.btnTireRotation.Location = new System.Drawing.Point(326, 212);
+            this.btnTireRotation.Name = "btnTireRotation";
+            this.btnTireRotation.Size = new System.Drawing.Size(111, 42);
+            this.btnTireRotation.TabIndex = 13;
+            this.btnTireRotation.Text = "Tire Rotation";
+            this.btnTireRotation.UseVisualStyleBackColor = true;
+            this.btnTireRotation.Click += new System.EventHandler(this.btnTireRotation_Click);
+            // 
+            // btnBrakePad
+            // 
+            this.btnBrakePad.Location = new System.Drawing.Point(206, 212);
+            this.btnBrakePad.Name = "btnBrakePad";
+            this.btnBrakePad.Size = new System.Drawing.Size(114, 42);
+            this.btnBrakePad.TabIndex = 12;
+            this.btnBrakePad.Text = "Brake Pads";
+            this.btnBrakePad.UseVisualStyleBackColor = true;
+            this.btnBrakePad.Click += new System.EventHandler(this.btnBrakePad_Click);
+            // 
+            // btnOilChange
+            // 
+            this.btnOilChange.Location = new System.Drawing.Point(88, 212);
+            this.btnOilChange.Name = "btnOilChange";
+            this.btnOilChange.Size = new System.Drawing.Size(112, 42);
+            this.btnOilChange.TabIndex = 11;
+            this.btnOilChange.Text = "Oil Change";
+            this.btnOilChange.UseVisualStyleBackColor = true;
+            this.btnOilChange.Click += new System.EventHandler(this.btnOilChange_Click);
+            // 
             // btnAddLabor
             // 
-            this.btnAddLabor.Location = new System.Drawing.Point(542, 229);
+            this.btnAddLabor.Location = new System.Drawing.Point(200, 260);
             this.btnAddLabor.Name = "btnAddLabor";
-            this.btnAddLabor.Size = new System.Drawing.Size(106, 31);
+            this.btnAddLabor.Size = new System.Drawing.Size(119, 42);
             this.btnAddLabor.TabIndex = 6;
             this.btnAddLabor.Text = "Add Labor";
             this.btnAddLabor.UseVisualStyleBackColor = true;
@@ -97,7 +160,7 @@
             this.dgvLaborItems.Name = "dgvLaborItems";
             this.dgvLaborItems.RowHeadersWidth = 62;
             this.dgvLaborItems.RowTemplate.Height = 28;
-            this.dgvLaborItems.Size = new System.Drawing.Size(642, 198);
+            this.dgvLaborItems.Size = new System.Drawing.Size(642, 172);
             this.dgvLaborItems.TabIndex = 0;
             // 
             // gboOrderInformation
@@ -136,7 +199,7 @@
             // 
             // dtpDate
             // 
-            this.dtpDate.Location = new System.Drawing.Point(399, 80);
+            this.dtpDate.Location = new System.Drawing.Point(398, 77);
             this.dtpDate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(271, 26);
@@ -208,7 +271,7 @@
             this.cboStatus.FormattingEnabled = true;
             this.cboStatus.Location = new System.Drawing.Point(399, 106);
             this.cboStatus.Name = "cboStatus";
-            this.cboStatus.Size = new System.Drawing.Size(120, 28);
+            this.cboStatus.Size = new System.Drawing.Size(189, 28);
             this.cboStatus.TabIndex = 7;
             // 
             // cboVehicle
@@ -231,20 +294,53 @@
             // 
             // gboParts
             // 
+            this.gboParts.Controls.Add(this.btnRemoveParts);
+            this.gboParts.Controls.Add(this.btnOilFilter);
+            this.gboParts.Controls.Add(this.btnAirFilter);
             this.gboParts.Controls.Add(this.btnAddParts);
             this.gboParts.Controls.Add(this.dgvPartsItem);
-            this.gboParts.Location = new System.Drawing.Point(12, 448);
+            this.gboParts.Location = new System.Drawing.Point(12, 499);
             this.gboParts.Name = "gboParts";
             this.gboParts.Size = new System.Drawing.Size(680, 265);
             this.gboParts.TabIndex = 5;
             this.gboParts.TabStop = false;
             this.gboParts.Text = "Parts";
             // 
+            // btnRemoveParts
+            // 
+            this.btnRemoveParts.Location = new System.Drawing.Point(461, 211);
+            this.btnRemoveParts.Name = "btnRemoveParts";
+            this.btnRemoveParts.Size = new System.Drawing.Size(119, 42);
+            this.btnRemoveParts.TabIndex = 14;
+            this.btnRemoveParts.Text = "Remove Parts";
+            this.btnRemoveParts.UseVisualStyleBackColor = true;
+            this.btnRemoveParts.Click += new System.EventHandler(this.btnRemoveParts_Click);
+            // 
+            // btnOilFilter
+            // 
+            this.btnOilFilter.Location = new System.Drawing.Point(218, 211);
+            this.btnOilFilter.Name = "btnOilFilter";
+            this.btnOilFilter.Size = new System.Drawing.Size(112, 42);
+            this.btnOilFilter.TabIndex = 13;
+            this.btnOilFilter.Text = "Oil Filter";
+            this.btnOilFilter.UseVisualStyleBackColor = true;
+            this.btnOilFilter.Click += new System.EventHandler(this.btnOilFilter_Click);
+            // 
+            // btnAirFilter
+            // 
+            this.btnAirFilter.Location = new System.Drawing.Point(100, 211);
+            this.btnAirFilter.Name = "btnAirFilter";
+            this.btnAirFilter.Size = new System.Drawing.Size(112, 42);
+            this.btnAirFilter.TabIndex = 12;
+            this.btnAirFilter.Text = "Air Filter";
+            this.btnAirFilter.UseVisualStyleBackColor = true;
+            this.btnAirFilter.Click += new System.EventHandler(this.btnAirFilter_Click);
+            // 
             // btnAddParts
             // 
-            this.btnAddParts.Location = new System.Drawing.Point(542, 229);
+            this.btnAddParts.Location = new System.Drawing.Point(336, 211);
             this.btnAddParts.Name = "btnAddParts";
-            this.btnAddParts.Size = new System.Drawing.Size(106, 31);
+            this.btnAddParts.Size = new System.Drawing.Size(119, 42);
             this.btnAddParts.TabIndex = 7;
             this.btnAddParts.Text = "Add Parts";
             this.btnAddParts.UseVisualStyleBackColor = true;
@@ -257,7 +353,7 @@
             this.dgvPartsItem.Name = "dgvPartsItem";
             this.dgvPartsItem.RowHeadersWidth = 62;
             this.dgvPartsItem.RowTemplate.Height = 28;
-            this.dgvPartsItem.Size = new System.Drawing.Size(642, 198);
+            this.dgvPartsItem.Size = new System.Drawing.Size(642, 180);
             this.dgvPartsItem.TabIndex = 0;
             // 
             // gboCostInformation
@@ -270,16 +366,16 @@
             this.gboCostInformation.Controls.Add(this.lblGrandTotal);
             this.gboCostInformation.Controls.Add(this.lblPartsTotal);
             this.gboCostInformation.Controls.Add(this.lblLaborTotal);
-            this.gboCostInformation.Location = new System.Drawing.Point(12, 718);
+            this.gboCostInformation.Location = new System.Drawing.Point(12, 770);
             this.gboCostInformation.Name = "gboCostInformation";
-            this.gboCostInformation.Size = new System.Drawing.Size(682, 231);
+            this.gboCostInformation.Size = new System.Drawing.Size(682, 213);
             this.gboCostInformation.TabIndex = 6;
             this.gboCostInformation.TabStop = false;
             this.gboCostInformation.Text = "Cost Information";
             // 
             // txtFeedback
             // 
-            this.txtFeedback.Location = new System.Drawing.Point(202, 126);
+            this.txtFeedback.Location = new System.Drawing.Point(196, 101);
             this.txtFeedback.Multiline = true;
             this.txtFeedback.Name = "txtFeedback";
             this.txtFeedback.Size = new System.Drawing.Size(442, 99);
@@ -287,21 +383,21 @@
             // 
             // txtGrandTotal
             // 
-            this.txtGrandTotal.Location = new System.Drawing.Point(154, 72);
+            this.txtGrandTotal.Location = new System.Drawing.Point(146, 66);
             this.txtGrandTotal.Name = "txtGrandTotal";
             this.txtGrandTotal.Size = new System.Drawing.Size(146, 26);
             this.txtGrandTotal.TabIndex = 6;
             // 
             // txtPartsTotal
             // 
-            this.txtPartsTotal.Location = new System.Drawing.Point(468, 32);
+            this.txtPartsTotal.Location = new System.Drawing.Point(460, 26);
             this.txtPartsTotal.Name = "txtPartsTotal";
             this.txtPartsTotal.Size = new System.Drawing.Size(146, 26);
             this.txtPartsTotal.TabIndex = 5;
             // 
             // txtLaborTotal
             // 
-            this.txtLaborTotal.Location = new System.Drawing.Point(140, 35);
+            this.txtLaborTotal.Location = new System.Drawing.Point(132, 29);
             this.txtLaborTotal.Name = "txtLaborTotal";
             this.txtLaborTotal.Size = new System.Drawing.Size(146, 26);
             this.txtLaborTotal.TabIndex = 4;
@@ -309,7 +405,7 @@
             // lblFeedback
             // 
             this.lblFeedback.AutoSize = true;
-            this.lblFeedback.Location = new System.Drawing.Point(40, 129);
+            this.lblFeedback.Location = new System.Drawing.Point(33, 104);
             this.lblFeedback.Name = "lblFeedback";
             this.lblFeedback.Size = new System.Drawing.Size(157, 20);
             this.lblFeedback.TabIndex = 3;
@@ -319,7 +415,7 @@
             // 
             this.lblGrandTotal.AutoSize = true;
             this.lblGrandTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGrandTotal.Location = new System.Drawing.Point(40, 75);
+            this.lblGrandTotal.Location = new System.Drawing.Point(32, 69);
             this.lblGrandTotal.Name = "lblGrandTotal";
             this.lblGrandTotal.Size = new System.Drawing.Size(109, 20);
             this.lblGrandTotal.TabIndex = 2;
@@ -328,7 +424,7 @@
             // lblPartsTotal
             // 
             this.lblPartsTotal.AutoSize = true;
-            this.lblPartsTotal.Location = new System.Drawing.Point(374, 35);
+            this.lblPartsTotal.Location = new System.Drawing.Point(366, 29);
             this.lblPartsTotal.Name = "lblPartsTotal";
             this.lblPartsTotal.Size = new System.Drawing.Size(89, 20);
             this.lblPartsTotal.TabIndex = 1;
@@ -337,7 +433,7 @@
             // lblLaborTotal
             // 
             this.lblLaborTotal.AutoSize = true;
-            this.lblLaborTotal.Location = new System.Drawing.Point(40, 35);
+            this.lblLaborTotal.Location = new System.Drawing.Point(32, 29);
             this.lblLaborTotal.Name = "lblLaborTotal";
             this.lblLaborTotal.Size = new System.Drawing.Size(93, 20);
             this.lblLaborTotal.TabIndex = 0;
@@ -385,7 +481,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(706, 1048);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(706, 1050);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnGenerateInvoice);
             this.Controls.Add(this.btnCloseOrder);
@@ -443,5 +540,13 @@
         private System.Windows.Forms.TextBox txtOrderNum;
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.NumericUpDown nudMileage;
+        private System.Windows.Forms.Button btnDiagnostic;
+        private System.Windows.Forms.Button btnTireRotation;
+        private System.Windows.Forms.Button btnBrakePad;
+        private System.Windows.Forms.Button btnOilChange;
+        private System.Windows.Forms.Button btnOilFilter;
+        private System.Windows.Forms.Button btnAirFilter;
+        private System.Windows.Forms.Button btnRemoveLabor;
+        private System.Windows.Forms.Button btnRemoveParts;
     }
 }

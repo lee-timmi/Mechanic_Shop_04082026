@@ -15,6 +15,7 @@ namespace MechanicShop.Classes
         public string RepairStatus { get; set; } = "Pending";
         public int MileageAtService { get; set; }
         public decimal TotalCost { get; set; }
+        public string OrderNumber { get; set; }
 
         // Foreign keys (associations)
         public int CustomerId { get; set; }

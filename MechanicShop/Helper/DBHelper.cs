@@ -305,13 +305,15 @@ namespace MechanicShop.Helper
                     {
                         // Insert or update RepairOrder
                         string repairOrderQuery = @"
-                                INSERT INTO RepairOrders (CustomerId, VehicleId, DateOpened, DateClosed, MileageAtService, RepairStatus, CustomerComplaint)
-                                VALUES (@CustomerId, @VehicleId, @DateOpened, @DateClosed, @MileageAtService, @RepairStatus, @CustomerComplaint);
+                                INSERT INTO RepairOrders (OrderNumber, CustomerId, VehicleId, DateOpened, DateClosed, MileageAtService, RepairStatus, CustomerComplaint)
+                                VALUES (@OrderNumber, @CustomerId, @VehicleId, @DateOpened, @DateClosed, @MileageAtService, @RepairStatus, @CustomerComplaint);
                                 SELECT @@IDENTITY;";
                         int repairOrderId;
 
                         using (OleDbCommand cmd = new OleDbCommand(repairOrderQuery, conn, transaction))
                         {
+                            // Ensure OrderNumber is provided (may be null for older records)
+                            cmd.Parameters.AddWithValue("@OrderNumber", (object)repairOrder.OrderNumber ?? DBNull.Value);
                             cmd.Parameters.AddWithValue("@CustomerId", repairOrder.CustomerId);
                             cmd.Parameters.AddWithValue("@VehicleId", repairOrder.VehicleId);
                             cmd.Parameters.AddWithValue("@DateOpened", repairOrder.DateOpened);
@@ -587,6 +589,25 @@ namespace MechanicShop.Helper
                 }
             }
             return null;
+        }
+
+        public int GetNextOrderNumber(string year)
+        {
+            string query = @"
+                SELECT COUNT(*) 
+                FROM RepairOrders
+                WHERE OrderNumber LIKE @Pattern";
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (OleDbCommand cmd  = new OleDbCommand(query, conn))
+            {
+                // pattern must match GenerateOrderNumber ("RO-YYYY-xxxx")
+                cmd.Parameters.AddWithValue("@Pattern", $"RO-{year}-%");
+                conn.Open();
+
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count + 1; 
+            }
         }
 
     } // end of class DBHelper
