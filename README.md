@@ -25,14 +25,18 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 
 - **Repair Order System** — Complete repair order management
   - Create repair orders for customer vehicles
+  - Auto-generated order number (RO-YYYY-XXXX format)
   - Customer dropdown (displays customer names)
   - Vehicle dropdown (auto-filtered by selected customer)
   - Current mileage auto-loads when vehicle selected
-  - Add labor line items (description, hours, hourly rate)
-  - Add parts line items (part name, quantity, unit cost)
+  - **Quick Buttons for common services:**
+    - Labor: Oil Change, Brake Pads, Tire Rotation, Engine Diagnostic
+    - Parts: Oil Filter, Air Filter
+  - Add custom labor/parts items as needed
   - Automatic cost calculation (labor total, parts total, grand total)
   - Status tracking: Pending, In Progress, Completed, Invoiced
   - Customer complaint field
+  - Remove items from DataGridView with safety checks
 
 - **Database Integration** — Microsoft Access backend with full CRUD operations
   - `DBHelper.cs` with complete CRUD for Customers, Vehicles, Repair Orders
