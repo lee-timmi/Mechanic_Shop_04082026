@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data;
-using System.Data.OleDb;
-using MechanicShop.Classes;
-using System.IO;
 using System.Windows.Forms;
+using MechanicShop.Classes;
 
 namespace MechanicShop.Helper
 {
@@ -20,6 +21,9 @@ namespace MechanicShop.Helper
             string dbPath = Path.Combine(Application.StartupPath, "MechanicShopDB.accdb");
             connectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath}";
         }
+
+        // Expose the connection string so other services can reuse the same database configuration
+        public string ConnectionString => connectionString;
 
         // Customers
         public Customer GetCustomerById(int customerId)
@@ -235,6 +239,44 @@ namespace MechanicShop.Helper
             return repairOrders;
         }
 
+        public void DeleteRepairOrders(int repairOrderID)
+        {
+            using (OleDbConnection conn = new OleDbConnection(ConnectionString))
+            {
+                conn.Open();
+                using (OleDbTransaction trans  = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        using (OleDbCommand cmd = new OleDbCommand("DELETE FROM LaborLineItems WHERE RepairOrderID = @RepairOrderID", conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("@RepairOrderID", repairOrderID);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        using (OleDbCommand cmd = new OleDbCommand("DELETE FROM PartsLineItems WHERE RepairOrderID = @RepairOrderID", conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("@RepairOrderID", repairOrderID);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        using (OleDbCommand cmd = new OleDbCommand("DELETE FROM RepairOrders WHERE RepairOrderID = @RepairOrderID", conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("@RepairOrderID", repairOrderID);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
         // Labor and Parts Line Items
         public List<LaborLineItem> GetLaborItemsByRepairOrder(int repairOrderId)
         {
@@ -328,14 +370,16 @@ namespace MechanicShop.Helper
                         foreach (var labor in lineItems)
                         {
                             string laborQuery = @"
-                                    INSERT INTO LaborLineItems (RepairOrderId, LaborDescription, LaborHours, LaborHourlyRate)
-                                    VALUES (@RepairOrderId, @LaborDescription, @LaborHours, @LaborHourlyRate)";
+                                    INSERT INTO LaborLineItems (RepairOrderId, LaborDescription, LaborHours, LaborHourlyRate, MechanicID)
+                                    VALUES (@RepairOrderId, @LaborDescription, @LaborHours, @LaborHourlyRate, @MechanicID)";
                             using (OleDbCommand cmd = new OleDbCommand(laborQuery, conn, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@RepairOrderId", repairOrderId);
                                 cmd.Parameters.AddWithValue("@LaborDescription", labor.LaborDescription);
                                 cmd.Parameters.AddWithValue("@LaborHours", labor.LaborHours);
                                 cmd.Parameters.AddWithValue("@LaborHourlyRate", labor.LaborHourlyRate);
+                                cmd.Parameters.AddWithValue("@MechanicID", (object)labor.MechanicID ?? DBNull.Value);
+
                                 cmd.ExecuteNonQuery();
                             }
                         }

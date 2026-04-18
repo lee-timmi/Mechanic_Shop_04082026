@@ -69,7 +69,8 @@ namespace MechanicShop
 
         private void btnMechanics_Click(object sender, EventArgs e)
         {
-            
+            frmMechanic mechanicForm = new frmMechanic();
+            mechanicForm.ShowDialog();
         }
 
         private void btnReports_Click(object sender, EventArgs e)

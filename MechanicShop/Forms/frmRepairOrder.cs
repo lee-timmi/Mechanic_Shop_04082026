@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MechanicShop.Classes;
 using MechanicShop.Helper;
+using MechanicShop.Services;
 using Microsoft.VisualBasic;
 
 namespace MechanicShop.Forms
@@ -20,6 +21,7 @@ namespace MechanicShop.Forms
         private RepairOrder RepairOrder;
         private List<LaborLineItem> LaborLineItems;
         private List<PartsLineItem> PartsLineItems;
+        private MechanicService MechanicService;
         private int nextLaborLineItemId = 1;
         private int nextPartsLineItemId = 1;
         private int editingRepairOrderItemId = 0; // 0 = new, >0 = editing existing item
@@ -32,6 +34,7 @@ namespace MechanicShop.Forms
             RepairOrder = new RepairOrder();
             LaborLineItems = new List<LaborLineItem>();
             PartsLineItems = new List<PartsLineItem>();
+            MechanicService = new MechanicService();
             LoadCustomers(); // future methods
             SetupForm(); // future methods
         }
@@ -231,16 +234,48 @@ namespace MechanicShop.Forms
             string rateStr = Interaction.InputBox("Enter hourly rate:", "Hourly Rate", "80.00");
             if (!decimal.TryParse(rateStr, out decimal rate)) return;
 
-            var laborItem = new LaborLineItem
+            var mechanics = MechanicService.GetAllMechanics();
+            if (mechanics.Count > 0)
             {
-                LaborLineItemId = nextLaborLineItemId++,
-                LaborDescription = description,
-                LaborHours = hours,
-                LaborHourlyRate = rate
-            };
-            LaborLineItems.Add(laborItem);
-            RefreshLaborGrid();
-            CalculateTotals();
+                string mechanicNames = string.Join(Environment.NewLine,
+                    mechanics.Select((m, i) => $"{i + 1}. {m.FullName}"));
+
+                string mechanicChoice = Interaction.InputBox(
+                    $"Select mechanic by number:{Environment.NewLine}{mechanicNames}",
+                    "Assign Mechanic", "1");
+
+                if (int.TryParse(mechanicChoice, out int mechanicIndex) &&
+                    mechanicIndex >= 1 && mechanicIndex <= mechanics.Count)
+                {
+                    var selectedMechanic = mechanics[mechanicIndex - 1];
+
+                    var laborItem = new LaborLineItem
+                    {
+                        LaborLineItemId = nextLaborLineItemId++,
+                        LaborDescription = description,
+                        LaborHours = hours,
+                        LaborHourlyRate = rate,
+                        MechanicID = null
+                    };
+                    LaborLineItems.Add(laborItem);
+                    RefreshLaborGrid();
+                    CalculateTotals();
+                }
+            }
+            else
+            {
+                var laborItem = new LaborLineItem
+                {
+                    LaborLineItemId = nextLaborLineItemId++,
+                    LaborDescription = description,
+                    LaborHours = hours,
+                    LaborHourlyRate = rate,
+                    MechanicID = null
+                };
+                LaborLineItems.Add(laborItem);
+                RefreshLaborGrid();
+                CalculateTotals();
+            }
         }
 
         private void btnAddParts_Click(object sender, EventArgs e)
@@ -276,6 +311,7 @@ namespace MechanicShop.Forms
                 l.LaborDescription,
                 l.LaborHours,
                 l.LaborHourlyRate,
+                Mechanic = GetMechanicName(l.MechanicID),
                 LaborCost = l.LaborCost.ToString("C")
             }).ToList();
         }
@@ -302,7 +338,14 @@ namespace MechanicShop.Forms
             lblPartsTotal.Text = $"${partsTotal:F2}";
             lblGrandTotal.Text = $"${laborTotal + partsTotal:F2}";
         }
+        private string GetMechanicName(int? mechanicId)
+        {
+            if (!mechanicId.HasValue) return "Unassigned";
 
+            var mechanics = MechanicService.GetAllMechanics();
+            var mechanic = mechanics.FirstOrDefault(m => m.MechanicID == mechanicId);
+            return mechanic?.FullName ?? "Unknown";
+        }
         private void btnSubmitOrder_Click(object sender, EventArgs e)
         {
             if (cboCustomer.SelectedItem == null)
