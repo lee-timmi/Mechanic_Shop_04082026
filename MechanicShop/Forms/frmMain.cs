@@ -37,7 +37,7 @@ namespace MechanicShop
             {
                 btnCustomers.Visible = false;
                 btnVehicles.Visible = false;
-                btnReports.Visible = false;
+                btnRepairHistory.Visible = false;
                 btnAdmin.Visible = false;
                 btnMechanics.Visible = false;
             } 
@@ -45,7 +45,7 @@ namespace MechanicShop
             {
                 btnAdmin.Visible = false;
                 btnMechanics.Visible = false;
-                btnReports.Visible = false;
+                btnRepairHistory.Visible = false;
             }
         } // end of frmMain_Load
 
@@ -73,9 +73,10 @@ namespace MechanicShop
             mechanicForm.ShowDialog();
         }
 
-        private void btnReports_Click(object sender, EventArgs e)
+        private void btnRepairHistory_Click(object sender, EventArgs e)
         {
-
+            frmRepairOrderHistory historyForm = new frmRepairOrderHistory();
+            historyForm.ShowDialog();
         }
 
         private void btnAdmin_Click(object sender, EventArgs e)

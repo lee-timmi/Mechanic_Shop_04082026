@@ -34,7 +34,7 @@
             this.lblLogInState = new System.Windows.Forms.Label();
             this.gboOptions = new System.Windows.Forms.GroupBox();
             this.btnAdmin = new System.Windows.Forms.Button();
-            this.btnReports = new System.Windows.Forms.Button();
+            this.btnRepairHistory = new System.Windows.Forms.Button();
             this.btnMechanics = new System.Windows.Forms.Button();
             this.btnRepairOrders = new System.Windows.Forms.Button();
             this.btnVehicles = new System.Windows.Forms.Button();
@@ -84,7 +84,7 @@
             // 
             this.gboOptions.BackColor = System.Drawing.Color.Transparent;
             this.gboOptions.Controls.Add(this.btnAdmin);
-            this.gboOptions.Controls.Add(this.btnReports);
+            this.gboOptions.Controls.Add(this.btnRepairHistory);
             this.gboOptions.Controls.Add(this.btnMechanics);
             this.gboOptions.Controls.Add(this.btnRepairOrders);
             this.gboOptions.Controls.Add(this.btnVehicles);
@@ -112,17 +112,17 @@
             this.btnAdmin.UseVisualStyleBackColor = false;
             this.btnAdmin.Click += new System.EventHandler(this.btnAdmin_Click);
             // 
-            // btnReports
+            // btnRepairHistory
             // 
-            this.btnReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.btnReports.Location = new System.Drawing.Point(146, 86);
-            this.btnReports.Margin = new System.Windows.Forms.Padding(2);
-            this.btnReports.Name = "btnReports";
-            this.btnReports.Size = new System.Drawing.Size(120, 52);
-            this.btnReports.TabIndex = 10;
-            this.btnReports.Text = "Reports";
-            this.btnReports.UseVisualStyleBackColor = false;
-            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
+            this.btnRepairHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.btnRepairHistory.Location = new System.Drawing.Point(146, 86);
+            this.btnRepairHistory.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRepairHistory.Name = "btnRepairHistory";
+            this.btnRepairHistory.Size = new System.Drawing.Size(120, 52);
+            this.btnRepairHistory.TabIndex = 10;
+            this.btnRepairHistory.Text = "Repair History";
+            this.btnRepairHistory.UseVisualStyleBackColor = false;
+            this.btnRepairHistory.Click += new System.EventHandler(this.btnRepairHistory_Click);
             // 
             // btnMechanics
             // 
@@ -206,7 +206,7 @@
         private System.Windows.Forms.Label lblLogInState;
         private System.Windows.Forms.GroupBox gboOptions;
         private System.Windows.Forms.Button btnAdmin;
-        private System.Windows.Forms.Button btnReports;
+        private System.Windows.Forms.Button btnRepairHistory;
         private System.Windows.Forms.Button btnMechanics;
         private System.Windows.Forms.Button btnRepairOrders;
         private System.Windows.Forms.Button btnVehicles;

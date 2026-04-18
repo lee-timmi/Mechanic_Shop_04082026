@@ -14,6 +14,7 @@ using Microsoft.VisualBasic;
 
 namespace MechanicShop.Forms
 {
+    public enum RepairOrderFormMode { View, Edit, New }
     public partial class frmRepairOrder : Form
     {
         // Private fields
@@ -25,9 +26,11 @@ namespace MechanicShop.Forms
         private int nextLaborLineItemId = 1;
         private int nextPartsLineItemId = 1;
         private int editingRepairOrderItemId = 0; // 0 = new, >0 = editing existing item
+        private RepairOrderFormMode formMode = RepairOrderFormMode.New;
 
         // Constructor
-        public frmRepairOrder()
+        public frmRepairOrder(int? repairOrderId = null, int? vehicleId = null,
+                                int? customerId = null, RepairOrderFormMode mode = RepairOrderFormMode.New)
         {
             InitializeComponent();
             DBHelper = new DBHelper();
@@ -35,26 +38,25 @@ namespace MechanicShop.Forms
             LaborLineItems = new List<LaborLineItem>();
             PartsLineItems = new List<PartsLineItem>();
             MechanicService = new MechanicService();
-            LoadCustomers(); // future methods
-            SetupForm(); // future methods
-        }
-
-        // Constructor for editing existing RepairOrder
-        public frmRepairOrder(int? repairOrderId = null, int? vehicleId = null,
-                                int? customerId = null)
-        {
-            InitializeComponent();
-            DBHelper = new DBHelper();
-            RepairOrder = new RepairOrder();
-            LaborLineItems = new List<LaborLineItem>();
-            PartsLineItems = new List<PartsLineItem>();
-
+            formMode = mode;
+            
             if (repairOrderId.HasValue)
             {
                 LoadRepairOrderForEditing(repairOrderId.Value);
-                LoadCustomers();
+                LoadCustomers(); 
                 SetupForm();
-                this.Text = "Edit Repair Order";
+
+                switch (mode)
+                {
+                    case RepairOrderFormMode.View:
+                        SetReadOnly();
+                        this.Text = "View Repair Order";
+                        break;
+                    case RepairOrderFormMode.Edit:
+                        editingRepairOrderItemId = repairOrderId.Value;
+                        this.Text = "Edit Repair Order";
+                        break;
+                }
             }
             else if (vehicleId.HasValue)
             {
@@ -68,13 +70,37 @@ namespace MechanicShop.Forms
             }
             else
             {
-                // Fallback to default initialization
                 LoadCustomers();
                 SetupForm();
             }
+            
         }
 
         // Methods
+        private void SetReadOnly()
+        {
+            cboCustomer.Enabled = false;
+            cboVehicle.Enabled = false;
+            dtpDate.Enabled = false;
+            nudMileage.Enabled = false;
+            cboStatus.Enabled = false;
+            txtFeedback.ReadOnly = true;
+
+            // Hidden Buttons
+            btnSubmitOrder.Visible = false;
+            btnAddLabor.Visible = false;
+            btnAddParts.Visible = false;
+            btnRemoveLabor.Visible = false;
+            btnRemoveParts.Visible = false;
+
+            // Hidden Quick Buttons
+            btnOilChange.Visible = false;
+            btnBrakePad.Visible = false;
+            btnTireRotation.Visible = false;
+            btnDiagnostic.Visible = false;
+            btnAirFilter.Visible = false;
+            btnOilFilter.Visible = false;
+        }
         private void SetupForm()
         {
             // Set up form controls (e.g., combo boxes, data grids)
@@ -103,6 +129,7 @@ namespace MechanicShop.Forms
             
             if (RepairOrder != null)
             {
+                editingRepairOrderItemId = repairOrderId;
                 dtpDate.Value = RepairOrder.DateOpened;
                 nudMileage.Value = RepairOrder.MileageAtService;
                 cboStatus.Text = RepairOrder.RepairStatus;
@@ -209,6 +236,27 @@ namespace MechanicShop.Forms
             return $"RO-{year}-{nextNum:D4}";
         }
 
+        private int? PromptForMechanic()
+        {
+            var mechanics = MechanicService.GetAllMechanics();
+
+            if (mechanics.Count == 0)
+            {
+                return null;
+            }
+
+            string mechanicNames = string.Join(Environment.NewLine, mechanics.Select((m,i) => $"{i + 1}. {m.FullName}"));
+            string choice = Interaction.InputBox(
+                $"Assign a mechanic (or Cancel to leave unassigned):{Environment.NewLine}{mechanicNames}",
+                "Assign Mechanic", "");
+
+            if (int.TryParse(choice, out int index) && index >= 1 && index <= mechanics.Count)
+                return mechanics[index - 1].MechanicID;
+
+            return null;
+
+        }
+
         // Event Handlers
         private void cboCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -255,7 +303,7 @@ namespace MechanicShop.Forms
                         LaborDescription = description,
                         LaborHours = hours,
                         LaborHourlyRate = rate,
-                        MechanicID = null
+                        MechanicID = PromptForMechanic()
                     };
                     LaborLineItems.Add(laborItem);
                     RefreshLaborGrid();
@@ -270,7 +318,7 @@ namespace MechanicShop.Forms
                     LaborDescription = description,
                     LaborHours = hours,
                     LaborHourlyRate = rate,
-                    MechanicID = null
+                    MechanicID = PromptForMechanic()
                 };
                 LaborLineItems.Add(laborItem);
                 RefreshLaborGrid();
@@ -334,9 +382,9 @@ namespace MechanicShop.Forms
             decimal laborTotal = LaborLineItems.Sum(l => l.LaborCost);
             decimal partsTotal = PartsLineItems.Sum(p => p.TotalCost);
 
-            lblLaborTotal.Text = $"${laborTotal:F2}";
-            lblPartsTotal.Text = $"${partsTotal:F2}";
-            lblGrandTotal.Text = $"${laborTotal + partsTotal:F2}";
+            txtLaborTotal.Text = $"${laborTotal:F2}";
+            txtPartsTotal.Text = $"${partsTotal:F2}";
+            txtGrandTotal.Text = $"${laborTotal + partsTotal:F2}";
         }
         private string GetMechanicName(int? mechanicId)
         {
@@ -375,6 +423,7 @@ namespace MechanicShop.Forms
             }
             else
             {
+                RepairOrder.RepairOrderId = editingRepairOrderItemId;
                 DBHelper.UpdateRepairOrder(RepairOrder, LaborLineItems, PartsLineItems);
                 MessageBox.Show("Repair order updated successfully!", "Success");
             }
@@ -429,7 +478,8 @@ namespace MechanicShop.Forms
                 LaborLineItemId = nextLaborLineItemId++,
                 LaborDescription = "Oil Change",
                 LaborHours = 1.0m,
-                LaborHourlyRate = 80.00m
+                LaborHourlyRate = 80.00m,
+                MechanicID = PromptForMechanic()
             };
             LaborLineItems.Add(laborItem);
             RefreshLaborGrid();
@@ -443,7 +493,8 @@ namespace MechanicShop.Forms
                 LaborLineItemId = nextLaborLineItemId++,
                 LaborDescription = "Brake Pad Replacement",
                 LaborHours = 2.0m,
-                LaborHourlyRate = 95.00m
+                LaborHourlyRate = 95.00m,
+                MechanicID = PromptForMechanic()
             };
             LaborLineItems.Add(laborItem);
             RefreshLaborGrid();
@@ -457,7 +508,8 @@ namespace MechanicShop.Forms
                 LaborLineItemId = nextLaborLineItemId++,
                 LaborDescription = "Tire Rotation",
                 LaborHours = 0.5m,
-                LaborHourlyRate = 80.00m
+                LaborHourlyRate = 80.00m,
+                MechanicID = PromptForMechanic()
             };
             LaborLineItems.Add(laborItem);
             RefreshLaborGrid();
@@ -471,7 +523,8 @@ namespace MechanicShop.Forms
                 LaborLineItemId = nextLaborLineItemId++,
                 LaborDescription = "Diagnostics",
                 LaborHours = 1.5m,
-                LaborHourlyRate = 120.00m
+                LaborHourlyRate = 120.00m,
+                MechanicID = PromptForMechanic()
             };
             LaborLineItems.Add(laborItem);
             RefreshLaborGrid();

@@ -92,11 +92,11 @@
     <Compile Include="Forms\frmRepairOrder.Designer.cs">
       <DependentUpon>frmRepairOrder.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\frmReports.cs">
+    <Compile Include="Forms\frmRepairOrderHistory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmReports.Designer.cs">
-      <DependentUpon>frmReports.cs</DependentUpon>
+    <Compile Include="Forms\frmRepairOrderHistory.Designer.cs">
+      <DependentUpon>frmRepairOrderHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmVehicle.cs">
       <SubType>Form</SubType>
@@ -127,8 +127,8 @@
     <EmbeddedResource Include="Forms\frmRepairOrder.resx">
       <DependentUpon>frmRepairOrder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmReports.resx">
-      <DependentUpon>frmReports.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmRepairOrderHistory.resx">
+      <DependentUpon>frmRepairOrderHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmVehicle.resx">
       <DependentUpon>frmVehicle.cs</DependentUpon>

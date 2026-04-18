@@ -136,8 +136,8 @@ namespace MechanicShop.Helper
             var repairOrders = new List<RepairOrder>();
             string query = @"
                 SELECT r.*, c.FirstName, c.LastName, v.Make, v.Model, v.Year
-                FROM RepairOrders r
-                INNER JOIN Customers c ON r.CustomerID = c.CustomerID
+                FROM (RepairOrders r
+                INNER JOIN Customers c ON r.CustomerID = c.CustomerID)
                 INNER JOIN Vehicles v ON r.VehicleID = v.VehicleID
                 ORDER BY r.DateOpened DESC";
             using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -150,7 +150,7 @@ namespace MechanicShop.Helper
                     {
                         repairOrders.Add(new RepairOrder
                         {
-                            RepairOrderID = Convert.ToInt32(reader["RepairOrderID"]),
+                            RepairOrderId = Convert.ToInt32(reader["RepairOrderID"]),
                             
                             CustomerId = Convert.ToInt32(reader["CustomerID"]),
                             VehicleId = Convert.ToInt32(reader["VehicleID"]),
@@ -174,14 +174,14 @@ namespace MechanicShop.Helper
             var repairOrders = new List<RepairOrder>();
             string query = @"
                 SELECT r.*, c.FirstName, c.LastName, v.Make, v.Model, v.Year 
-                FROM RepairOrders r
-                INNER JOIN Customers c ON r.CustomerId = c.CustomerId
+                FROM (RepairOrders r
+                INNER JOIN Customers c ON r.CustomerId = c.CustomerId)
                 INNER JOIN Vehicles v ON r.VehicleId = v.VehicleId
                 WHERE 1=1";
 
             if (!string.IsNullOrEmpty(customerName))
             {
-                query += " AND (c.FirstName LIKE @customer OR c.LastName LIKE @customer";
+                query += " AND (c.FirstName LIKE @customer OR c.LastName LIKE @customer)";
             }
 
             if (startDate.HasValue)
@@ -193,7 +193,7 @@ namespace MechanicShop.Helper
             }
             if (!string.IsNullOrEmpty(status) && status != "All")
             {
-                query += " AND r.Status = @status";
+                query += " AND r.RepairStatus = @RepairStatus";
             }
 
             query += " ORDER BY r.DateOpened DESC";
@@ -225,7 +225,7 @@ namespace MechanicShop.Helper
                     {
                         repairOrders.Add(new RepairOrder
                         {
-                            RepairOrderID = Convert.ToInt32(reader["RepairOrderID"]),
+                            RepairOrderId = Convert.ToInt32(reader["RepairOrderID"]),
                             CustomerId = Convert.ToInt32(reader["CustomerID"]),
                             VehicleId = Convert.ToInt32(reader["VehicleID"]),
                             DateOpened = Convert.ToDateTime(reader["DateOpened"]),
@@ -294,11 +294,12 @@ namespace MechanicShop.Helper
                     {
                         items.Add(new LaborLineItem
                         {
-                            LaborLineItemId = Convert.ToInt32(reader["LaborLineItemId"]),
-                            RepairOrderId = Convert.ToInt32(reader["RepairOrderId"]),
-                            LaborDescription = reader["Description"].ToString(),
-                            LaborHours = Convert.ToDecimal(reader["Hours"]),
-                            LaborHourlyRate = Convert.ToDecimal(reader["HourlyRate"])
+                            LaborLineItemId = Convert.ToInt32(reader["LaborLineItemID"]),
+                            RepairOrderId = Convert.ToInt32(reader["RepairOrderID"]),
+                            LaborDescription = reader["LaborDescription"].ToString(),
+                            LaborHours = Convert.ToDecimal(reader["LaborHours"]),
+                            LaborHourlyRate = Convert.ToDecimal(reader["LaborHourlyRate"]),
+                            MechanicID = reader["MechanicID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["MechanicID"])
                         });
                     }
                 }
@@ -348,22 +349,28 @@ namespace MechanicShop.Helper
                         // Insert or update RepairOrder
                         string repairOrderQuery = @"
                                 INSERT INTO RepairOrders (OrderNumber, CustomerId, VehicleId, DateOpened, DateClosed, MileageAtService, RepairStatus, CustomerComplaint)
-                                VALUES (@OrderNumber, @CustomerId, @VehicleId, @DateOpened, @DateClosed, @MileageAtService, @RepairStatus, @CustomerComplaint);
-                                SELECT @@IDENTITY;";
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                         int repairOrderId;
 
                         using (OleDbCommand cmd = new OleDbCommand(repairOrderQuery, conn, transaction))
                         {
-                            // Ensure OrderNumber is provided (may be null for older records)
-                            cmd.Parameters.AddWithValue("@OrderNumber", (object)repairOrder.OrderNumber ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@CustomerId", repairOrder.CustomerId);
-                            cmd.Parameters.AddWithValue("@VehicleId", repairOrder.VehicleId);
-                            cmd.Parameters.AddWithValue("@DateOpened", repairOrder.DateOpened);
-                            cmd.Parameters.AddWithValue("@DateClosed", (object)repairOrder.DateClosed ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@MileageAtService", repairOrder.MileageAtService);
-                            cmd.Parameters.AddWithValue("@RepairStatus", repairOrder.RepairStatus);
-                            cmd.Parameters.AddWithValue("@CustomerComplaint", (object)repairOrder.CustomerComplaint ?? DBNull.Value);
-                            repairOrderId = Convert.ToInt32(cmd.ExecuteScalar());
+                            cmd.Parameters.Add(new OleDbParameter("@OrderNumber", OleDbType.VarWChar) { Value = (object)repairOrder.OrderNumber ?? DBNull.Value });
+                            cmd.Parameters.Add(new OleDbParameter("@CustomerId", OleDbType.Integer) { Value = repairOrder.CustomerId });
+                            cmd.Parameters.Add(new OleDbParameter("@VehicleId", OleDbType.Integer) { Value = repairOrder.VehicleId });
+                            cmd.Parameters.Add(new OleDbParameter("@DateOpened", OleDbType.DBDate) { Value = repairOrder.DateOpened });
+                            cmd.Parameters.Add(new OleDbParameter("@DateClosed", OleDbType.DBDate) { Value = (object)repairOrder.DateClosed ?? DBNull.Value });
+                            cmd.Parameters.Add(new OleDbParameter("@MileageAtService", OleDbType.Integer) { Value = repairOrder.MileageAtService });
+                            cmd.Parameters.Add(new OleDbParameter("@RepairStatus", OleDbType.VarWChar) { Value = repairOrder.RepairStatus });
+                            cmd.Parameters.Add(new OleDbParameter("@CustomerComplaint", OleDbType.VarWChar) { Value = (object)repairOrder.CustomerComplaint ?? DBNull.Value });
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Retrieve the last inserted identity value using a separate command (required by OleDb/ACE)
+                        using (OleDbCommand idCmd = new OleDbCommand("SELECT @@IDENTITY", conn, transaction))
+                        {
+                            object idResult = idCmd.ExecuteScalar();
+                            repairOrderId = Convert.ToInt32(idResult);
                         }
 
                         // Insert LaborLineItems
@@ -371,14 +378,15 @@ namespace MechanicShop.Helper
                         {
                             string laborQuery = @"
                                     INSERT INTO LaborLineItems (RepairOrderId, LaborDescription, LaborHours, LaborHourlyRate, MechanicID)
-                                    VALUES (@RepairOrderId, @LaborDescription, @LaborHours, @LaborHourlyRate, @MechanicID)";
+                                    VALUES (?, ?, ?, ?, ?)";
+
                             using (OleDbCommand cmd = new OleDbCommand(laborQuery, conn, transaction))
                             {
-                                cmd.Parameters.AddWithValue("@RepairOrderId", repairOrderId);
-                                cmd.Parameters.AddWithValue("@LaborDescription", labor.LaborDescription);
-                                cmd.Parameters.AddWithValue("@LaborHours", labor.LaborHours);
-                                cmd.Parameters.AddWithValue("@LaborHourlyRate", labor.LaborHourlyRate);
-                                cmd.Parameters.AddWithValue("@MechanicID", (object)labor.MechanicID ?? DBNull.Value);
+                                cmd.Parameters.Add(new OleDbParameter("@RepairOrderId", OleDbType.Integer) { Value = repairOrderId });
+                                cmd.Parameters.Add(new OleDbParameter("@LaborDescription", OleDbType.VarWChar) { Value = (object)labor.LaborDescription ?? DBNull.Value });
+                                cmd.Parameters.Add(new OleDbParameter("@LaborHours", OleDbType.Double) { Value = (double)labor.LaborHours });
+                                cmd.Parameters.Add(new OleDbParameter("@LaborHourlyRate", OleDbType.Currency) { Value = labor.LaborHourlyRate });
+                                cmd.Parameters.Add(new OleDbParameter("@MechanicID", OleDbType.Integer) { Value = (object)labor.MechanicID ?? DBNull.Value });
 
                                 cmd.ExecuteNonQuery();
                             }
@@ -389,13 +397,21 @@ namespace MechanicShop.Helper
                         {
                             string partQuery = @"
                                     INSERT INTO PartsLineItems (RepairOrderId, PartName, Quantity, UnitCost)
-                                    VALUES (@RepairOrderId, @PartName, @Quantity, @UnitCost)";
+                                    VALUES (?, ?, ?, ?)";
                             using (OleDbCommand cmd = new OleDbCommand(partQuery, conn, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@RepairOrderId", repairOrderId);
                                 cmd.Parameters.AddWithValue("@PartName", part.PartName);
                                 cmd.Parameters.AddWithValue("@Quantity", part.Quantity);
                                 cmd.Parameters.AddWithValue("@UnitCost", part.UnitCost);
+
+                                foreach (OleDbParameter p in cmd.Parameters)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(
+                                        $"Param: {p.ParameterName} | OleDbType: {p.OleDbType} | " +
+                                        $"Value: {p.Value} | ValueType: {p.Value?.GetType().Name}");
+                                }
+
                                 cmd.ExecuteNonQuery();
                             }
                         }
@@ -422,22 +438,22 @@ namespace MechanicShop.Helper
                     {
                         // Update Repair Order
                         string updateRepair = @"
-                    UPDATE RepairOrders 
-                    SET CustomerId = @CustomerId, VehicleId = @VehicleId, DateOpened = @DateOpened, 
-                        DateClosed = @DateClosed, MileageAtService = @MileageAtService, 
-                        Status = @Status, CustomerComplaint = @CustomerComplaint
-                    WHERE RepairOrderId = @RepairOrderId";
+                            UPDATE RepairOrders 
+                            SET CustomerID = ?, VehicleID = ?, DateOpened = ?, DateClosed = ?,
+                                MileageAtService = ?, RepairStatus = ?, CustomerComplaint = ?
+                            WHERE RepairOrderID = ?";
 
                         using (OleDbCommand cmd = new OleDbCommand(updateRepair, conn, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@RepairOrderId", repair.RepairOrderId);
-                            cmd.Parameters.AddWithValue("@CustomerId", repair.CustomerId);
-                            cmd.Parameters.AddWithValue("@VehicleId", repair.VehicleId);
-                            cmd.Parameters.AddWithValue("@DateOpened", repair.DateOpened);
-                            cmd.Parameters.AddWithValue("@DateClosed", (object)repair.DateClosed ?? DBNull.Value);
-                            cmd.Parameters.AddWithValue("@MileageAtService", repair.MileageAtService);
-                            cmd.Parameters.AddWithValue("@Status", repair.RepairStatus);
-                            cmd.Parameters.AddWithValue("@CustomerComplaint", (object)repair.CustomerComplaint ?? DBNull.Value);
+                            cmd.Parameters.Add(new OleDbParameter("@CustomerID", OleDbType.Integer) { Value = repair.CustomerId });
+                            cmd.Parameters.Add(new OleDbParameter("@VehicleID", OleDbType.Integer) { Value = repair.VehicleId });
+                            cmd.Parameters.Add(new OleDbParameter("@DateOpened", OleDbType.DBDate) { Value = repair.DateOpened });
+                            cmd.Parameters.Add(new OleDbParameter("@DateClosed", OleDbType.DBDate) { Value = (object)repair.DateClosed ?? DBNull.Value });
+                            cmd.Parameters.Add(new OleDbParameter("@MileageAtService", OleDbType.Integer) { Value = repair.MileageAtService });
+                            cmd.Parameters.Add(new OleDbParameter("@RepairStatus", OleDbType.VarWChar) { Value = repair.RepairStatus });
+                            cmd.Parameters.Add(new OleDbParameter("@CustomerComplaint", OleDbType.VarWChar) { Value = (object)repair.CustomerComplaint ?? DBNull.Value });
+                            cmd.Parameters.Add(new OleDbParameter("@RepairOrderID", OleDbType.Integer) { Value = repair.RepairOrderId });
+
                             cmd.ExecuteNonQuery();
                         }
 
@@ -451,14 +467,15 @@ namespace MechanicShop.Helper
                         foreach (var labor in laborItems)
                         {
                             string insertLabor = @"
-                        INSERT INTO LaborLineItems (RepairOrderId, Description, Hours, HourlyRate)
-                        VALUES (@RepairOrderId, @Description, @Hours, @HourlyRate)";
+                                INSERT INTO LaborLineItems (RepairOrderId, LaborDescription, LaborHours, LaborHourlyRate, MechanicID)
+                                VALUES (?, ?, ?, ?, ?)";
                             using (OleDbCommand cmd = new OleDbCommand(insertLabor, conn, transaction))
                             {
-                                cmd.Parameters.AddWithValue("@RepairOrderId", repair.RepairOrderId);
-                                cmd.Parameters.AddWithValue("@Description", labor.LaborDescription);
-                                cmd.Parameters.AddWithValue("@Hours", labor.LaborHours);
-                                cmd.Parameters.AddWithValue("@HourlyRate", labor.LaborHourlyRate);
+                                cmd.Parameters.Add(new OleDbParameter("@RepairOrderId", OleDbType.Integer) { Value = repair.RepairOrderId });
+                                cmd.Parameters.Add(new OleDbParameter("@LaborDescription", OleDbType.VarWChar) { Value = (object)labor.LaborDescription ?? DBNull.Value });
+                                cmd.Parameters.Add(new OleDbParameter("@LaborHours", OleDbType.Double) { Value = (double)labor.LaborHours });
+                                cmd.Parameters.Add(new OleDbParameter("@LaborHourlyRate", OleDbType.Currency) { Value = labor.LaborHourlyRate });
+                                cmd.Parameters.Add(new OleDbParameter("@MechanicID", OleDbType.Integer) { Value = (object)labor.MechanicID ?? DBNull.Value });
                                 cmd.ExecuteNonQuery();
                             }
                         }
@@ -503,7 +520,7 @@ namespace MechanicShop.Helper
             string queryGet =
                 @"SELECT v.*, c.FirstName, c.LastName
                   FROM Vehicles v
-                  INNER JOIN Customer c ON v.CustomerID = c.CustomerID
+                  INNER JOIN Customers c ON v.CustomerID = c.CustomerID
                   ORDER BY c.LastName, v.Year DESC";
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
