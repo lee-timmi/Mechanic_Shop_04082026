@@ -44,7 +44,9 @@ namespace MechanicShop.Services
                             MechanicID = Convert.ToInt32(reader["MechanicID"]),
                             FirstName = reader["FirstName"].ToString(),
                             LastName = reader["LastName"].ToString(),
-                            HourlyRate = Convert.ToDecimal(reader["HourlyRate"])
+                            HourlyRate = Convert.ToDecimal(reader["HourlyRate"]),
+                            Specialty = reader["Specialty"]?.ToString() ?? "",
+                            Phone = reader["Phone"]?.ToString() ?? ""
                         });
                     }
                 }
@@ -55,7 +57,8 @@ namespace MechanicShop.Services
 
         public void AddMechanic(Mechanic mechanic)
         {
-            string query = "INSERT INTO Mechanics (FirstName, LastName, HourlyRate) VALUES (@FirstName, @LastName, @HourlyRate)";
+            string query = "INSERT INTO Mechanics (FirstName, LastName, HourlyRate, Specialty, Phone) " +
+                           "VALUES (@FirstName, @LastName, @HourlyRate, @Specialty, @Phone)";
 
             using (OleDbConnection conn = new OleDbConnection(connString))
             using (OleDbCommand cmd = new OleDbCommand(query, conn))
@@ -63,6 +66,8 @@ namespace MechanicShop.Services
                 cmd.Parameters.AddWithValue("@FirstName", mechanic.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", mechanic.LastName);
                 cmd.Parameters.AddWithValue("@HourlyRate", mechanic.HourlyRate);
+                cmd.Parameters.AddWithValue("@Specialty", (object)mechanic.Specialty ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@Phone", (object)mechanic.Phone ?? DBNull.Value);
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
@@ -70,7 +75,8 @@ namespace MechanicShop.Services
 
         public void UpdateMechanic(Mechanic mechanic)
         {
-            string query = "UPDATE Mechanics SET FirstName = @FirstName, LastName = @LastName, HourlyRate = @HourlyRate WHERE MechanicID = @MechanicID";
+            string query = "UPDATE Mechanics SET FirstName = @FirstName, LastName = @LastName, HourlyRate = @HourlyRate, Specialty = @Specialty, Phone = @Phone " +
+                           "WHERE MechanicID = @MechanicID";
 
             using (OleDbConnection conn = new OleDbConnection(connString))
             using (OleDbCommand cmd = new OleDbCommand(query, conn))
@@ -78,6 +84,8 @@ namespace MechanicShop.Services
                 cmd.Parameters.AddWithValue("@FirstName", mechanic.FirstName);
                 cmd.Parameters.AddWithValue("@LastName", mechanic.LastName);
                 cmd.Parameters.AddWithValue("@HourlyRate", mechanic.HourlyRate);
+                cmd.Parameters.AddWithValue("@Specialty", (object)mechanic.Specialty ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@Phone", (object)mechanic.Phone ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@MechanicID", mechanic.MechanicID);
                 conn.Open();
                 cmd.ExecuteNonQuery();

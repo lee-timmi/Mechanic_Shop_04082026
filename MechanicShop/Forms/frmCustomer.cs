@@ -100,7 +100,7 @@ namespace MechanicShop.Forms
             selectedCustomer = null;
             isEditMode = false;
             btnSave.Text = "Add Customer";
-            btnAddVehicle.Enabled = false;
+            btnManageVehicle.Enabled = false;
             this.Text = "Customer Management - Add Mode";
         }
 
@@ -126,7 +126,6 @@ namespace MechanicShop.Forms
             c.Email = txtEmail.Text.Trim();
             c.Address = txtAddress.Text.Trim();
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             // Validate input
@@ -186,7 +185,7 @@ namespace MechanicShop.Forms
                     isEditMode = true;
                     btnSave.Text = "Update Customer";
 
-                    btnAddVehicle.Enabled = true;
+                    btnManageVehicle.Enabled = true;
                 }
             }
             else
@@ -268,21 +267,6 @@ namespace MechanicShop.Forms
             RefreshCustomerList();
         }
 
-        private void btnAddVehicle_Click(object sender, EventArgs e)
-        {
-            if (selectedCustomer == null)
-            {
-                MessageBox.Show("Please select a customer to add a vehicle for.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            frmVehicle vehicleForm = new frmVehicle(selectedCustomer.CustomerID);
-            if (vehicleForm.ShowDialog() == DialogResult.OK)
-            {
-                MessageBox.Show("Vehicle added successfully.", "Success");
-            }
-        }
-
         private void btnRepair_Click(object sender, EventArgs e)
         {
             if (selectedCustomer == null)
@@ -295,6 +279,19 @@ namespace MechanicShop.Forms
             frmRepairOrder orderForm = new frmRepairOrder(customerId: selectedCustomer.CustomerID);
             orderForm.ShowDialog();
 
+        }
+
+        private void btnManageVehicle_Click(object sender, EventArgs e)
+        {
+            if (selectedCustomer == null)
+            {
+                MessageBox.Show("Please select a customer first.", "No Customer Selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            frmVehicle vehicleForm = new frmVehicle(selectedCustomer.CustomerID);
+            vehicleForm.ShowDialog();
         }
     }
 }

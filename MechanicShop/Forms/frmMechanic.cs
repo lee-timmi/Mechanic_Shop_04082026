@@ -47,6 +47,8 @@ namespace MechanicShop.Forms
                 ListViewItem item = new ListViewItem(mechanic.FirstName);
                 item.SubItems.Add(mechanic.LastName);
                 item.SubItems.Add(mechanic.HourlyRate.ToString("F2"));
+                item.SubItems.Add(mechanic.Specialty ?? "");
+                item.SubItems.Add(mechanic.Phone ?? "");
                 item.Tag = mechanic;
 
                 lvMechanicList.Items.Add(item);
@@ -58,6 +60,8 @@ namespace MechanicShop.Forms
             txtFirstName.Clear();
             txtLastName.Clear();
             txtHourlyRate.Clear();
+            txtSpecialty.Clear();
+            txtPhone.Clear();
             txtSearch.Clear();
 
             selectedMechanic = null;
@@ -71,6 +75,8 @@ namespace MechanicShop.Forms
             txtFirstName.Text = mechanic.FirstName;
             txtLastName.Text = mechanic.LastName;
             txtHourlyRate.Text = mechanic.HourlyRate.ToString("F2");
+            txtSpecialty.Text = mechanic.Specialty ?? "";
+            txtPhone.Text = mechanic.Phone ?? "";
 
             selectedMechanic = mechanic;
             isEditMode = true;
@@ -101,6 +107,8 @@ namespace MechanicShop.Forms
                     selectedMechanic.FirstName = txtFirstName.Text.Trim();
                     selectedMechanic.LastName = txtLastName.Text.Trim();
                     selectedMechanic.HourlyRate = rate;
+                    selectedMechanic.Specialty = txtSpecialty.Text.Trim();
+                    selectedMechanic.Phone = txtPhone.Text.Trim();
 
                     mechServicesHelper.UpdateMechanic(selectedMechanic);
                     MessageBox.Show("Mechanic updated successfully.");
@@ -111,7 +119,9 @@ namespace MechanicShop.Forms
                     {
                         FirstName = txtFirstName.Text.Trim(),
                         LastName = txtLastName.Text.Trim(),
-                        HourlyRate = rate
+                        HourlyRate = rate,
+                        Specialty = txtSpecialty.Text.Trim(),
+                        Phone = txtPhone.Text.Trim()
                     };
 
                     mechServicesHelper.AddMechanic(newMechanic);

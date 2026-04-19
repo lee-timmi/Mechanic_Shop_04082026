@@ -361,7 +361,7 @@ namespace MechanicShop.Helper
                             cmd.Parameters.Add(new OleDbParameter("@DateClosed", OleDbType.DBDate) { Value = (object)repairOrder.DateClosed ?? DBNull.Value });
                             cmd.Parameters.Add(new OleDbParameter("@MileageAtService", OleDbType.Integer) { Value = repairOrder.MileageAtService });
                             cmd.Parameters.Add(new OleDbParameter("@RepairStatus", OleDbType.VarWChar) { Value = repairOrder.RepairStatus });
-                            cmd.Parameters.Add(new OleDbParameter("@CustomerComplaint", OleDbType.VarWChar) { Value = (object)repairOrder.CustomerComplaint ?? DBNull.Value });
+                            cmd.Parameters.Add(new OleDbParameter("@CustomerComplaint", OleDbType.LongVarChar) { Value = (object)repairOrder.CustomerComplaint ?? DBNull.Value });
 
                             cmd.ExecuteNonQuery();
                         }
@@ -451,7 +451,7 @@ namespace MechanicShop.Helper
                             cmd.Parameters.Add(new OleDbParameter("@DateClosed", OleDbType.DBDate) { Value = (object)repair.DateClosed ?? DBNull.Value });
                             cmd.Parameters.Add(new OleDbParameter("@MileageAtService", OleDbType.Integer) { Value = repair.MileageAtService });
                             cmd.Parameters.Add(new OleDbParameter("@RepairStatus", OleDbType.VarWChar) { Value = repair.RepairStatus });
-                            cmd.Parameters.Add(new OleDbParameter("@CustomerComplaint", OleDbType.VarWChar) { Value = (object)repair.CustomerComplaint ?? DBNull.Value });
+                            cmd.Parameters.Add(new OleDbParameter("@CustomerComplaint", OleDbType.LongVarChar) { Value = (object)repair.CustomerComplaint ?? DBNull.Value });
                             cmd.Parameters.Add(new OleDbParameter("@RepairOrderID", OleDbType.Integer) { Value = repair.RepairOrderId });
 
                             cmd.ExecuteNonQuery();
