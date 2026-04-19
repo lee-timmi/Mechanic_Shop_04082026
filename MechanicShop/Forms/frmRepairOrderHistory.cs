@@ -1,5 +1,6 @@
 ﻿using MechanicShop.Classes;
 using MechanicShop.Helper;
+using MechanicShop.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,14 +11,14 @@ namespace MechanicShop.Forms
 {
     public partial class frmRepairOrderHistory : Form
     {
-        private DBHelper DBHelper;
         private List<RepairOrder> allRepairOrders;
         private RepairOrder selectedRepairOrder;
+        private RepairOrderService repairOrderService;
 
         public frmRepairOrderHistory()
         {
             InitializeComponent();
-            DBHelper = new DBHelper();
+            repairOrderService = new RepairOrderService(new RepairOrderRepository());
             SetupDataView();
             SetupFilters();
             LoadRepairOrders();
@@ -63,38 +64,17 @@ namespace MechanicShop.Forms
         }
         private void LoadRepairOrders()
         {
-            allRepairOrders = DBHelper.GetAllRepairOrders();
+            allRepairOrders = repairOrderService.GetAll();
             ApplyFilters();
         }
         private void ApplyFilters()
         {
-            var filtered = allRepairOrders.AsEnumerable();
+            string searchTerm = txtFilter.Text.Trim();
+            string status = cboStatusFilter.SelectedItem?.ToString() ?? "All";
+            DateTime fromDate = dtpFromDate.Value;
+            DateTime toDate = dtpToDate.Value;
 
-            // Search filter
-            string searchTerm = txtFilter.Text.Trim().ToLower();
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                filtered = filtered.Where(r =>
-                    r.RepairOrderId.ToString().Contains(searchTerm) ||
-                    r.CustomerName.ToLower().Contains(searchTerm) ||
-                    r.VehicleDisplay.ToLower().Contains(searchTerm) ||
-                    r.RepairStatus.ToLower().Contains(searchTerm)
-                );
-            }
-
-            // Status filter
-            if (cboStatusFilter.SelectedItem != null && cboStatusFilter.SelectedItem.ToString() != "All")
-            {
-                string status = cboStatusFilter.SelectedItem.ToString();
-                filtered = filtered.Where(r => r.RepairStatus == status);
-            }
-
-            // Date range filter
-            filtered = filtered.Where(r => r.DateOpened.Date >= dtpFromDate.Value.Date &&
-                                            r.DateOpened.Date <= dtpToDate.Value.Date);
-
-            // Sort by date (newest first)
-            var results = filtered.OrderByDescending(r => r.DateOpened).ToList();
+            var results = repairOrderService.Filter(searchTerm, status, fromDate, toDate);
 
             RefreshDataGridView(results);
             lblTotalRecords.Text = $"Total Records: {results.Count}";
@@ -219,7 +199,7 @@ namespace MechanicShop.Forms
             {
                 try
                 {
-                    DBHelper.DeleteRepairOrders(selectedRepairOrder.RepairOrderId);
+                    repairOrderService.Delete(selectedRepairOrder.RepairOrderId);
                     MessageBox.Show("Repair Order deleted successfully.", "Success");
                     LoadRepairOrders();
                 }

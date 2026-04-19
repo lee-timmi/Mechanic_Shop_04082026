@@ -12,6 +12,7 @@ using MechanicShop.Classes;
 using MechanicShop.Helper;
 using MehcnicShop.Helper;
 using System.Net.Http;
+using MechanicShop.Services;
 
 namespace MechanicShop.Forms
 {
@@ -21,8 +22,8 @@ namespace MechanicShop.Forms
         private int customerID;
         public Vehicle selectedVehicle { get; private set; }
         private bool isEditMode = false;
-        private DBHelper DBHelper = new DBHelper();
         private List<Vehicle> vehicleList;
+        private VehicleService vehicleService;
 
         public frmVehicle()
         {
@@ -37,6 +38,7 @@ namespace MechanicShop.Forms
             this.customerID = customerID;
             // Initialize the API service so the field is not null when used
             _vehicleAPI = new VehicleApiService();
+            vehicleService = new VehicleService(new VehicleRepository(), new CustomerRepository());
             LoadCustomerInfo();
             LoadVehicles();
             SetupListView();
@@ -129,22 +131,20 @@ namespace MechanicShop.Forms
             // Validation for required fields
             if (string.IsNullOrWhiteSpace(txtMake.Text))
             {
-                MessageBox.Show("Make is required. Please enter the vehicle make.", "Validation Error");
+                MessageBox.Show("Make is required.", "Validation Error");
                 txtMake.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtModel.Text))
             {
-                MessageBox.Show("Model is required. Please enter the vehicle make.", "Validation Error");
-                txtModel.Focus();
+                MessageBox.Show("Model is required.", "Validation Error");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtVIN.Text))
             {
-                MessageBox.Show("VIN is required. Please enter the vehicle make.", "Validation Error");
-                txtVIN.Focus();
+                MessageBox.Show("VIN is required.", "Validation Error");
                 return;
             }
 
@@ -159,7 +159,7 @@ namespace MechanicShop.Forms
                 selectedVehicle.LicensePlate = txtLicensePlate.Text.Trim().ToUpper();
                 selectedVehicle.CurrentMileage = (int)nudCurrentMileage.Value;
 
-                dbHelper.UpdateVehicle(selectedVehicle);
+                vehicleService.Update(selectedVehicle);
                 MessageBox.Show("Vehicle updated successfully!");
             } else
             {
@@ -175,7 +175,7 @@ namespace MechanicShop.Forms
                     CurrentMileage = (int)nudCurrentMileage.Value
                 };
                 
-                dbHelper.AddVehicle(vehicle);
+                vehicleService.Add(vehicle);
                 MessageBox.Show("Vehicle added successfully!");
             }
  
@@ -188,10 +188,10 @@ namespace MechanicShop.Forms
         private void LoadCustomerInfo()
         {
             var dbHelper = new DBHelper();
-            var customer = dbHelper.GetCustomerById(customerID);
+            var customer = vehicleService.GetCustomerDisplayName(customerID);
             if (customer != null)
             {
-                lblCustomer.Text = $"Vehicles for: {customer.FirstName} {customer.LastName}";
+                lblCustomer.Text = vehicleService.GetCustomerDisplayName(customerID);
             }
         }
 
@@ -213,7 +213,7 @@ namespace MechanicShop.Forms
 
         private void LoadVehicles()
         {
-            vehicleList = DBHelper.GetVehiclesByCustomer(customerID);
+            vehicleList = vehicleService.GetByCustomer(customerID);
             lvVehicleList.Items.Clear();
 
             foreach (var v in vehicleList)
@@ -246,12 +246,7 @@ namespace MechanicShop.Forms
             if (lvVehicleList.SelectedItems.Count == 0) return;
 
             Vehicle vehicle = (Vehicle)lvVehicleList.SelectedItems[0].Tag;
-
-            frmVehicle editForm = new frmVehicle(customerID);
-            editForm.LoadVehicleForEditing(vehicle);
-
-            if (editForm.ShowDialog() == DialogResult.OK)
-                LoadVehicles();
+            LoadVehicleForEditing(vehicle);
         }
 
         private void btnVehicleDelete_Click(object sender, EventArgs e)
@@ -266,7 +261,7 @@ namespace MechanicShop.Forms
             {
                 try
                 {
-                    DBHelper.DeleteVehicle(selectedVehicle.VehicleID);
+                    vehicleService.Delete(selectedVehicle.VehicleID);
                     selectedVehicle = null;
                     ClearForm();
                     LoadVehicles();

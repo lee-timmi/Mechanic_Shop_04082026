@@ -18,26 +18,43 @@ namespace MechanicShop.Forms
     public partial class frmRepairOrder : Form
     {
         // Private fields
-        private DBHelper DBHelper;
         private RepairOrder RepairOrder;
         private List<LaborLineItem> LaborLineItems;
         private List<PartsLineItem> PartsLineItems;
-        private MechanicService MechanicService;
         private int nextLaborLineItemId = 1;
         private int nextPartsLineItemId = 1;
-        private int editingRepairOrderItemId = 0; // 0 = new, >0 = editing existing item
+        private int editingRepairOrderItemId = 0;
         private RepairOrderFormMode formMode = RepairOrderFormMode.New;
+        private LaborServices laborServices;
+        private PartsServices partsServices;
+        private RepairOrderService repairOrderService;
+
+        // Repository Calls
+        private readonly CustomerRepository customerRepository;
+        private readonly VehicleRepository vehicleRepository;
+        private readonly RepairOrderRepository repairOrderRepository;
+        private readonly LaborPartRepository laborPartRepository;
+
 
         // Constructor
         public frmRepairOrder(int? repairOrderId = null, int? vehicleId = null,
                                 int? customerId = null, RepairOrderFormMode mode = RepairOrderFormMode.New)
         {
             InitializeComponent();
-            DBHelper = new DBHelper();
+
+            // Repos and services
+            customerRepository = new CustomerRepository();
+            vehicleRepository = new VehicleRepository();
+            repairOrderRepository = new RepairOrderRepository();
+            laborPartRepository = new LaborPartRepository();
+            repairOrderService = new RepairOrderService(new RepairOrderRepository());
+            laborServices = new LaborServices(new MechanicService());
+            partsServices = new PartsServices();
+
+            // Date
             RepairOrder = new RepairOrder();
             LaborLineItems = new List<LaborLineItem>();
             PartsLineItems = new List<PartsLineItem>();
-            MechanicService = new MechanicService();
             formMode = mode;
             
             if (repairOrderId.HasValue)
@@ -72,6 +89,7 @@ namespace MechanicShop.Forms
             {
                 LoadCustomers();
                 SetupForm();
+               
             }
             
         }
@@ -108,14 +126,14 @@ namespace MechanicShop.Forms
             dtpDate.Value = DateTime.Now;
             cboStatus.Items.AddRange(new string[] { "Pending", "In Progress", "Completed", "Invoiced" });
             cboStatus.SelectedIndex = 0; // Default to "Pending"
-            txtOrderNum.Text = GenerateOrderNumber();
+            txtOrderNum.Text = repairOrderService.GenerateOrderNumber();
             txtOrderNum.ReadOnly = true;
             txtOrderNum.BackColor = System.Drawing.SystemColors.Control;
         }
         private void LoadCustomers()
         {
             // Load customers from the database and populate a combo box
-            var customers = DBHelper.GetAllCustomers();
+            var customers = customerRepository.GetAll();
             cboCustomer.DataSource = customers;
             cboCustomer.DisplayMember = "FullName";
             cboCustomer.ValueMember = "CustomerId";
@@ -124,7 +142,7 @@ namespace MechanicShop.Forms
         {
             // Load the RepairOrder, LaborLineItems, and PartsLineItems from the database
             // and populate the form controls with the existing data
-            var repairs = DBHelper.GetAllRepairOrders();
+            var repairs = repairOrderRepository.GetAll();
             RepairOrder = repairs.FirstOrDefault(r => r.RepairOrderId == repairOrderId);
             
             if (RepairOrder != null)
@@ -137,8 +155,8 @@ namespace MechanicShop.Forms
 
 
                 // Load LaborLineItems and PartsLineItems for this RepairOrder
-                LaborLineItems = DBHelper.GetLaborItemsByRepairOrder(repairOrderId);
-                PartsLineItems = DBHelper.GetPartsItemsByRepairOrder(repairOrderId);
+                LaborLineItems = laborPartRepository.GetLaborByRepairOrder(repairOrderId);
+                PartsLineItems = laborPartRepository.GetPartsByRepairOrder(repairOrderId);
 
                 RefreshLaborGrid();
                 RefreshPartsGrid();
@@ -150,11 +168,11 @@ namespace MechanicShop.Forms
         private void LoadVehicleAndCustomer(int vehicleId)
         {
             // Get Vehicle
-            Vehicle vehicle = DBHelper.GetVehicleById(vehicleId);
+            Vehicle vehicle = vehicleRepository.GetById(vehicleId);
 
             if (vehicle != null)
             {
-                Customer customer = DBHelper.GetCustomerById(vehicle.CustomerID);
+                Customer customer = customerRepository.GetByID(vehicle.CustomerID);
 
                 if (customer != null)
                 {
@@ -163,14 +181,14 @@ namespace MechanicShop.Forms
                     RepairOrder.VehicleId = vehicleId;
 
                     // Find and select within dropdown
-                    var customers = DBHelper.GetAllCustomers();
+                    var customers = customerRepository.GetAll();
                     cboCustomer.DataSource = customers;
                     cboCustomer.DisplayMember = "FullName";
                     cboCustomer.ValueMember = "CustomerID";
                     cboCustomer.SelectedValue = customer.CustomerID;
 
                     // Load vehicle for this customer
-                    var vehicles = DBHelper.GetVehiclesByCustomer(customer.CustomerID);
+                    var vehicles = vehicleRepository.GetByCustomer(customer.CustomerID);
                     cboVehicle.DataSource = vehicles;
                     cboVehicle.DisplayMember = "DisplayName";
                     cboVehicle.ValueMember = "vehicleId";
@@ -194,13 +212,13 @@ namespace MechanicShop.Forms
 
         private void LoadCustomerForRepair(int customerId)
         {
-            Customer customer = DBHelper.GetCustomerById(customerId);
+            Customer customer = customerRepository.GetByID(customerId);
 
             if (customer != null)
             {
                 RepairOrder.CustomerId = customer.CustomerID;
 
-                var customers = DBHelper.GetAllCustomers();
+                var customers = customerRepository.GetAll();
                 cboCustomer.DataSource = customers;
                 cboCustomer.DisplayMember = "FullName";
                 cboCustomer.ValueMember = "CustomerID";
@@ -215,7 +233,7 @@ namespace MechanicShop.Forms
 
         private void LoadVehiclesForCustomer(int customerId)
         {
-            var vehicles = DBHelper.GetVehiclesByCustomer(customerId);
+            var vehicles = vehicleRepository.GetByCustomer(customerId);
             cboVehicle.DataSource = vehicles;
             cboVehicle.DisplayMember = "DisplayName";
             cboVehicle.ValueMember = "VehicleID";
@@ -228,42 +246,13 @@ namespace MechanicShop.Forms
             }
         }
 
-        public string GenerateOrderNumber()
-        {
-            // Our format will be similar to RO-2026-0001
-            string year = DateTime.Now.Year.ToString();
-            int nextNum = DBHelper.GetNextOrderNumber(year);
-            return $"RO-{year}-{nextNum:D4}";
-        }
-
-        private int? PromptForMechanic()
-        {
-            var mechanics = MechanicService.GetAllMechanics();
-
-            if (mechanics.Count == 0)
-            {
-                return null;
-            }
-
-            string mechanicNames = string.Join(Environment.NewLine, mechanics.Select((m,i) => $"{i + 1}. {m.FullName}"));
-            string choice = Interaction.InputBox(
-                $"Assign a mechanic (or Cancel to leave unassigned):{Environment.NewLine}{mechanicNames}",
-                "Assign Mechanic", "");
-
-            if (int.TryParse(choice, out int index) && index >= 1 && index <= mechanics.Count)
-                return mechanics[index - 1].MechanicID;
-
-            return null;
-
-        }
-
         // Event Handlers
         private void cboCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboCustomer.SelectedValue != null)
             {
                 Customer selected = (Customer)cboCustomer.SelectedItem;
-                var vehicles = DBHelper.GetVehiclesByCustomer(selected.CustomerID);
+                var vehicles = vehicleRepository.GetByCustomer(selected.CustomerID);
                 cboVehicle.DataSource = vehicles;
                 cboVehicle.DisplayMember = "DisplayName";
                 cboVehicle.ValueMember = "VehicleID";
@@ -282,48 +271,7 @@ namespace MechanicShop.Forms
             string rateStr = Interaction.InputBox("Enter hourly rate:", "Hourly Rate", "80.00");
             if (!decimal.TryParse(rateStr, out decimal rate)) return;
 
-            var mechanics = MechanicService.GetAllMechanics();
-            if (mechanics.Count > 0)
-            {
-                string mechanicNames = string.Join(Environment.NewLine,
-                    mechanics.Select((m, i) => $"{i + 1}. {m.FullName}"));
-
-                string mechanicChoice = Interaction.InputBox(
-                    $"Select mechanic by number:{Environment.NewLine}{mechanicNames}",
-                    "Assign Mechanic", "1");
-
-                if (int.TryParse(mechanicChoice, out int mechanicIndex) &&
-                    mechanicIndex >= 1 && mechanicIndex <= mechanics.Count)
-                {
-                    var selectedMechanic = mechanics[mechanicIndex - 1];
-
-                    var laborItem = new LaborLineItem
-                    {
-                        LaborLineItemId = nextLaborLineItemId++,
-                        LaborDescription = description,
-                        LaborHours = hours,
-                        LaborHourlyRate = rate,
-                        MechanicID = PromptForMechanic()
-                    };
-                    LaborLineItems.Add(laborItem);
-                    RefreshLaborGrid();
-                    CalculateTotals();
-                }
-            }
-            else
-            {
-                var laborItem = new LaborLineItem
-                {
-                    LaborLineItemId = nextLaborLineItemId++,
-                    LaborDescription = description,
-                    LaborHours = hours,
-                    LaborHourlyRate = rate,
-                    MechanicID = PromptForMechanic()
-                };
-                LaborLineItems.Add(laborItem);
-                RefreshLaborGrid();
-                CalculateTotals();
-            }
+            AddLaborItem(description, hours, rate);
         }
 
         private void btnAddParts_Click(object sender, EventArgs e)
@@ -337,44 +285,20 @@ namespace MechanicShop.Forms
             string costStr = Interaction.InputBox("Enter unit cost:", "Unit Cost", "12.99");
             if (!decimal.TryParse(costStr, out decimal cost)) return;
 
-            var partItem = new PartsLineItem
-            {
-                PartsLineItemId = nextPartsLineItemId++,
-                PartName = partName,
-                Quantity = quantity,
-                UnitCost = cost
-            };
-            PartsLineItems.Add(partItem);
-            RefreshPartsGrid();
-            CalculateTotals();
+            AddPartItem(partName, quantity, cost);
         }
 
         // Helper methods to refresh grids and calculate totals
         public void RefreshLaborGrid()
         {
             dgvLaborItems.DataSource = null;
-            dgvLaborItems.DataSource = LaborLineItems.Select(l => new
-            {
-                l.LaborLineItemId,
-                l.LaborDescription,
-                l.LaborHours,
-                l.LaborHourlyRate,
-                Mechanic = GetMechanicName(l.MechanicID),
-                LaborCost = l.LaborCost.ToString("C")
-            }).ToList();
+            dgvLaborItems.DataSource = laborServices.ProjectForGrid(LaborLineItems);
         }
 
         public void RefreshPartsGrid()
         {
             dgvPartsItem.DataSource = null;
-            dgvPartsItem.DataSource = PartsLineItems.Select(p => new
-            {
-                p.PartsLineItemId,
-                p.PartName,
-                p.Quantity,
-                UnitCost = p.UnitCost.ToString("C"),
-                TotalCost = p.TotalCost.ToString("C")
-            }).ToList();
+            dgvPartsItem.DataSource = partsServices.ProjectForGrid(PartsLineItems);
         }
 
         public void CalculateTotals()
@@ -382,18 +306,11 @@ namespace MechanicShop.Forms
             decimal laborTotal = LaborLineItems.Sum(l => l.LaborCost);
             decimal partsTotal = PartsLineItems.Sum(p => p.TotalCost);
 
-            txtLaborTotal.Text = $"${laborTotal:F2}";
-            txtPartsTotal.Text = $"${partsTotal:F2}";
+            txtLaborTotal.Text = $"${CostCalculator.LaborTotal(LaborLineItems):F2}";
+            txtPartsTotal.Text = $"${CostCalculator.PartsTotal(PartsLineItems):F2}";
             txtGrandTotal.Text = $"${laborTotal + partsTotal:F2}";
         }
-        private string GetMechanicName(int? mechanicId)
-        {
-            if (!mechanicId.HasValue) return "Unassigned";
 
-            var mechanics = MechanicService.GetAllMechanics();
-            var mechanic = mechanics.FirstOrDefault(m => m.MechanicID == mechanicId);
-            return mechanic?.FullName ?? "Unknown";
-        }
         private void btnSubmitOrder_Click(object sender, EventArgs e)
         {
             if (cboCustomer.SelectedItem == null)
@@ -418,13 +335,13 @@ namespace MechanicShop.Forms
 
             if (editingRepairOrderItemId == 0)
             {
-                DBHelper.SaveRepairOrder(RepairOrder, LaborLineItems, PartsLineItems);
+                repairOrderService.Save(RepairOrder, LaborLineItems, PartsLineItems);
                 MessageBox.Show("Repair order saved successfully!", "Success");
             }
             else
             {
                 RepairOrder.RepairOrderId = editingRepairOrderItemId;
-                DBHelper.UpdateRepairOrder(RepairOrder, LaborLineItems, PartsLineItems);
+                repairOrderService.Update(RepairOrder, LaborLineItems, PartsLineItems);
                 MessageBox.Show("Repair order updated successfully!", "Success");
             }
 
@@ -471,91 +388,39 @@ namespace MechanicShop.Forms
         }
 
         // === Labor Item Event Handlers ====
-        private void btnOilChange_Click(object sender, EventArgs e)
-        {
-            var laborItem = new LaborLineItem
-            {
-                LaborLineItemId = nextLaborLineItemId++,
-                LaborDescription = "Oil Change",
-                LaborHours = 1.0m,
-                LaborHourlyRate = 80.00m,
-                MechanicID = PromptForMechanic()
-            };
-            LaborLineItems.Add(laborItem);
-            RefreshLaborGrid();
-            CalculateTotals();
-        }
+        private void btnOilChange_Click(object sender, EventArgs e) => AddLaborItem("Oil Change", 1.0m, 80.00m);
+        private void btnBrakePad_Click(object sender, EventArgs e) => AddLaborItem("Brake Pad Replacement", 2.0m, 95.00m);
+        private void btnTireRotation_Click(object sender, EventArgs e) => AddLaborItem("Tire Rotation", 0.5m, 80.00m);
+        private void btnDiagnostic_Click(object sender, EventArgs e) => AddLaborItem("Diagnostics", 1.5m, 120.00m);
 
-        private void btnBrakePad_Click(object sender, EventArgs e)
-        {
-            var laborItem = new LaborLineItem
-            {
-                LaborLineItemId = nextLaborLineItemId++,
-                LaborDescription = "Brake Pad Replacement",
-                LaborHours = 2.0m,
-                LaborHourlyRate = 95.00m,
-                MechanicID = PromptForMechanic()
-            };
-            LaborLineItems.Add(laborItem);
-            RefreshLaborGrid();
-            CalculateTotals();
-        }
-
-        private void btnTireRotation_Click(object sender, EventArgs e)
-        {
-            var laborItem = new LaborLineItem
-            {
-                LaborLineItemId = nextLaborLineItemId++,
-                LaborDescription = "Tire Rotation",
-                LaborHours = 0.5m,
-                LaborHourlyRate = 80.00m,
-                MechanicID = PromptForMechanic()
-            };
-            LaborLineItems.Add(laborItem);
-            RefreshLaborGrid();
-            CalculateTotals();
-        }
-
-        private void btnDiagnostic_Click(object sender, EventArgs e)
-        {
-            var laborItem = new LaborLineItem
-            {
-                LaborLineItemId = nextLaborLineItemId++,
-                LaborDescription = "Diagnostics",
-                LaborHours = 1.5m,
-                LaborHourlyRate = 120.00m,
-                MechanicID = PromptForMechanic()
-            };
-            LaborLineItems.Add(laborItem);
-            RefreshLaborGrid();
-            CalculateTotals();
-        }
-        
         // ==== Parts Item Event Handler ====
-        private void btnAirFilter_Click(object sender, EventArgs e)
+        private void btnAirFilter_Click(object sender, EventArgs e) => AddPartItem("Air Filter", 1, 18.50m);
+        private void btnOilFilter_Click(object sender, EventArgs e) => AddPartItem("Oil Filter", 1, 12.99m);
+        private void AddLaborItem(string description, decimal hours, decimal rate)
         {
-            var partItem = new PartsLineItem
+            var item = new LaborLineItem
             {
-                PartsLineItemId = nextPartsLineItemId++,
-                PartName = "Air Filter",
-                Quantity = 1,
-                UnitCost = 18.50m
+                LaborLineItemId = nextLaborLineItemId++,
+                LaborDescription = description,
+                LaborHours = hours,
+                LaborHourlyRate = rate,
+                MechanicID = laborServices.PromptForMechanic()
             };
-            PartsLineItems.Add(partItem);
-            RefreshPartsGrid();
+            LaborLineItems.Add(item);
+            RefreshLaborGrid();
             CalculateTotals();
         }
 
-        private void btnOilFilter_Click(object sender, EventArgs e)
+        private void AddPartItem(string name, int qty, decimal cost)
         {
-            var partItem = new PartsLineItem
+            var item = new PartsLineItem
             {
                 PartsLineItemId = nextPartsLineItemId++,
-                PartName = "Oil Filter",
-                Quantity = 1,
-                UnitCost = 12.99m
+                PartName = name,
+                Quantity = qty,
+                UnitCost = cost
             };
-            PartsLineItems.Add(partItem);
+            PartsLineItems.Add(item);
             RefreshPartsGrid();
             CalculateTotals();
         }

@@ -1,5 +1,6 @@
 ﻿using MechanicShop.Classes;
 using MechanicShop.Helper;
+using MechanicShop.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,15 +17,15 @@ namespace MechanicShop.Forms
     {
         // This form is used to add and edit customers in the database.
         // Private variables
-        private DBHelper dbHelper;
         private List<Customer> customerList;
         private Customer selectedCustomer;
         private bool isEditMode;
+        private CustomerService customerService;
 
         public frmCustomer()
         {
             InitializeComponent();
-            dbHelper = new DBHelper();
+            customerService = new CustomerService(new CustomerRepository());
             LoadCustomerData();
             ClearEntryForm();
             isEditMode = false;
@@ -42,7 +43,7 @@ namespace MechanicShop.Forms
 
         private void LoadCustomerData()
         {
-            customerList = dbHelper.GetAllCustomers();
+            customerList = customerService.GetAll();
             RefreshCustomerList();
         }
 
@@ -66,28 +67,6 @@ namespace MechanicShop.Forms
 
             lvCustomerList.EndUpdate();
             lblStatus.Text = $"Total Customers: {customerList.Count}";
-        }
-
-        private void RefreshCustomerListFiltered(List<Customer> filteredCustomers)
-        {
-            lvCustomerList.BeginUpdate();
-            lvCustomerList.Items.Clear();
-
-            foreach (var customer in customerList.OrderBy(c => c.LastName))
-            {
-                string fullName = $"{customer.FirstName} {customer.LastName}";
-
-                ListViewItem item = new ListViewItem(fullName);
-                item.SubItems.Add(customer.PhoneNumber ?? "");
-                item.SubItems.Add(customer.Email ?? "");
-                item.SubItems.Add(customer.Address ?? "");
-
-                item.Tag = customer;
-                lvCustomerList.Items.Add(item);
-            }
-
-            lvCustomerList.EndUpdate();
-            lblStatus.Text = $"{filteredCustomers.Count} customers";
         }
 
         private void ClearEntryForm()
@@ -141,7 +120,7 @@ namespace MechanicShop.Forms
                 {
                     // Only update the existing customer when in edit mode and selectedCustomer is set
                     PopulateCustomerFromForm(selectedCustomer);
-                    dbHelper.UpdateCustomer(selectedCustomer);
+                    customerService.Update(selectedCustomer);
                     MessageBox.Show("Customer updated successfully.", "Success");
                 }
                 else
@@ -150,7 +129,7 @@ namespace MechanicShop.Forms
                     Customer newCustomer = new Customer();
                     PopulateCustomerFromForm(newCustomer);
 
-                    dbHelper.AddCustomer(newCustomer);
+                    customerService.Add(newCustomer);
                     MessageBox.Show("Customer added successfully.", "Success");
 
                 }
@@ -229,7 +208,7 @@ namespace MechanicShop.Forms
             {
                 try
                 {
-                    dbHelper.DeleteCustomer(selectedCustomer.CustomerID);
+                    customerService.Delete(selectedCustomer.CustomerID);
                     MessageBox.Show("Customer deleted successfully.", "Success");
                     LoadCustomerData();
                     ClearEntryForm();
@@ -243,22 +222,24 @@ namespace MechanicShop.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string searchTerm = txtSearch.Text.Trim().ToLower();
+            string searchTerm = txtSearch.Text.Trim();
+            var filtered = customerService.Search(searchTerm);
 
-            if(string.IsNullOrWhiteSpace(searchTerm))
-            {
-                RefreshCustomerList();
-            }
-            else
-            {
-                var filtered = customerList.Where(c =>
-                    c.FirstName.ToLower().Contains(searchTerm) ||
-                    c.LastName.ToLower().Contains(searchTerm) ||
-                    c.Email.ToLower().Contains(searchTerm) ||
-                    c.PhoneNumber.ToLower().Contains(searchTerm)).ToList();
+            lvCustomerList.BeginUpdate();
+            lvCustomerList.Items.Clear();
 
-                RefreshCustomerListFiltered(filtered);
+            foreach (var customer in filtered.OrderBy(c => c.LastName))
+            {
+                ListViewItem item = new ListViewItem($"{customer.FirstName} {customer.LastName}");
+                item.SubItems.Add(customer.PhoneNumber ?? "");
+                item.SubItems.Add(customer.Email ?? "");
+                item.SubItems.Add(customer.Address ?? "");
+                item.Tag = customer;
+                lvCustomerList.Items.Add(item);
             }
+
+            lvCustomerList.EndUpdate();
+            lblStatus.Text = $"{filtered.Count} customers";
         }
 
         private void btnShowAll_Click(object sender, EventArgs e)

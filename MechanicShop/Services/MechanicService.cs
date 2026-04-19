@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MechanicShop.Helper;
 
 namespace MechanicShop.Services
 {
@@ -20,10 +21,9 @@ namespace MechanicShop.Services
 
         public MechanicService()
         {
-            // Ensure there is always a valid connection string when the
-            // parameterless constructor is used (maintains backward compatibility).
-            // DBHelper centralizes how the connection string is built (Application.StartupPath).
-            this.connString = new MechanicShop.Helper.DBHelper().ConnectionString;
+            string dbPath = System.IO.Path.Combine(
+                System.Windows.Forms.Application.StartupPath, "MechanicShopDB.accdb");
+            this.connString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath}";
         }
 
         public List<Mechanic> GetAllMechanics()
@@ -103,6 +103,15 @@ namespace MechanicShop.Services
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+        }
+        public List<Mechanic> Search(string term)
+        {
+            if (string.IsNullOrWhiteSpace(term)) return GetAllMechanics();
+
+            term = term.ToLower();
+            return GetAllMechanics().Where(m =>
+                m.FirstName.ToLower().Contains(term) ||
+                m.LastName.ToLower().Contains(term)).ToList();
         }
     } //end of public class
 }

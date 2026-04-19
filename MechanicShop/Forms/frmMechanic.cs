@@ -10,7 +10,6 @@ namespace MechanicShop.Forms
 {
     public partial class frmMechanic : Form
     {
-        private DBHelper dbHelper;
         private List<Mechanic> mechanicList;
         private Mechanic selectedMechanic;
         private bool isEditMode;
@@ -19,9 +18,7 @@ namespace MechanicShop.Forms
         public frmMechanic()
         {
             InitializeComponent();
-            dbHelper = new DBHelper();
-            // Ensure the MechanicService is initialized with the application's connection string
-            mechServicesHelper = new MechanicService(dbHelper.ConnectionString);
+            mechServicesHelper = new MechanicService();
         }
 
         private void frmMechanic_Load(object sender, EventArgs e)
@@ -194,17 +191,8 @@ namespace MechanicShop.Forms
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string term = txtSearch.Text.Trim().ToLower();
-
-            if (string.IsNullOrEmpty(term))
-            {
-                RefreshMechanicList();
-                return;
-            }
-
-            var filtered = mechanicList.Where(m =>
-                m.FirstName.ToLower().Contains(term) ||
-                m.LastName.ToLower().Contains(term)).ToList();
+            string term = txtSearch.Text.Trim();
+            var filtered = mechServicesHelper.Search(term);
 
             lvMechanicList.Items.Clear();
 
@@ -213,8 +201,9 @@ namespace MechanicShop.Forms
                 ListViewItem item = new ListViewItem(mechanic.FirstName);
                 item.SubItems.Add(mechanic.LastName);
                 item.SubItems.Add(mechanic.HourlyRate.ToString("F2"));
+                item.SubItems.Add(mechanic.Specialty ?? "");
+                item.SubItems.Add(mechanic.Phone ?? "");
                 item.Tag = mechanic;
-
                 lvMechanicList.Items.Add(item);
             }
         }
