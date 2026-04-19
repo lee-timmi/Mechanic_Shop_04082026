@@ -37,7 +37,6 @@ namespace MechanicShop
             {
                 btnCustomers.Visible = false;
                 btnVehicles.Visible = false;
-                btnRepairHistory.Visible = false;
                 btnAdmin.Visible = false;
                 btnMechanics.Visible = false;
             } 
