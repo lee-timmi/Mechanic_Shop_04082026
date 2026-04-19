@@ -1,98 +1,258 @@
 # Mechanic Shop Management System
 
-A desktop application for mechanic shops to manage customers, vehicles, repair orders, labor/parts tracking, and invoicing. Built with Windows Forms and C#.
+A desktop application for mechanic shops to manage customers, vehicles, repair orders, labor/parts tracking, and mechanic assignments. Built with Windows Forms and C#, backed by a Microsoft Access database.
 
-**Status:** Core functionality complete — VIN lookup, authentication, repair orders, and database integration.
+**Status:** Core functionality complete.
+
+---
+
+## Team
+
+| Feature Area | Developer |
+|---|---|
+| Customer Management | Thimmy |
+| Vehicle Management | Thimmy |
+| Repair Order System | Thimmy |
+| Database Integration | Thimmy |
+| VIN Lookup API | Thimmy |
+| Mechanic Management | Edwin |
+| Repair Order History | Edwin |
+| Authentication System | Edwin |
+
+---
+
+## User Flow
+
+### Getting Started
+Log in with your credentials. Before creating repair orders, add at least one mechanic via **Mechanics** on the dashboard.
+
+### Adding a Customer and Vehicle
+1. Go to **Customers** → fill in the customer's details → click **Add Customer**
+2. Select the customer from the list → click **Manage Vehicles**
+3. Enter the VIN and click **Lookup VIN** to auto-fill the vehicle details, then click **Add Vehicle**
+
+### Creating a Repair Order
+1. Go to **Customers** → select a customer → click **New Repair Order**
+2. Select the vehicle, set the status, and enter the customer complaint
+3. Add labor and parts using the quick buttons or custom entry — assign a mechanic to each labor item when prompted
+4. Click **Submit** to save
+
+### Viewing and Editing Orders
+Go to **Repair History** to search and filter all orders. Select an order to view, edit, or delete it. Rows are color-coded by status — yellow (Pending), blue (In Progress), green (Completed).
+
+### Managing Mechanics
+Go to **Mechanics** to add, edit, or delete mechanics. Mechanics added here appear as options when assigning labor on a repair order.
 
 ---
 
 ## Features
 
-### Completed (Thimmy)
-- **Customer Management** — Full CRUD operations with ListView interface
-  - Add, edit, delete customers
-  - Search customers by name, phone, or email
-  - ListView display with Name, Phone, Email columns
-  - Real-time validation and error handling
-  - Customer selection enables "Add Vehicle" button
+### Customer Management (Thimmy)
+- Full CRUD operations with ListView interface
+- Add, edit, delete customers
+- Search customers by name, phone, or email
+- Real-time validation and error handling
+- Customer selection enables "Manage Vehicles" and "New Repair Order" buttons
 
-- **Vehicle Management** — Add, edit vehicles with VIN lookup
-  - Link vehicles to specific customers via Customer dropdown
-  - VIN Lookup API Integration (NHTSA)
-    - Enter 17-character VIN → Click "Lookup" → Auto-fills Make, Model, Year
-    - Error handling for invalid VINs, network issues, and missing data
-    - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
+### Vehicle Management (Thimmy)
+- Full vehicle management within a single form — add, edit, delete
+- Vehicles linked to a specific customer, loaded automatically when the form opens
+- VIN Lookup API Integration (NHTSA)
+  - Enter 17-character VIN → Click "Lookup" → Auto-fills Make, Model, Year
+  - Error handling for invalid VINs, network issues, and missing data
+  - Test VIN: `1HGCM82633A123456` (returns: HONDA, ACCORD, 2003)
+- Current mileage tracked per vehicle
+- License plate stored and displayed
 
-- **Repair Order System** — Complete repair order management
-  - Create repair orders for customer vehicles
-  - Auto-generated order number (RO-YYYY-XXXX format)
-  - Customer dropdown (displays customer names)
-  - Vehicle dropdown (auto-filtered by selected customer)
-  - Current mileage auto-loads when vehicle selected
-  - **Quick Buttons for common services:**
-    - Labor: Oil Change, Brake Pads, Tire Rotation, Engine Diagnostic
-    - Parts: Oil Filter, Air Filter
-  - Add custom labor/parts items as needed
-  - Automatic cost calculation (labor total, parts total, grand total)
-  - Status tracking: Pending, In Progress, Completed, Invoiced
-  - Customer complaint field
-  - Remove items from DataGridView with safety checks
+### Repair Order System (Thimmy)
+- Create and manage repair orders for customer vehicles
+- Auto-generated order numbers (RO-YYYY-XXXX format)
+- Customer and vehicle dropdowns (vehicle list auto-filters by selected customer)
+- Current mileage auto-loads when vehicle is selected
+- Status tracking: Pending, In Progress, Completed, Invoiced
+- Customer complaint field (Long Text — no character limit)
+- Automatic cost calculation (labor total, parts total, grand total)
+- **Quick-add buttons for common services:**
+  - Labor: Oil Change, Brake Pad Replacement, Tire Rotation, Engine Diagnostic
+  - Parts: Oil Filter, Air Filter
+- Custom labor and parts items via input dialogs
+- Mechanic assignment per labor line item (prompt appears on all labor adds)
+- Remove items from grids with safety checks
+- View (read-only) and Edit modes controlled via `RepairOrderFormMode` enum
 
-- **Database Integration** — Microsoft Access backend with full CRUD operations
-  - `DBHelper.cs` with complete CRUD for Customers, Vehicles, Repair Orders
-  - Transaction support for repair order saving
-  - Parameterized queries for SQL injection protection
+### Repair Order History (Edwin)
+- View all repair orders in a searchable, filterable grid
+- Filter by customer name, vehicle, status, or date range
+- Color-coded rows by repair status:
+  - 🟡 Pending — yellow
+  - 🔵 In Progress — blue
+  - 🟢 Completed — green
+- View details (read-only) or edit existing repair orders
+- Delete repair orders with confirmation (cascades to labor and parts)
+- Record count display
 
-- **Main Form Dashboard** — Navigation menu with role-based access
-- **Class Models** — Customer, Vehicle, RepairOrder, LaborLineItem, PartsLineItem, User
+### Mechanic Management (Edwin)
+- Full CRUD operations for shop mechanics
+- Fields: First Name, Last Name, Specialty, Hourly Rate, Phone
+- Search mechanics by name
+- ListView display with all fields
+- Mechanics available for assignment when adding labor to repair orders
 
-### Completed (Edwin)
+### Authentication System (Edwin)
 - Login form with username/password validation
-- Hardcoded admin credentials for testing
-- Clear and Exit functionality
-- Session management with UserSession helper
-
-### Authentication System
 - User roles: Admin, Staff, Mechanic
-- Session management with `UserSession` static class
+- Session management via `UserSession` static class
 - Failed login attempt limit (3 attempts)
-- Role-based menu visibility
-- Login flow with while-loop for logout → login cycle
+- Role-based menu visibility on main dashboard
 
-### In Progress
-- **VIN Lookup API Integration** — Auto-populate vehicle details from NHTSA database
-- **Vehicle Management** — Add, edit vehicles with VIN lookup
-- **Repair Order System** — Labor/parts tracking and cost calculation
-
-### Planned
-- Invoice generation
-- Appointment scheduling
-- Inventory management
-- Customer portal
-- Reporting dashboard
+### Database Integration (Thimmy)
+- Microsoft Access backend (`.accdb`)
+- Full CRUD for all entities via `DBHelper.cs`
+- Transaction support for repair order saves and updates
+- Parameterized queries with explicit `OleDbType` on all parameters
+- Proper Access multi-JOIN syntax with parentheses
+- Relationships: Customers → Vehicles → RepairOrders → LaborLineItems / PartsLineItems → Mechanics
 
 ---
 
-## API Integration
+## Project Structure
 
-### Endpoint Used
-- GET https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json
+```
+MechanicShop/
+├── Classes/
+│   ├── Customer.cs
+│   ├── Vehicle.cs
+│   ├── RepairOrder.cs
+│   ├── LaborLineItem.cs
+│   ├── PartsLineItem.cs
+│   ├── Mechanic.cs
+│   └── User.cs
+├── Forms/
+│   ├── frmMain.cs                  — Dashboard / navigation
+│   ├── frmLogin.cs                 — Authentication
+│   ├── frmCustomer.cs              — Customer management
+│   ├── frmVehicle.cs               — Vehicle management (add, edit, delete)
+│   ├── frmRepairOrder.cs           — Create / edit repair orders
+│   ├── frmRepairOrderHistory.cs    — Repair order history, search, and filtering
+│   └── frmMechanic.cs              — Mechanic management
+├── Helper/
+│   └── DBHelper.cs                 — All database operations
+├── Services/
+│   ├── MechanicService.cs          — Mechanic data access
+│   ├── VehicleApiService.cs        — NHTSA VIN lookup
+│   └── UserSession.cs              — Session state
+└── MechanicShopDB.accdb            — Access database (not tracked in Git)
+```
 
-### How It Works
-1. User enters a 17-character VIN in the Vehicle Form
-2. Clicks "Lookup VIN" button
-3. Application sends GET request to NHTSA API
-4. JSON response is parsed to extract Make, Model, and Year
-5. Form fields are automatically populated
+---
 
-### Example Response
-```json
-{
-  "Results": [
-    {
-      "Make": "HONDA",
-      "Model": "ACCORD",
-      "ModelYear": "2003"
-    }
-  ]
-}
+### Customers
+| Column | Type |
+|---|---|
+| CustomerID | AutoNumber (PK) |
+| FirstName | Short Text |
+| LastName | Short Text |
+| Phone | Short Text |
+| Email | Short Text |
+| Address | Short Text |
+
+### Vehicles
+| Column | Type |
+|---|---|
+| VehicleID | AutoNumber (PK) |
+| CustomerID | Number — Long Integer (FK) |
+| VIN | Short Text |
+| Make | Short Text |
+| Model | Short Text |
+| Year | Number — Long Integer |
+| LicensePlate | Short Text |
+| CurrentMileage | Number — Long Integer |
+
+### RepairOrders
+| Column | Type |
+|---|---|
+| RepairOrderID | AutoNumber (PK) |
+| OrderNumber | Short Text |
+| CustomerID | Number — Long Integer (FK) |
+| VehicleID | Number — Long Integer (FK) |
+| DateOpened | Date/Time |
+| DateClosed | Date/Time |
+| MileageAtService | Number — Long Integer |
+| RepairStatus | Short Text |
+| CustomerComplaint | Long Text |
+
+### LaborLineItems
+| Column | Type |
+|---|---|
+| LaborLineItemID | AutoNumber (PK) |
+| RepairOrderID | Number — Long Integer (FK) |
+| LaborDescription | Short Text |
+| Hours | Number — Double |
+| HourlyRate | Currency |
+| MechanicID | Number — Long Integer (FK, nullable) |
+
+### PartsLineItems
+| Column | Type |
+|---|---|
+| PartsLineItemID | AutoNumber (PK) |
+| RepairOrderID | Number — Long Integer (FK) |
+| PartName | Short Text |
+| Quantity | Number — Long Integer |
+| UnitCost | Currency |
+| TotalCost | Currency |
+
+### Mechanics
+| Column | Type |
+|---|---|
+| MechanicID | AutoNumber (PK) |
+| FirstName | Short Text |
+| LastName | Short Text |
+| Specialty | Short Text |
+| HourlyRate | Number — Double |
+| Phone | Short Text |
+| IsActive | Yes/No |
+
+### Relationships
+Set the following in Access with Enforce Referential Integrity enabled:
+
+| Primary Table | PK | Foreign Table | FK |
+|---|---|---|---|
+| Customers | CustomerID | Vehicles | CustomerID |
+| Customers | CustomerID | RepairOrders | CustomerID |
+| Vehicles | VehicleID | RepairOrders | VehicleID |
+| RepairOrders | RepairOrderID | LaborLineItems | RepairOrderID |
+| RepairOrders | RepairOrderID | PartsLineItems | RepairOrderID |
+| Mechanics | MechanicID | LaborLineItems | MechanicID |
+
+> Do not enable cascade delete on Mechanics → LaborLineItems since MechanicID is nullable on labor items.
+
+---
+
+## VIN Lookup API
+
+**Endpoint:** `GET https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json`
+
+1. Enter a 17-character VIN in the Vehicle form
+2. Click "Lookup VIN"
+3. Make, Model, and Year are parsed from the JSON response and auto-filled
+4. If the lookup fails, fields unlock for manual entry
+
+**Test VIN:** `1HGCM82633A123456` → HONDA / ACCORD / 2003
+
+---
+
+## Requirements
+
+- Windows OS
+- .NET Framework 4.8
+- Microsoft Access Database Engine (ACE OLEDB 12.0)
+  - Download: [Microsoft Access Database Engine 2016](https://www.microsoft.com/en-us/download/details.aspx?id=54920)
+- Visual Studio 2019 or later
+
+---
+
+## Known Limitations
+
+- Authentication uses hardcoded credentials for testing
+- `IsActive` field exists on the Mechanics table but is not yet used in the UI
+- Invoice generation not implemented
