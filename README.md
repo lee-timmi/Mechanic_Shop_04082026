@@ -254,5 +254,3 @@ Set the following in Access with Enforce Referential Integrity enabled:
 ## Known Limitations
 
 - Authentication uses hardcoded credentials for testing
-- `IsActive` field exists on the Mechanics table but is not yet used in the UI
-- Invoice generation not implemented
