@@ -2,7 +2,7 @@
 
 A desktop application for mechanic shops to manage customers, vehicles, repair orders, labor/parts tracking, and mechanic assignments. Built with Windows Forms and C#, backed by a Microsoft Access database.
 
-**Status:** Core functionality complete.
+**Status:** Core functionality complete. SOLID refactor applied.
 
 ---
 
@@ -107,11 +107,46 @@ Go to **Mechanics** to add, edit, or delete mechanics. Mechanics added here appe
 
 ### Database Integration (Thimmy)
 - Microsoft Access backend (`.accdb`)
-- Full CRUD for all entities via `DBHelper.cs`
+- Repository pattern — each table has its own dedicated repository class
+- `DBHelper` acts as a facade delegating to individual repositories
 - Transaction support for repair order saves and updates
 - Parameterized queries with explicit `OleDbType` on all parameters
 - Proper Access multi-JOIN syntax with parentheses
 - Relationships: Customers → Vehicles → RepairOrders → LaborLineItems / PartsLineItems → Mechanics
+
+---
+
+## Architecture
+
+This project follows SOLID principles. Forms delegate to service and repository classes rather than handling business logic or database access directly.
+
+### Repositories (`Helper/`)
+Each repository handles one table only:
+
+| Class | Responsibility |
+|---|---|
+| `BaseRepository` | Shared connection string setup |
+| `CustomerRepository` | Customer CRUD |
+| `VehicleRepository` | Vehicle CRUD |
+| `RepairOrderRepository` | Repair order CRUD, search, order number |
+| `LaborRepository` | Labor line item reads |
+| `PartsRepository` | Parts line item reads |
+| `DBHelper` | Facade — delegates to all repositories |
+
+### Services (`Services/`)
+Each service handles business logic for one domain:
+
+| Class | Responsibility |
+|---|---|
+| `RepairOrderService` | Generate order numbers, save, update, filter |
+| `CustomerService` | Customer search and CRUD delegation |
+| `VehicleService` | Vehicle CRUD and customer name lookup |
+| `LaborServices` | Mechanic prompting, grid projection, mechanic name lookup |
+| `PartsServices` | Parts grid projection |
+| `CostCalculator` | Labor total, parts total, grand total calculation |
+| `MechanicService` | Mechanic CRUD and search |
+| `VehicleApiService` | NHTSA VIN lookup API calls |
+| `UserSession` | Session state management |
 
 ---
 
@@ -136,95 +171,31 @@ MechanicShop/
 │   ├── frmRepairOrderHistory.cs    — Repair order history, search, and filtering
 │   └── frmMechanic.cs              — Mechanic management
 ├── Helper/
-│   └── DBHelper.cs                 — All database operations
+│   ├── BaseRepository.cs           — Shared connection string
+│   ├── CustomerRepository.cs       — Customer data access
+│   ├── VehicleRepository.cs        — Vehicle data access
+│   ├── RepairOrderRepository.cs    — Repair order data access
+│   ├── LaborRepository.cs          — Labor line item data access
+│   ├── PartsRepository.cs          — Parts line item data access
+│   └── DBHelper.cs                 — Facade delegating to repositories
 ├── Services/
-│   ├── MechanicService.cs          — Mechanic data access
+│   ├── RepairOrderService.cs       — Repair order business logic
+│   ├── CustomerService.cs          — Customer business logic
+│   ├── VehicleService.cs           — Vehicle business logic
+│   ├── LaborServices.cs            — Labor business logic
+│   ├── PartsServices.cs            — Parts business logic
+│   ├── CostCalculator.cs           — Cost calculation
+│   ├── MechanicService.cs          — Mechanic data access and search
 │   ├── VehicleApiService.cs        — NHTSA VIN lookup
 │   └── UserSession.cs              — Session state
-└── MechanicShopDB.accdb            — Access database (not tracked in Git)
+└── MechanicShopDB.accdb            — Access database
 ```
 
 ---
 
-### Customers
-| Column | Type |
-|---|---|
-| CustomerID | AutoNumber (PK) |
-| FirstName | Short Text |
-| LastName | Short Text |
-| Phone | Short Text |
-| Email | Short Text |
-| Address | Short Text |
+## Database
 
-### Vehicles
-| Column | Type |
-|---|---|
-| VehicleID | AutoNumber (PK) |
-| CustomerID | Number — Long Integer (FK) |
-| VIN | Short Text |
-| Make | Short Text |
-| Model | Short Text |
-| Year | Number — Long Integer |
-| LicensePlate | Short Text |
-| CurrentMileage | Number — Long Integer |
-
-### RepairOrders
-| Column | Type |
-|---|---|
-| RepairOrderID | AutoNumber (PK) |
-| OrderNumber | Short Text |
-| CustomerID | Number — Long Integer (FK) |
-| VehicleID | Number — Long Integer (FK) |
-| DateOpened | Date/Time |
-| DateClosed | Date/Time |
-| MileageAtService | Number — Long Integer |
-| RepairStatus | Short Text |
-| CustomerComplaint | Long Text |
-
-### LaborLineItems
-| Column | Type |
-|---|---|
-| LaborLineItemID | AutoNumber (PK) |
-| RepairOrderID | Number — Long Integer (FK) |
-| LaborDescription | Short Text |
-| Hours | Number — Double |
-| HourlyRate | Currency |
-| MechanicID | Number — Long Integer (FK, nullable) |
-
-### PartsLineItems
-| Column | Type |
-|---|---|
-| PartsLineItemID | AutoNumber (PK) |
-| RepairOrderID | Number — Long Integer (FK) |
-| PartName | Short Text |
-| Quantity | Number — Long Integer |
-| UnitCost | Currency |
-| TotalCost | Currency |
-
-### Mechanics
-| Column | Type |
-|---|---|
-| MechanicID | AutoNumber (PK) |
-| FirstName | Short Text |
-| LastName | Short Text |
-| Specialty | Short Text |
-| HourlyRate | Number — Double |
-| Phone | Short Text |
-| IsActive | Yes/No |
-
-### Relationships
-Set the following in Access with Enforce Referential Integrity enabled:
-
-| Primary Table | PK | Foreign Table | FK |
-|---|---|---|---|
-| Customers | CustomerID | Vehicles | CustomerID |
-| Customers | CustomerID | RepairOrders | CustomerID |
-| Vehicles | VehicleID | RepairOrders | VehicleID |
-| RepairOrders | RepairOrderID | LaborLineItems | RepairOrderID |
-| RepairOrders | RepairOrderID | PartsLineItems | RepairOrderID |
-| Mechanics | MechanicID | LaborLineItems | MechanicID |
-
-> Do not enable cascade delete on Mechanics → LaborLineItems since MechanicID is nullable on labor items.
+The `MechanicShopDB.accdb` file is included in the repository. Place it in the project output directory (`bin/Debug/`) before running the application. The table structure is documented below for reference.
 
 ---
 
@@ -254,3 +225,4 @@ Set the following in Access with Enforce Referential Integrity enabled:
 ## Known Limitations
 
 - Authentication uses hardcoded credentials for testing
+- `IsActive` field exists on the Mechanics table but is not yet used in the UI
