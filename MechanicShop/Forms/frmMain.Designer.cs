@@ -30,23 +30,27 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.btnLogOut = new System.Windows.Forms.Button();
-            this.pboLogo = new System.Windows.Forms.PictureBox();
             this.lblLogInState = new System.Windows.Forms.Label();
             this.gboOptions = new System.Windows.Forms.GroupBox();
-            this.btnAdmin = new System.Windows.Forms.Button();
-            this.btnReports = new System.Windows.Forms.Button();
+            this.btnAuditLog = new System.Windows.Forms.Button();
+            this.btnRepairHistory = new System.Windows.Forms.Button();
             this.btnMechanics = new System.Windows.Forms.Button();
             this.btnRepairOrders = new System.Windows.Forms.Button();
             this.btnVehicles = new System.Windows.Forms.Button();
             this.btnCustomers = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pboLogo)).BeginInit();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.gboOptions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLogOut
             // 
-            this.btnLogOut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.btnLogOut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnLogOut.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btnLogOut.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLogOut.FlatAppearance.BorderSize = 0;
+            this.btnLogOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogOut.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLogOut.ForeColor = System.Drawing.Color.White;
             this.btnLogOut.Location = new System.Drawing.Point(398, 280);
             this.btnLogOut.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogOut.Name = "btnLogOut";
@@ -56,41 +60,30 @@
             this.btnLogOut.UseVisualStyleBackColor = false;
             this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
-            // pboLogo
-            // 
-            this.pboLogo.BackColor = System.Drawing.Color.Transparent;
-            this.pboLogo.BackgroundImage = global::MechanicShop.Properties.Resources.mechanicLogo;
-            this.pboLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pboLogo.ErrorImage = null;
-            this.pboLogo.Location = new System.Drawing.Point(124, 8);
-            this.pboLogo.Margin = new System.Windows.Forms.Padding(2);
-            this.pboLogo.Name = "pboLogo";
-            this.pboLogo.Size = new System.Drawing.Size(260, 110);
-            this.pboLogo.TabIndex = 7;
-            this.pboLogo.TabStop = false;
-            // 
             // lblLogInState
             // 
             this.lblLogInState.AutoSize = true;
             this.lblLogInState.BackColor = System.Drawing.Color.Transparent;
+            this.lblLogInState.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLogInState.ForeColor = System.Drawing.Color.White;
             this.lblLogInState.Location = new System.Drawing.Point(39, 288);
             this.lblLogInState.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblLogInState.Name = "lblLogInState";
-            this.lblLogInState.Size = new System.Drawing.Size(57, 13);
+            this.lblLogInState.Size = new System.Drawing.Size(67, 13);
             this.lblLogInState.TabIndex = 8;
             this.lblLogInState.Text = "Logged in:";
             // 
             // gboOptions
             // 
             this.gboOptions.BackColor = System.Drawing.Color.Transparent;
-            this.gboOptions.Controls.Add(this.btnAdmin);
-            this.gboOptions.Controls.Add(this.btnReports);
+            this.gboOptions.Controls.Add(this.btnAuditLog);
+            this.gboOptions.Controls.Add(this.btnRepairHistory);
             this.gboOptions.Controls.Add(this.btnMechanics);
             this.gboOptions.Controls.Add(this.btnRepairOrders);
             this.gboOptions.Controls.Add(this.btnVehicles);
             this.gboOptions.Controls.Add(this.btnCustomers);
             this.gboOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gboOptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.gboOptions.ForeColor = System.Drawing.Color.White;
             this.gboOptions.Location = new System.Drawing.Point(42, 122);
             this.gboOptions.Margin = new System.Windows.Forms.Padding(2);
             this.gboOptions.Name = "gboOptions";
@@ -100,29 +93,29 @@
             this.gboOptions.TabStop = false;
             this.gboOptions.Text = "Options";
             // 
-            // btnAdmin
+            // btnAuditLog
             // 
-            this.btnAdmin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.btnAdmin.Location = new System.Drawing.Point(291, 86);
-            this.btnAdmin.Margin = new System.Windows.Forms.Padding(2);
-            this.btnAdmin.Name = "btnAdmin";
-            this.btnAdmin.Size = new System.Drawing.Size(120, 52);
-            this.btnAdmin.TabIndex = 11;
-            this.btnAdmin.Text = "Admin";
-            this.btnAdmin.UseVisualStyleBackColor = false;
-            this.btnAdmin.Click += new System.EventHandler(this.btnAdmin_Click);
+            this.btnAuditLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.btnAuditLog.Location = new System.Drawing.Point(291, 86);
+            this.btnAuditLog.Margin = new System.Windows.Forms.Padding(2);
+            this.btnAuditLog.Name = "btnAuditLog";
+            this.btnAuditLog.Size = new System.Drawing.Size(120, 52);
+            this.btnAuditLog.TabIndex = 11;
+            this.btnAuditLog.Text = "Audit Log";
+            this.btnAuditLog.UseVisualStyleBackColor = false;
+            this.btnAuditLog.Click += new System.EventHandler(this.btnAuditLog_Click);
             // 
-            // btnReports
+            // btnRepairHistory
             // 
-            this.btnReports.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.btnReports.Location = new System.Drawing.Point(146, 86);
-            this.btnReports.Margin = new System.Windows.Forms.Padding(2);
-            this.btnReports.Name = "btnReports";
-            this.btnReports.Size = new System.Drawing.Size(120, 52);
-            this.btnReports.TabIndex = 10;
-            this.btnReports.Text = "Reports";
-            this.btnReports.UseVisualStyleBackColor = false;
-            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
+            this.btnRepairHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.btnRepairHistory.Location = new System.Drawing.Point(146, 86);
+            this.btnRepairHistory.Margin = new System.Windows.Forms.Padding(2);
+            this.btnRepairHistory.Name = "btnRepairHistory";
+            this.btnRepairHistory.Size = new System.Drawing.Size(120, 52);
+            this.btnRepairHistory.TabIndex = 10;
+            this.btnRepairHistory.Text = "Repair History";
+            this.btnRepairHistory.UseVisualStyleBackColor = false;
+            this.btnRepairHistory.Click += new System.EventHandler(this.btnRepairHistory_Click);
             // 
             // btnMechanics
             // 
@@ -163,6 +156,7 @@
             // btnCustomers
             // 
             this.btnCustomers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.btnCustomers.ForeColor = System.Drawing.Color.White;
             this.btnCustomers.Location = new System.Drawing.Point(8, 16);
             this.btnCustomers.Margin = new System.Windows.Forms.Padding(2);
             this.btnCustomers.Name = "btnCustomers";
@@ -171,6 +165,17 @@
             this.btnCustomers.Text = "Customers";
             this.btnCustomers.UseVisualStyleBackColor = false;
             this.btnCustomers.Click += new System.EventHandler(this.btnCustomers_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(-17, -76);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(537, 279);
+            this.pictureBox1.TabIndex = 11;
+            this.pictureBox1.TabStop = false;
             // 
             // frmMain
             // 
@@ -182,8 +187,8 @@
             this.ClientSize = new System.Drawing.Size(511, 319);
             this.Controls.Add(this.gboOptions);
             this.Controls.Add(this.lblLogInState);
-            this.Controls.Add(this.pboLogo);
             this.Controls.Add(this.btnLogOut);
+            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -192,8 +197,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MECHANIC SHOP MANAGEMENT SYSTEM";
             this.Load += new System.EventHandler(this.frmMain_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pboLogo)).EndInit();
             this.gboOptions.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -202,15 +207,15 @@
         #endregion
 
         private System.Windows.Forms.Button btnLogOut;
-        private System.Windows.Forms.PictureBox pboLogo;
         private System.Windows.Forms.Label lblLogInState;
         private System.Windows.Forms.GroupBox gboOptions;
-        private System.Windows.Forms.Button btnAdmin;
-        private System.Windows.Forms.Button btnReports;
+        private System.Windows.Forms.Button btnAuditLog;
+        private System.Windows.Forms.Button btnRepairHistory;
         private System.Windows.Forms.Button btnMechanics;
         private System.Windows.Forms.Button btnRepairOrders;
         private System.Windows.Forms.Button btnVehicles;
         private System.Windows.Forms.Button btnCustomers;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

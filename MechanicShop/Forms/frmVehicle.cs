@@ -12,6 +12,7 @@ using MechanicShop.Classes;
 using MechanicShop.Helper;
 using MehcnicShop.Helper;
 using System.Net.Http;
+using MechanicShop.Services;
 
 namespace MechanicShop.Forms
 {
@@ -19,21 +20,22 @@ namespace MechanicShop.Forms
     {
         VehicleApiService _vehicleAPI;
         private int customerID;
+        public Vehicle selectedVehicle { get; private set; }
+        private bool isEditMode = false;
+        private List<Vehicle> vehicleList;
+        private VehicleService vehicleService;
 
-        public frmVehicle()
-        {
-            InitializeComponent();
-            // Initialize the API service so the field is not null when used
-            _vehicleAPI = new VehicleApiService();
-        }
-
-        public frmVehicle(int customerID)
+        public frmVehicle(int customerID = 0)
         {
             InitializeComponent();
             this.customerID = customerID;
+            var audit = new AuditService(new AuditRepository());
             // Initialize the API service so the field is not null when used
             _vehicleAPI = new VehicleApiService();
+            vehicleService = new VehicleService(new VehicleRepository(), new CustomerRepository(), audit);
+            SetupListView();
             LoadCustomerInfo();
+            LoadVehicles();
         }
 
         private async void btnVINLookup_Click(object sender, EventArgs e)
@@ -104,67 +106,193 @@ namespace MechanicShop.Forms
             txtYear.ReadOnly = true;
         }
 
+        private void SetupListView()
+        {
+            lvVehicleList.Columns.Clear();
+            lvVehicleList.Columns.Add("Year", 50);
+            lvVehicleList.Columns.Add("Make", 80);
+            lvVehicleList.Columns.Add("Model", 90);
+            lvVehicleList.Columns.Add("VIN", 130);
+            lvVehicleList.Columns.Add("Plate", 70);
+            lvVehicleList.View = View.Details;
+            lvVehicleList.FullRowSelect = true;
+            lvVehicleList.MultiSelect = false;
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             // Validation for required fields
             if (string.IsNullOrWhiteSpace(txtMake.Text))
             {
-                MessageBox.Show("Make is required. Please enter the vehicle make.", "Validation Error");
+                MessageBox.Show("Make is required.", "Validation Error");
                 txtMake.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtModel.Text))
             {
-                MessageBox.Show("Model is required. Please enter the vehicle make.", "Validation Error");
-                txtModel.Focus();
+                MessageBox.Show("Model is required.", "Validation Error");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtVIN.Text))
             {
-                MessageBox.Show("VIN is required. Please enter the vehicle make.", "Validation Error");
-                txtVIN.Focus();
+                MessageBox.Show("VIN is required.", "Validation Error");
                 return;
             }
 
-            // Creating vehicle obj
-            var vehicle = new Vehicle
-            {
-                CustomerID = customerID,
-                VIN = txtVIN.Text.Trim().ToUpper(),
-                Make = txtMake.Text.Trim(),
-                Model = txtModel.Text.Trim(),
-                Year = int.TryParse(txtYear.Text, out int year) ? year : 0,
-                LicensePlate = txtLicensePlate.Text.Trim().ToUpper(),
-                CurrentMileage = (int)nudCurrentMileage.Value
-            };
-
             DBHelper dbHelper = new DBHelper();
-            dbHelper.AddVehicle(vehicle);
 
-            MessageBox.Show("Vehicle added successfully!");
+            if (isEditMode && selectedVehicle != null)
+            {
+                selectedVehicle.VIN = txtVIN.Text.Trim().ToUpper();
+                selectedVehicle.Make = txtMake.Text.Trim();
+                selectedVehicle.Model = txtModel.Text.Trim();
+                selectedVehicle.Year = int.TryParse(txtYear.Text, out int editYear) ? editYear : 0;
+                selectedVehicle.LicensePlate = txtLicensePlate.Text.Trim().ToUpper();
+                selectedVehicle.CurrentMileage = (int)nudCurrentMileage.Value;
+
+                vehicleService.Update(selectedVehicle);
+                MessageBox.Show("Vehicle updated successfully!");
+            } else
+            {
+                // Creating vehicle obj
+                var vehicle = new Vehicle
+                {
+                    CustomerID = customerID,
+                    VIN = txtVIN.Text.Trim().ToUpper(),
+                    Make = txtMake.Text.Trim(),
+                    Model = txtModel.Text.Trim(),
+                    Year = int.TryParse(txtYear.Text, out int year) ? year : 0,
+                    LicensePlate = txtLicensePlate.Text.Trim().ToUpper(),
+                    CurrentMileage = (int)nudCurrentMileage.Value
+                };
+                
+                vehicleService.Add(vehicle);
+                MessageBox.Show("Vehicle added successfully!");
+            }
+ 
             DialogResult = DialogResult.OK;
-            Close();
-
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Cancel;
-            Close();
+            LoadVehicles();
+            ClearForm();
         }
 
         // Load customer info for display
         private void LoadCustomerInfo()
         {
-            var dbHelper = new DBHelper();
-            var customer = dbHelper.GetCustomerById(customerID);
-            if (customer != null)
+            if (customerID == 0) 
             {
-                lblCustomer.Text = $"Adding Vehicle for: {customer.FirstName} {customer.LastName}";
+                lblCustomer.Text = "All Vehicles";
+                return;
             }
+            lblCustomer.Text = vehicleService.GetCustomerDisplayName(customerID);
+        }
 
+        public void LoadVehicleForEditing(Vehicle vehicle)
+        {
+            selectedVehicle = vehicle;
+            isEditMode = true;
+
+            txtVIN.Text = vehicle.VIN;
+            txtMake.Text = vehicle.Make;
+            txtModel.Text = vehicle.Model;
+            txtYear.Text = vehicle.Year.ToString();
+            txtLicensePlate.Text = vehicle.LicensePlate;
+            nudCurrentMileage.Value = vehicle.CurrentMileage;
+
+            this.Text = "Edit Vehicle";
+            btnSave.Text = "Update Vehicle";
+        }
+
+        private void LoadVehicles()
+        {
+            if (customerID == 0)
+            {
+                vehicleList = vehicleService.GetAll();
+            }
+            else
+            {
+                vehicleList = vehicleService.GetByCustomer(customerID);
+            }
+            
+            lvVehicleList.Items.Clear();
+
+            foreach (var v in vehicleList)
+            {
+                ListViewItem item = new ListViewItem(v.Year.ToString());
+                item.SubItems.Add(v.Make);
+                item.SubItems.Add(v.Model);
+                item.SubItems.Add(v.VIN ?? "");
+                item.SubItems.Add(v.LicensePlate ?? "");
+                item.SubItems.Add(v.CurrentMileage.ToString());
+                item.Tag = v;
+                lvVehicleList.Items.Add(item);
+            }
+        }
+
+        private void ClearForm()
+        {
+            txtVIN.Clear();
+            txtLicensePlate.Clear();
+            nudCurrentMileage.Value = 0;
+            ClearVehicleFields();
+            selectedVehicle = null;
+            isEditMode = false;
+            btnSave.Text = "Add Vehicle";
+            lblStatus.Text = "";
+        }
+
+        private void btnVehicleEdit_Click(object sender, EventArgs e)
+        {
+            if (lvVehicleList.SelectedItems.Count == 0) return;
+
+            Vehicle vehicle = (Vehicle)lvVehicleList.SelectedItems[0].Tag;
+            LoadVehicleForEditing(vehicle);
+        }
+
+        private void btnVehicleDelete_Click(object sender, EventArgs e)
+        {
+            if (selectedVehicle == null) return;
+
+            DialogResult result = MessageBox.Show(
+                $"Delete {selectedVehicle.Year} {selectedVehicle.Make} {selectedVehicle.Model}?",
+                "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    vehicleService.Delete(selectedVehicle.VehicleID);
+                    selectedVehicle = null;
+                    ClearForm();
+                    LoadVehicles();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting vehicle: {ex.Message}", "Error");
+                }
+            }
+        }
+
+        private void lvVehicleList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvVehicleList.SelectedItems.Count > 0)
+            {
+                selectedVehicle = (Vehicle)lvVehicleList.SelectedItems[0].Tag;
+                LoadVehicleForEditing(selectedVehicle);
+                btnVehicleDelete.Enabled = true;
+            }
+            else
+            {
+                selectedVehicle = null;
+                btnVehicleDelete.Enabled = false;
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

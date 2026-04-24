@@ -9,10 +9,15 @@ namespace MechanicShop.Classes
     public class Mechanic
     {
         // Properties (Id, FirstName, LastName, HourlyRate)
-        public int Id { get; set; }
+        public int MechanicID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
+        public string Specialty { get; set; }
         public decimal HourlyRate { get; set; }
+        public string Phone { get; set; }
+        public bool isActive { get; set; }
 
         // Nav Property
         public List<LaborLineItem> LaborLineItems { get; set; } = new List<LaborLineItem>();

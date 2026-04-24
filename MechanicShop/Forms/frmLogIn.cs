@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using MechanicShop.Classes;
 using MechanicShop.Helper;
 using MechanicShop.Services;
-
 
 namespace MechanicShop.Forms
 {
@@ -17,6 +15,11 @@ namespace MechanicShop.Forms
             authService = new AuthService();
         }
 
+        private void frmLogIn_Load(object sender, EventArgs e)
+        {
+            lblMessage.Text = "";
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text.Trim();
@@ -28,10 +31,7 @@ namespace MechanicShop.Forms
 
             if (result.Success)
             {
-                // Set current user in session
                 UserSession.currentUser = result.User;
-
-                // Close login form
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -39,13 +39,13 @@ namespace MechanicShop.Forms
             {
                 lblMessage.Text = result.Message;
                 txtPassword.Clear();
-                txtUsername.Clear();
-            }
-        }
+                txtPassword.Focus();
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.Show();
+                if (result.Message.Contains("Too many failed attempts"))
+                {
+                    btnLogin.Enabled = false;
+                }
+            }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -61,6 +61,12 @@ namespace MechanicShop.Forms
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void btnCreateUser_Click(object sender, EventArgs e)
+        {
+            frmRegister registerForm = new frmRegister();
+            registerForm.ShowDialog();
         }
     }
 }

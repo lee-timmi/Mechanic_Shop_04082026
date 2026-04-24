@@ -23,6 +23,7 @@ namespace MechanicShop.Classes
 
         // Foreign key (association)
         public int RepairOrderId { get; set; }
+        public int? MechanicID { get; set; }
 
         // Parameterless constructor
         public LaborLineItem()

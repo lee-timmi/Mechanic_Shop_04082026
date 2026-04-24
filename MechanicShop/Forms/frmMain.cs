@@ -37,15 +37,14 @@ namespace MechanicShop
             {
                 btnCustomers.Visible = false;
                 btnVehicles.Visible = false;
-                btnReports.Visible = false;
-                btnAdmin.Visible = false;
+                btnAuditLog.Visible = false;
                 btnMechanics.Visible = false;
             } 
             else if (UserSession.HasRole(UserRole.Staff))
             {
-                btnAdmin.Visible = false;
+                btnAuditLog.Visible = false;
                 btnMechanics.Visible = false;
-                btnReports.Visible = false;
+                btnRepairHistory.Visible = false;
             }
         } // end of frmMain_Load
 
@@ -69,19 +68,21 @@ namespace MechanicShop
 
         private void btnMechanics_Click(object sender, EventArgs e)
         {
-            
+            frmMechanic mechanicForm = new frmMechanic();
+            mechanicForm.ShowDialog();
         }
 
-        private void btnReports_Click(object sender, EventArgs e)
+        private void btnRepairHistory_Click(object sender, EventArgs e)
         {
-
+            frmRepairOrderHistory historyForm = new frmRepairOrderHistory();
+            historyForm.ShowDialog();
         }
 
-        private void btnAdmin_Click(object sender, EventArgs e)
+        private void btnAuditLog_Click(object sender, EventArgs e)
         {
-
+            frmAuditLog frm = new frmAuditLog();
+            frm.ShowDialog();
         }
-
         private void btnLogOut_Click(object sender, EventArgs e)
         {
             // Clear session

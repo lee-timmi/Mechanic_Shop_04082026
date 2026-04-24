@@ -39,7 +39,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\AuditLog.cs" />
     <Compile Include="Classes\Customer.cs" />
     <Compile Include="Classes\LaborLineItem.cs" />
     <Compile Include="Classes\Mechanic.cs" />
@@ -62,6 +63,12 @@
     <Compile Include="Classes\ServiceType.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\Vehicle.cs" />
+    <Compile Include="Forms\frmAuditLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAuditLog.Designer.cs">
+      <DependentUpon>frmAuditLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmCustomer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,11 +87,29 @@
     <Compile Include="Forms\frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\frmMechanic.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMechanic.Designer.cs">
+      <DependentUpon>frmMechanic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRegister.Designer.cs">
+      <DependentUpon>frmRegister.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmRepairOrder.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmRepairOrder.Designer.cs">
       <DependentUpon>frmRepairOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmRepairOrderHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmRepairOrderHistory.Designer.cs">
+      <DependentUpon>frmRepairOrderHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmVehicle.cs">
       <SubType>Form</SubType>
@@ -92,13 +117,35 @@
     <Compile Include="Forms\frmVehicle.Designer.cs">
       <DependentUpon>frmVehicle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\AuditRepository.cs" />
+    <Compile Include="Helper\BaseRepository.cs" />
+    <Compile Include="Helper\CustomerRepository.cs" />
     <Compile Include="Helper\DBHelper.cs" />
+    <Compile Include="Helper\LaborPartRepository.cs" />
+    <Compile Include="Helper\RepairOrderRepository.cs" />
     <Compile Include="Helper\UserSession.cs" />
     <Compile Include="Helper\VehicleAPIService.cs" />
+    <Compile Include="Helper\VehicleRepository.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AuditService.cs" />
     <Compile Include="Services\AuthServices.cs" />
+    <Compile Include="Services\CostCalculator.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\LaborServices.cs" />
+    <Compile Include="Services\MechanicService.cs" />
+    <Compile Include="Services\PartsServices.cs" />
+    <Compile Include="Services\RepairOrderService.cs" />
     <Compile Include="Services\UserServices.cs" />
+    <Compile Include="Services\VehicleService.cs" />
+    <EmbeddedResource Include="Forms\frmAuditLog.resx">
+      <DependentUpon>frmAuditLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmCustomer.resx">
       <DependentUpon>frmCustomer.cs</DependentUpon>
     </EmbeddedResource>
@@ -108,8 +155,17 @@
     <EmbeddedResource Include="Forms\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMechanic.resx">
+      <DependentUpon>frmMechanic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRegister.resx">
+      <DependentUpon>frmRegister.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmRepairOrder.resx">
       <DependentUpon>frmRepairOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmRepairOrderHistory.resx">
+      <DependentUpon>frmRepairOrderHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmVehicle.resx">
       <DependentUpon>frmVehicle.cs</DependentUpon>
@@ -123,11 +179,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -139,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Classes\Classes.txt" />
-    <None Include="Helper\Future Improvements" />
     <Content Include="MechanicShopDB.accdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

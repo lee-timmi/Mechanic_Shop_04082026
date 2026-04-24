@@ -13,7 +13,7 @@ namespace MechanicShop.Classes
         public string PartName { get; set; }
         public int Quantity { get; set; }
         public decimal UnitCost { get; set; }
-        public decimal TotalCost { get; set; }
+        public decimal TotalCost => Quantity * UnitCost;
 
         // Constructor
         public PartsLineItem(int ID, string partName, int quantity, decimal unitCost)
@@ -26,39 +26,11 @@ namespace MechanicShop.Classes
 
         // Navigation property to the associated RepairOrder
         public RepairOrder repairOrder { get; set; }
-        public int RepairOrderId { get; internal set; }
+        public int RepairOrderId { get; set; }
 
         // Parameterless constructor
         public PartsLineItem()
         {
-        }
-
-        // Public methods
-        public decimal CalculateTotalCost()
-        {
-            TotalCost = Quantity * UnitCost;
-            return TotalCost;
-        }
-
-        public void UpdateQuantity(int newQuantity)
-        {
-            if (newQuantity < 0)
-            {
-                throw new ArgumentException("Quantity cannot be negative.");
-            }
-
-            Quantity = newQuantity;
-            CalculateTotalCost();
-        }
-
-        public void UpdateUnitCost(decimal newUnitCost)
-        {
-            if (newUnitCost <= 0)
-            {
-                throw new ArgumentException("Unit cost cannot be negative.");
-            }
-            UnitCost = newUnitCost;
-            CalculateTotalCost();
         }
     }
 }

@@ -1,27 +1,40 @@
 ﻿using MechanicShop.Classes;
-using System;
+using MechanicShop.Helper;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Services
 {
     public class UserService
     {
-        // For future: Add, Edit, Delete users
-        // For now, just a placeholder
+        private readonly DBHelper dbHelper;
+
+        public UserService()
+        {
+            dbHelper = new DBHelper();
+        }
 
         public List<User> GetAllUsers()
         {
-            // Will eventually load from database
-            return new List<User>();
+            return dbHelper.GetAllUsers();
         }
 
         public bool AddUser(User user)
         {
-            // Will eventually save to database
-            return true;
+            if (user == null)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Password))
+                return false;
+
+            if (dbHelper.UsernameExists(user.Username))
+                return false;
+
+            return dbHelper.AddUser(user);
+        }
+
+        public bool UsernameExists(string username)
+        {
+            return dbHelper.UsernameExists(username);
         }
     }
 }
