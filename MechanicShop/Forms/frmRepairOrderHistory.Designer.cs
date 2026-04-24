@@ -39,7 +39,7 @@
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(11, 9);
+            this.lblTitle.Location = new System.Drawing.Point(13, 9);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(227, 22);
@@ -51,7 +51,7 @@
             this.lblFilter.AutoSize = true;
             this.lblFilter.Font = new System.Drawing.Font("Arial", 9F);
             this.lblFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.lblFilter.Location = new System.Drawing.Point(15, 83);
+            this.lblFilter.Location = new System.Drawing.Point(18, 83);
             this.lblFilter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblFilter.Name = "lblFilter";
             this.lblFilter.Size = new System.Drawing.Size(79, 15);
@@ -64,10 +64,10 @@
             this.txtFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtFilter.Font = new System.Drawing.Font("Arial", 9F);
             this.txtFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.txtFilter.Location = new System.Drawing.Point(17, 100);
+            this.txtFilter.Location = new System.Drawing.Point(20, 100);
             this.txtFilter.Margin = new System.Windows.Forms.Padding(2);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(168, 21);
+            this.txtFilter.Size = new System.Drawing.Size(196, 21);
             this.txtFilter.TabIndex = 4;
             // 
             // btnSearch
@@ -78,10 +78,10 @@
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(508, 86);
+            this.btnSearch.Location = new System.Drawing.Point(593, 86);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(109, 35);
+            this.btnSearch.Size = new System.Drawing.Size(127, 35);
             this.btnSearch.TabIndex = 5;
             this.btnSearch.Text = "🔎 Search";
             this.btnSearch.UseVisualStyleBackColor = false;
@@ -95,10 +95,10 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(736, 86);
+            this.btnClose.Location = new System.Drawing.Point(859, 86);
             this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(95, 35);
+            this.btnClose.Size = new System.Drawing.Size(111, 35);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "✗ Close";
             this.btnClose.UseVisualStyleBackColor = false;
@@ -109,7 +109,8 @@
             this.lblStatusFilter.AutoSize = true;
             this.lblStatusFilter.Font = new System.Drawing.Font("Arial", 9F);
             this.lblStatusFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.lblStatusFilter.Location = new System.Drawing.Point(187, 83);
+            this.lblStatusFilter.Location = new System.Drawing.Point(218, 83);
+            this.lblStatusFilter.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblStatusFilter.Name = "lblStatusFilter";
             this.lblStatusFilter.Size = new System.Drawing.Size(90, 15);
             this.lblStatusFilter.TabIndex = 9;
@@ -118,9 +119,10 @@
             // cboStatusFilter
             // 
             this.cboStatusFilter.FormattingEnabled = true;
-            this.cboStatusFilter.Location = new System.Drawing.Point(190, 100);
+            this.cboStatusFilter.Location = new System.Drawing.Point(222, 100);
+            this.cboStatusFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.cboStatusFilter.Name = "cboStatusFilter";
-            this.cboStatusFilter.Size = new System.Drawing.Size(79, 21);
+            this.cboStatusFilter.Size = new System.Drawing.Size(92, 21);
             this.cboStatusFilter.TabIndex = 10;
             // 
             // lblFrom
@@ -128,7 +130,8 @@
             this.lblFrom.AutoSize = true;
             this.lblFrom.Font = new System.Drawing.Font("Arial", 9F);
             this.lblFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.lblFrom.Location = new System.Drawing.Point(297, 86);
+            this.lblFrom.Location = new System.Drawing.Point(346, 86);
+            this.lblFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFrom.Name = "lblFrom";
             this.lblFrom.Size = new System.Drawing.Size(39, 15);
             this.lblFrom.TabIndex = 11;
@@ -139,7 +142,8 @@
             this.lblTo.AutoSize = true;
             this.lblTo.Font = new System.Drawing.Font("Arial", 9F);
             this.lblTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.lblTo.Location = new System.Drawing.Point(392, 86);
+            this.lblTo.Location = new System.Drawing.Point(457, 86);
+            this.lblTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTo.Name = "lblTo";
             this.lblTo.Size = new System.Drawing.Size(23, 15);
             this.lblTo.TabIndex = 12;
@@ -148,17 +152,19 @@
             // dtpFromDate
             // 
             this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFromDate.Location = new System.Drawing.Point(300, 101);
+            this.dtpFromDate.Location = new System.Drawing.Point(350, 101);
+            this.dtpFromDate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.dtpFromDate.Name = "dtpFromDate";
-            this.dtpFromDate.Size = new System.Drawing.Size(89, 20);
+            this.dtpFromDate.Size = new System.Drawing.Size(103, 20);
             this.dtpFromDate.TabIndex = 13;
             // 
             // dtpToDate
             // 
             this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpToDate.Location = new System.Drawing.Point(395, 101);
+            this.dtpToDate.Location = new System.Drawing.Point(461, 101);
+            this.dtpToDate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.dtpToDate.Name = "dtpToDate";
-            this.dtpToDate.Size = new System.Drawing.Size(89, 20);
+            this.dtpToDate.Size = new System.Drawing.Size(103, 20);
             this.dtpToDate.TabIndex = 14;
             // 
             // lblTotalRecords
@@ -166,7 +172,8 @@
             this.lblTotalRecords.AutoSize = true;
             this.lblTotalRecords.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Italic);
             this.lblTotalRecords.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblTotalRecords.Location = new System.Drawing.Point(664, 132);
+            this.lblTotalRecords.Location = new System.Drawing.Point(775, 132);
+            this.lblTotalRecords.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalRecords.Name = "lblTotalRecords";
             this.lblTotalRecords.Size = new System.Drawing.Size(79, 14);
             this.lblTotalRecords.TabIndex = 18;
@@ -180,10 +187,10 @@
             this.btnShowAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShowAll.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnShowAll.ForeColor = System.Drawing.Color.White;
-            this.btnShowAll.Location = new System.Drawing.Point(621, 86);
+            this.btnShowAll.Location = new System.Drawing.Point(724, 86);
             this.btnShowAll.Margin = new System.Windows.Forms.Padding(2);
             this.btnShowAll.Name = "btnShowAll";
-            this.btnShowAll.Size = new System.Drawing.Size(111, 35);
+            this.btnShowAll.Size = new System.Drawing.Size(130, 35);
             this.btnShowAll.TabIndex = 19;
             this.btnShowAll.Text = "↻ Show All";
             this.btnShowAll.UseVisualStyleBackColor = false;
@@ -194,10 +201,10 @@
             this.flpRepairOrders.AutoScroll = true;
             this.flpRepairOrders.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(246)))), ((int)(((byte)(248)))));
             this.flpRepairOrders.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpRepairOrders.Location = new System.Drawing.Point(43, 148);
+            this.flpRepairOrders.Location = new System.Drawing.Point(50, 148);
             this.flpRepairOrders.Margin = new System.Windows.Forms.Padding(2);
             this.flpRepairOrders.Name = "flpRepairOrders";
-            this.flpRepairOrders.Size = new System.Drawing.Size(760, 420);
+            this.flpRepairOrders.Size = new System.Drawing.Size(887, 420);
             this.flpRepairOrders.TabIndex = 20;
             this.flpRepairOrders.WrapContents = false;
             // 
@@ -208,26 +215,28 @@
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(851, 60);
+            this.pnlHeader.Size = new System.Drawing.Size(993, 60);
             this.pnlHeader.TabIndex = 23;
             // 
             // lblSubtitle
             // 
             this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Arial", 8F);
+            this.lblSubtitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(200)))), ((int)(((byte)(220)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(18, 38);
+            this.lblSubtitle.Location = new System.Drawing.Point(21, 38);
+            this.lblSubtitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(183, 14);
+            this.lblSubtitle.Size = new System.Drawing.Size(212, 13);
             this.lblSubtitle.TabIndex = 22;
             this.lblSubtitle.Text = "Search and manage all repair orders";
             // 
             // frmRepairOrderHistory
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(851, 591);
+            this.ClientSize = new System.Drawing.Size(993, 591);
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.flpRepairOrders);
             this.Controls.Add(this.btnShowAll);
@@ -242,6 +251,7 @@
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.lblFilter);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmRepairOrderHistory";

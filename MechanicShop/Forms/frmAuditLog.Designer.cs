@@ -27,6 +27,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.dgvAuditLog = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblSubtitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAuditLog)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +49,7 @@
             this.lblEntity.AutoSize = true;
             this.lblEntity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEntity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.lblEntity.Location = new System.Drawing.Point(11, 49);
+            this.lblEntity.Location = new System.Drawing.Point(11, 66);
             this.lblEntity.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblEntity.Name = "lblEntity";
             this.lblEntity.Size = new System.Drawing.Size(39, 15);
@@ -59,7 +60,7 @@
             // 
             this.cboEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboEntity.FormattingEnabled = true;
-            this.cboEntity.Location = new System.Drawing.Point(14, 64);
+            this.cboEntity.Location = new System.Drawing.Point(14, 81);
             this.cboEntity.Margin = new System.Windows.Forms.Padding(2);
             this.cboEntity.Name = "cboEntity";
             this.cboEntity.Size = new System.Drawing.Size(108, 21);
@@ -68,7 +69,7 @@
             // lblUser
             // 
             this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(142, 49);
+            this.lblUser.Location = new System.Drawing.Point(142, 66);
             this.lblUser.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(32, 13);
@@ -77,7 +78,7 @@
             // 
             // txtUser
             // 
-            this.txtUser.Location = new System.Drawing.Point(145, 64);
+            this.txtUser.Location = new System.Drawing.Point(145, 81);
             this.txtUser.Margin = new System.Windows.Forms.Padding(2);
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(108, 20);
@@ -91,7 +92,7 @@
             this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoad.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnLoad.ForeColor = System.Drawing.Color.White;
-            this.btnLoad.Location = new System.Drawing.Point(276, 49);
+            this.btnLoad.Location = new System.Drawing.Point(276, 66);
             this.btnLoad.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(102, 32);
@@ -108,7 +109,7 @@
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClear.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnClear.ForeColor = System.Drawing.Color.White;
-            this.btnClear.Location = new System.Drawing.Point(392, 49);
+            this.btnClear.Location = new System.Drawing.Point(392, 66);
             this.btnClear.Margin = new System.Windows.Forms.Padding(2);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(105, 32);
@@ -124,7 +125,7 @@
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(511, 49);
+            this.btnClose.Location = new System.Drawing.Point(511, 66);
             this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(111, 32);
@@ -141,7 +142,7 @@
             this.dgvAuditLog.BackgroundColor = System.Drawing.Color.White;
             this.dgvAuditLog.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvAuditLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAuditLog.Location = new System.Drawing.Point(14, 89);
+            this.dgvAuditLog.Location = new System.Drawing.Point(14, 106);
             this.dgvAuditLog.Margin = new System.Windows.Forms.Padding(2);
             this.dgvAuditLog.Name = "dgvAuditLog";
             this.dgvAuditLog.ReadOnly = true;
@@ -154,20 +155,32 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
+            this.panel1.Controls.Add(this.lblSubtitle);
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(633, 45);
+            this.panel1.Size = new System.Drawing.Size(633, 62);
             this.panel1.TabIndex = 9;
+            // 
+            // lblSubtitle
+            // 
+            this.lblSubtitle.AutoSize = true;
+            this.lblSubtitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold);
+            this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(200)))), ((int)(((byte)(220)))));
+            this.lblSubtitle.Location = new System.Drawing.Point(15, 38);
+            this.lblSubtitle.Name = "lblSubtitle";
+            this.lblSubtitle.Size = new System.Drawing.Size(133, 13);
+            this.lblSubtitle.TabIndex = 1;
+            this.lblSubtitle.Text = "System activity history";
             // 
             // frmAuditLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(246)))), ((int)(((byte)(248)))));
-            this.ClientSize = new System.Drawing.Size(633, 359);
+            this.ClientSize = new System.Drawing.Size(633, 377);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvAuditLog);
             this.Controls.Add(this.btnClose);
@@ -202,5 +215,6 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.DataGridView dgvAuditLog;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblSubtitle;
     }
 }

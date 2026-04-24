@@ -600,11 +600,11 @@
             // lblSubtitle
             // 
             this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Arial", 8F);
+            this.lblSubtitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(200)))), ((int)(((byte)(220)))));
             this.lblSubtitle.Location = new System.Drawing.Point(18, 38);
             this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(167, 14);
+            this.lblSubtitle.Size = new System.Drawing.Size(192, 13);
             this.lblSubtitle.TabIndex = 22;
             this.lblSubtitle.Text = "Create and manage repair orders";
             // 

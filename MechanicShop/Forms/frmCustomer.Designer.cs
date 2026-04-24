@@ -471,7 +471,7 @@
             this.lblSubtitle.AutoSize = true;
             this.lblSubtitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(200)))), ((int)(((byte)(220)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(40, 38);
+            this.lblSubtitle.Location = new System.Drawing.Point(12, 35);
             this.lblSubtitle.Name = "lblSubtitle";
             this.lblSubtitle.Size = new System.Drawing.Size(192, 13);
             this.lblSubtitle.TabIndex = 1;
@@ -483,9 +483,9 @@
             this.lblCustomerTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCustomerTitle.Location = new System.Drawing.Point(7, 9);
             this.lblCustomerTitle.Name = "lblCustomerTitle";
-            this.lblCustomerTitle.Size = new System.Drawing.Size(254, 24);
+            this.lblCustomerTitle.Size = new System.Drawing.Size(127, 24);
             this.lblCustomerTitle.TabIndex = 0;
-            this.lblCustomerTitle.Text = "👤 Customer Management";
+            this.lblCustomerTitle.Text = "👤 Customer";
             // 
             // frmCustomer
             // 

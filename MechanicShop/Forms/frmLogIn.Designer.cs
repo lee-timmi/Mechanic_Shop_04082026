@@ -213,12 +213,12 @@ namespace MechanicShop.Forms
             // lblSubtitle
             // 
             this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Arial", 9F);
+            this.lblSubtitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(200)))), ((int)(((byte)(220)))));
             this.lblSubtitle.Location = new System.Drawing.Point(18, 48);
             this.lblSubtitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(108, 15);
+            this.lblSubtitle.Size = new System.Drawing.Size(114, 13);
             this.lblSubtitle.TabIndex = 12;
             this.lblSubtitle.Text = "Sign in to continue";
             // 
