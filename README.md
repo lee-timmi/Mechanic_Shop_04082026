@@ -10,16 +10,17 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 
 | Feature Area | Developer |
 |---|---|
-| Customer Management | Thimmy |
-| Vehicle Management | Thimmy |
-| Repair Order System | Thimmy |
-| Database Integration | Thimmy |
-| VIN Lookup API | Thimmy |
-| Mechanic Management | Edwin |
-| Repair Order History | Edwin |
-| Authentication System | Edwin |
-| Audit Log | Edwin |
+| Customer Management | Thimmy & Edwin |
+| Vehicle Management | Thimmy & Edwin |
+| Repair Order System | Thimmy & Edwin |
+| Repair Order History | Thimmy & Edwin |
+| Mechanic Management | Thimmy & Edwin |
+| Authentication System | Thimmy & Edwin |
+| Audit Log | Thimmy & Edwin |
+| Database Integration | Thimmy & Edwin |
 | UI Design & Styling | Thimmy & Edwin |
+| VIN Lookup API *(Learning Opportunity)* | Thimmy |
+| Authentication & Registration *(Learning Opportunity)* | Edwin |
 
 ---
 
@@ -52,14 +53,14 @@ Go to **Audit Log** on the dashboard to see a full history of all actions taken 
 
 ## Features
 
-### Customer Management (Thimmy)
+### Customer Management (Thimmy & Edwin)
 - Full CRUD operations with ListView interface
 - Add, edit, delete customers
 - Search customers by name, phone, or email
 - Real-time validation and error handling
 - Customer selection enables "Manage Vehicles" and "New Repair Order" buttons
 
-### Vehicle Management (Thimmy)
+### Vehicle Management (Thimmy & Edwin)
 - Full vehicle management within a single form — add, edit, delete
 - Vehicles linked to a specific customer, loaded automatically when the form opens
 - VIN Lookup API Integration (NHTSA)
@@ -69,7 +70,7 @@ Go to **Audit Log** on the dashboard to see a full history of all actions taken 
 - Current mileage tracked per vehicle
 - License plate stored and displayed
 
-### Repair Order System (Thimmy)
+### Repair Order System (Thimmy & Edwin)
 - Create and manage repair orders for customer vehicles
 - Auto-generated order numbers (RO-YYYY-XXXX format)
 - Customer and vehicle dropdowns (vehicle list auto-filters by selected customer)
@@ -85,7 +86,7 @@ Go to **Audit Log** on the dashboard to see a full history of all actions taken 
 - Remove items from grids with safety checks
 - View (read-only) and Edit modes controlled via `RepairOrderFormMode` enum
 
-### Repair Order History (Edwin)
+### Repair Order History (Thimmy & Edwin)
 - View all repair orders in a searchable, filterable grid
 - Filter by customer name, vehicle, status, or date range
 - Color-coded rows by repair status:
@@ -96,21 +97,21 @@ Go to **Audit Log** on the dashboard to see a full history of all actions taken 
 - Delete repair orders with confirmation (cascades to labor and parts)
 - Record count display
 
-### Mechanic Management (Edwin)
+### Mechanic Management (Thimmy & Edwin)
 - Full CRUD operations for shop mechanics
 - Fields: First Name, Last Name, Specialty, Hourly Rate, Phone
 - Search mechanics by name
 - ListView display with all fields
 - Mechanics available for assignment when adding labor to repair orders
 
-### Authentication System (Edwin)
+### Authentication System (Thimmy & Edwin)
 - Login form with username/password validation
 - User roles: Admin, Staff, Mechanic
 - Session management via `UserSession` static class
 - Failed login attempt limit (3 attempts)
 - Role-based menu visibility on main dashboard
 
-### Audit Log (Edwin)
+### Audit Log (Thimmy & Edwin)
 - Tracks all create, update, and delete actions across the system
 - Logs the action type, entity affected, description, timestamp, and user who performed it
 - Covers: Customers, Vehicles, Repair Orders, and Mechanics
@@ -119,7 +120,25 @@ Go to **Audit Log** on the dashboard to see a full history of all actions taken 
 - Read-only display form with a full history grid
 - Color-coded rows by action type — green (Created), blue (Updated), red (Deleted)
 
-### UI Design & Styling (Thimmy & Edwin)
+### VIN Lookup API — Learning Opportunity (Thimmy)
+- Async HTTP GET request to the NHTSA public API
+- Endpoint: `GET https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/{VIN}?format=json`
+- Parses JSON response to extract Make, Model, and Year
+- Auto-fills vehicle fields on successful lookup
+- Error handling for invalid VINs, network failures, and missing data
+- Fields unlock for manual entry if lookup fails
+- Test VIN: `1HGCM82633A123456` → HONDA / ACCORD / 2003
+- Implemented in `Services/VehicleApiService.cs`, triggered from `frmVehicle.cs`
+
+### Authentication & Registration — Learning Opportunity (Edwin)
+- Database-driven login replacing hardcoded credentials
+- New account registration with username, password, and role selection
+- Password validation with minimum length enforcement
+- Duplicate username detection before saving
+- Role-based access control — Admin, Staff, Mechanic roles control dashboard visibility
+- Session management via `UserSession` static class
+- Failed login attempt limit (3 attempts) before lockout
+- Implemented in `Helper/UserRepository.cs`, `Services/UserService.cs`, `Forms/frmLogin.cs`, `Forms/frmRegister.cs`
 - Consistent color scheme applied across all forms
 - Dark navy header panels on every form with title and subtitle
 - Color-coded buttons by action type — orange (save), green (add), blue (search/info), red (delete/danger), gray (cancel/neutral)
