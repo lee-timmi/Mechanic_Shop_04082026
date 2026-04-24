@@ -614,14 +614,32 @@ namespace MechanicShop.Forms
         }
 
         // === Labor Item Event Handlers ====
-        private void btnOilChange_Click(object sender, EventArgs e) => AddLaborItem("Oil Change", 1.0m, 80.00m);
-        private void btnBrakePad_Click(object sender, EventArgs e) => AddLaborItem("Brake Pad Replacement", 2.0m, 95.00m);
-        private void btnTireRotation_Click(object sender, EventArgs e) => AddLaborItem("Tire Rotation", 0.5m, 80.00m);
-        private void btnDiagnostic_Click(object sender, EventArgs e) => AddLaborItem("Diagnostics", 1.5m, 120.00m);
+        private void btnOilChange_Click(object sender, EventArgs e)
+        {
+            AddLaborItem("Oil Change", 1.0m, 80.00m);
+        }
+        private void btnBrakePad_Click(object sender, EventArgs e)
+        {
+            AddLaborItem("Brake Pad Replacement", 2.0m, 95.00m);
+        }
+        private void btnTireRotation_Click(object sender, EventArgs e)
+        {
+            AddLaborItem("Tire Rotation", 0.5m, 80.00m);
+        }
+        private void btnDiagnostic_Click(object sender, EventArgs e)
+        {
+            AddLaborItem("Diagnostics", 1.5m, 120.00m);
+        }
 
         // ==== Parts Item Event Handler ====
-        private void btnAirFilter_Click(object sender, EventArgs e) => AddPartItem("Air Filter", 1, 18.50m);
-        private void btnOilFilter_Click(object sender, EventArgs e) => AddPartItem("Oil Filter", 1, 12.99m);
+        private void btnAirFilter_Click(object sender, EventArgs e)
+        {
+            AddPartItem("Air Filter", 1, 18.50m);
+        }
+        private void btnOilFilter_Click(object sender, EventArgs e)
+        {
+            AddPartItem("Oil Filter", 1, 12.99m);
+        }
         private void AddLaborItem(string description, decimal hours, decimal rate)
         {
             var item = new LaborLineItem

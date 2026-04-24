@@ -141,8 +141,6 @@ namespace MechanicShop.Forms
                 return;
             }
 
-            DBHelper dbHelper = new DBHelper();
-
             if (isEditMode && selectedVehicle != null)
             {
                 selectedVehicle.VIN = txtVIN.Text.Trim().ToUpper();

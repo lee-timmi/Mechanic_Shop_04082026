@@ -135,9 +135,9 @@
             this.txtSpecialty.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSpecialty.Font = new System.Drawing.Font("Arial", 9F);
             this.txtSpecialty.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.txtSpecialty.Location = new System.Drawing.Point(135, 92);
+            this.txtSpecialty.Location = new System.Drawing.Point(24, 93);
             this.txtSpecialty.Name = "txtSpecialty";
-            this.txtSpecialty.Size = new System.Drawing.Size(146, 21);
+            this.txtSpecialty.Size = new System.Drawing.Size(106, 21);
             this.txtSpecialty.TabIndex = 8;
             // 
             // btnAddNew
@@ -205,9 +205,9 @@
             this.txtHourlyRate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHourlyRate.Font = new System.Drawing.Font("Arial", 9F);
             this.txtHourlyRate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
-            this.txtHourlyRate.Location = new System.Drawing.Point(24, 92);
+            this.txtHourlyRate.Location = new System.Drawing.Point(135, 92);
             this.txtHourlyRate.Name = "txtHourlyRate";
-            this.txtHourlyRate.Size = new System.Drawing.Size(105, 21);
+            this.txtHourlyRate.Size = new System.Drawing.Size(146, 21);
             this.txtHourlyRate.TabIndex = 2;
             // 
             // lblHourlyRate

@@ -290,9 +290,9 @@
             this.btnManageVehicle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageVehicle.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnManageVehicle.ForeColor = System.Drawing.Color.White;
-            this.btnManageVehicle.Location = new System.Drawing.Point(349, 234);
+            this.btnManageVehicle.Location = new System.Drawing.Point(349, 233);
             this.btnManageVehicle.Name = "btnManageVehicle";
-            this.btnManageVehicle.Size = new System.Drawing.Size(101, 23);
+            this.btnManageVehicle.Size = new System.Drawing.Size(121, 23);
             this.btnManageVehicle.TabIndex = 12;
             this.btnManageVehicle.Text = "Manage Vehicles";
             this.btnManageVehicle.UseVisualStyleBackColor = false;
@@ -376,7 +376,7 @@
             this.btnRepair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRepair.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnRepair.ForeColor = System.Drawing.Color.White;
-            this.btnRepair.Location = new System.Drawing.Point(456, 233);
+            this.btnRepair.Location = new System.Drawing.Point(476, 233);
             this.btnRepair.Name = "btnRepair";
             this.btnRepair.Size = new System.Drawing.Size(118, 23);
             this.btnRepair.TabIndex = 6;

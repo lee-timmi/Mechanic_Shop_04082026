@@ -56,8 +56,12 @@ namespace MechanicShop
 
         private void btnVehicles_Click(object sender, EventArgs e)
         {
-            frmVehicle vehicleForm = new frmVehicle();
-            vehicleForm.ShowDialog();
+            MessageBox.Show(
+                "Please select a customer first then manage vehicles button.",
+                "Vehicle Management", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            frmCustomer customerForm = new frmCustomer();
+            customerForm.ShowDialog();
         }
 
         private void btnRepairOrders_Click(object sender, EventArgs e)

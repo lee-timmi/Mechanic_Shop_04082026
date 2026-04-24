@@ -64,8 +64,6 @@ namespace MechanicShop.Forms
 
             selectedMechanic = null;
             isEditMode = false;
-
-            btnSave.Text = "Add Mechanic";
         }
 
         private void LoadMechanicToForm(Mechanic mechanic)
