@@ -31,6 +31,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gboCustomerInfo = new System.Windows.Forms.GroupBox();
+            this.btnClose = new System.Windows.Forms.Button();
             this.lblCustomerAddress = new System.Windows.Forms.Label();
             this.lblCustomerEmail = new System.Windows.Forms.Label();
             this.lblCustomerPhone = new System.Windows.Forms.Label();
@@ -72,7 +73,7 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(299, 100);
+            this.btnSave.Location = new System.Drawing.Point(277, 100);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(67, 23);
@@ -89,7 +90,7 @@
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(370, 100);
+            this.btnCancel.Location = new System.Drawing.Point(348, 100);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(67, 23);
@@ -100,6 +101,7 @@
             // 
             // gboCustomerInfo
             // 
+            this.gboCustomerInfo.Controls.Add(this.btnClose);
             this.gboCustomerInfo.Controls.Add(this.lblCustomerAddress);
             this.gboCustomerInfo.Controls.Add(this.lblCustomerEmail);
             this.gboCustomerInfo.Controls.Add(this.btnCancel);
@@ -120,6 +122,23 @@
             this.gboCustomerInfo.TabIndex = 13;
             this.gboCustomerInfo.TabStop = false;
             this.gboCustomerInfo.Text = "Customer Info";
+            // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(419, 100);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(96, 23);
+            this.btnClose.TabIndex = 25;
+            this.btnClose.Text = "Close Form";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // lblCustomerAddress
             // 
@@ -257,7 +276,7 @@
             this.gboCustomerEdit.Controls.Add(this.lblSearch);
             this.gboCustomerEdit.Location = new System.Drawing.Point(11, 66);
             this.gboCustomerEdit.Name = "gboCustomerEdit";
-            this.gboCustomerEdit.Size = new System.Drawing.Size(739, 267);
+            this.gboCustomerEdit.Size = new System.Drawing.Size(741, 267);
             this.gboCustomerEdit.TabIndex = 14;
             this.gboCustomerEdit.TabStop = false;
             this.gboCustomerEdit.Text = "Customer Edit";
@@ -271,7 +290,7 @@
             this.btnManageVehicle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageVehicle.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnManageVehicle.ForeColor = System.Drawing.Color.White;
-            this.btnManageVehicle.Location = new System.Drawing.Point(315, 234);
+            this.btnManageVehicle.Location = new System.Drawing.Point(349, 234);
             this.btnManageVehicle.Name = "btnManageVehicle";
             this.btnManageVehicle.Size = new System.Drawing.Size(101, 23);
             this.btnManageVehicle.TabIndex = 12;
@@ -296,7 +315,7 @@
             this.lvCustomerList.Location = new System.Drawing.Point(51, 56);
             this.lvCustomerList.MultiSelect = false;
             this.lvCustomerList.Name = "lvCustomerList";
-            this.lvCustomerList.Size = new System.Drawing.Size(616, 171);
+            this.lvCustomerList.Size = new System.Drawing.Size(619, 171);
             this.lvCustomerList.TabIndex = 10;
             this.lvCustomerList.UseCompatibleStateImageBehavior = false;
             this.lvCustomerList.View = System.Windows.Forms.View.Details;
@@ -341,7 +360,7 @@
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(215, 233);
+            this.btnDelete.Location = new System.Drawing.Point(249, 233);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(94, 23);
             this.btnDelete.TabIndex = 7;
@@ -357,7 +376,7 @@
             this.btnRepair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRepair.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnRepair.ForeColor = System.Drawing.Color.White;
-            this.btnRepair.Location = new System.Drawing.Point(422, 233);
+            this.btnRepair.Location = new System.Drawing.Point(456, 233);
             this.btnRepair.Name = "btnRepair";
             this.btnRepair.Size = new System.Drawing.Size(118, 23);
             this.btnRepair.TabIndex = 6;
@@ -373,7 +392,7 @@
             this.btnAddNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddNew.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
             this.btnAddNew.ForeColor = System.Drawing.Color.White;
-            this.btnAddNew.Location = new System.Drawing.Point(134, 233);
+            this.btnAddNew.Location = new System.Drawing.Point(168, 233);
             this.btnAddNew.Name = "btnAddNew";
             this.btnAddNew.Size = new System.Drawing.Size(75, 23);
             this.btnAddNew.TabIndex = 5;
@@ -477,7 +496,7 @@
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.gboCustomerEdit);
             this.Controls.Add(this.gboCustomerInfo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -527,5 +546,6 @@
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblCustomerTitle;
         private System.Windows.Forms.Label lblSubtitle;
+        private System.Windows.Forms.Button btnClose;
     }
 }

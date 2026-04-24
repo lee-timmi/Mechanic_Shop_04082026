@@ -30,8 +30,16 @@
         {
             this.gboVehicleInfo = new System.Windows.Forms.GroupBox();
             this.nudCurrentMileage = new System.Windows.Forms.NumericUpDown();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnVehicleDelete = new System.Windows.Forms.Button();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.lvVehicleList = new System.Windows.Forms.ListView();
+            this.Year = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Make = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Model = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.VIN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Plate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnSave = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnVINLookup = new System.Windows.Forms.Button();
             this.lblCurrentMileage = new System.Windows.Forms.Label();
@@ -45,17 +53,9 @@
             this.txtModel = new System.Windows.Forms.TextBox();
             this.txtMake = new System.Windows.Forms.TextBox();
             this.txtVIN = new System.Windows.Forms.TextBox();
-            this.btnVehicleDelete = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblSubtitle = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.Year = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Make = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Model = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.VIN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Plate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.gboVehicleInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCurrentMileage)).BeginInit();
             this.pnlHeader.SuspendLayout();
@@ -107,6 +107,39 @@
             this.nudCurrentMileage.TabIndex = 30;
             this.nudCurrentMileage.ThousandsSeparator = true;
             // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(259, 343);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(105, 34);
+            this.btnClose.TabIndex = 16;
+            this.btnClose.Text = "✗ Close";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnVehicleDelete
+            // 
+            this.btnVehicleDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.btnVehicleDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVehicleDelete.FlatAppearance.BorderSize = 0;
+            this.btnVehicleDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVehicleDelete.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnVehicleDelete.ForeColor = System.Drawing.Color.White;
+            this.btnVehicleDelete.Location = new System.Drawing.Point(148, 343);
+            this.btnVehicleDelete.Name = "btnVehicleDelete";
+            this.btnVehicleDelete.Size = new System.Drawing.Size(106, 34);
+            this.btnVehicleDelete.TabIndex = 4;
+            this.btnVehicleDelete.Text = "🗑 Delete";
+            this.btnVehicleDelete.UseVisualStyleBackColor = false;
+            this.btnVehicleDelete.Click += new System.EventHandler(this.btnVehicleDelete_Click);
+            // 
             // lblCustomer
             // 
             this.lblCustomer.AutoSize = true;
@@ -141,6 +174,48 @@
             this.lvVehicleList.TabIndex = 2;
             this.lvVehicleList.UseCompatibleStateImageBehavior = false;
             this.lvVehicleList.SelectedIndexChanged += new System.EventHandler(this.lvVehicleList_SelectedIndexChanged);
+            // 
+            // Year
+            // 
+            this.Year.Text = "Year";
+            this.Year.Width = 50;
+            // 
+            // Make
+            // 
+            this.Make.Text = "Make";
+            this.Make.Width = 80;
+            // 
+            // Model
+            // 
+            this.Model.Text = "Model";
+            this.Model.Width = 90;
+            // 
+            // VIN
+            // 
+            this.VIN.Text = "VIN";
+            this.VIN.Width = 130;
+            // 
+            // Plate
+            // 
+            this.Plate.Text = "Plate";
+            this.Plate.Width = 70;
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
+            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(30, 343);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(113, 34);
+            this.btnSave.TabIndex = 15;
+            this.btnSave.Text = "✓ Save";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // lblStatus
             // 
@@ -306,56 +381,6 @@
             this.txtVIN.Size = new System.Drawing.Size(262, 21);
             this.txtVIN.TabIndex = 14;
             // 
-            // btnVehicleDelete
-            // 
-            this.btnVehicleDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.btnVehicleDelete.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnVehicleDelete.FlatAppearance.BorderSize = 0;
-            this.btnVehicleDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnVehicleDelete.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            this.btnVehicleDelete.ForeColor = System.Drawing.Color.White;
-            this.btnVehicleDelete.Location = new System.Drawing.Point(148, 343);
-            this.btnVehicleDelete.Name = "btnVehicleDelete";
-            this.btnVehicleDelete.Size = new System.Drawing.Size(106, 34);
-            this.btnVehicleDelete.TabIndex = 4;
-            this.btnVehicleDelete.Text = "🗑 Delete";
-            this.btnVehicleDelete.UseVisualStyleBackColor = false;
-            this.btnVehicleDelete.Click += new System.EventHandler(this.btnVehicleDelete_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
-            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(30, 343);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(113, 34);
-            this.btnSave.TabIndex = 15;
-            this.btnSave.Text = "✓ Save";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(259, 343);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(105, 34);
-            this.btnClose.TabIndex = 16;
-            this.btnClose.Text = "✗ Close";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
             // pnlHeader
             // 
             this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(43)))), ((int)(((byte)(74)))));
@@ -389,31 +414,6 @@
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "🚗 Vehicle Management";
             // 
-            // Year
-            // 
-            this.Year.Text = "Year";
-            this.Year.Width = 50;
-            // 
-            // Make
-            // 
-            this.Make.Text = "Make";
-            this.Make.Width = 80;
-            // 
-            // Model
-            // 
-            this.Model.Text = "Model";
-            this.Model.Width = 90;
-            // 
-            // VIN
-            // 
-            this.VIN.Text = "VIN";
-            this.VIN.Width = 130;
-            // 
-            // Plate
-            // 
-            this.Plate.Text = "Plate";
-            this.Plate.Width = 70;
-            // 
             // frmVehicle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,6 +421,7 @@
             this.ClientSize = new System.Drawing.Size(435, 459);
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.gboVehicleInfo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmVehicle";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

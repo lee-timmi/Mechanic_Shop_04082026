@@ -242,6 +242,7 @@
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.lblFilter);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmRepairOrderHistory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

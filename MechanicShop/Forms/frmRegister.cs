@@ -117,5 +117,10 @@ namespace MechanicShop.Forms
             // Clear any message when role changes
             if (lblMessage != null) lblMessage.Text = string.Empty;
         }
+
+        private void lblPassword_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

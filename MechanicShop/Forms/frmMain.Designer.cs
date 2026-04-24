@@ -101,7 +101,7 @@
             this.btnAuditLog.Name = "btnAuditLog";
             this.btnAuditLog.Size = new System.Drawing.Size(120, 52);
             this.btnAuditLog.TabIndex = 11;
-            this.btnAuditLog.Text = "Audit Log";
+            this.btnAuditLog.Text = "📋 Audit Log";
             this.btnAuditLog.UseVisualStyleBackColor = false;
             this.btnAuditLog.Click += new System.EventHandler(this.btnAuditLog_Click);
             // 
@@ -113,7 +113,7 @@
             this.btnRepairHistory.Name = "btnRepairHistory";
             this.btnRepairHistory.Size = new System.Drawing.Size(120, 52);
             this.btnRepairHistory.TabIndex = 10;
-            this.btnRepairHistory.Text = "Repair History";
+            this.btnRepairHistory.Text = "📜 Repair History";
             this.btnRepairHistory.UseVisualStyleBackColor = false;
             this.btnRepairHistory.Click += new System.EventHandler(this.btnRepairHistory_Click);
             // 
@@ -125,7 +125,7 @@
             this.btnMechanics.Name = "btnMechanics";
             this.btnMechanics.Size = new System.Drawing.Size(120, 52);
             this.btnMechanics.TabIndex = 9;
-            this.btnMechanics.Text = "Mechanics";
+            this.btnMechanics.Text = "🔧 Mechanics";
             this.btnMechanics.UseVisualStyleBackColor = false;
             this.btnMechanics.Click += new System.EventHandler(this.btnMechanics_Click);
             // 
@@ -137,7 +137,7 @@
             this.btnRepairOrders.Name = "btnRepairOrders";
             this.btnRepairOrders.Size = new System.Drawing.Size(120, 52);
             this.btnRepairOrders.TabIndex = 8;
-            this.btnRepairOrders.Text = "Repair Orders";
+            this.btnRepairOrders.Text = "📝 Repair Orders";
             this.btnRepairOrders.UseVisualStyleBackColor = false;
             this.btnRepairOrders.Click += new System.EventHandler(this.btnRepairOrders_Click);
             // 
@@ -149,7 +149,7 @@
             this.btnVehicles.Name = "btnVehicles";
             this.btnVehicles.Size = new System.Drawing.Size(120, 52);
             this.btnVehicles.TabIndex = 7;
-            this.btnVehicles.Text = "Vehicles";
+            this.btnVehicles.Text = "🚗 Vehicles";
             this.btnVehicles.UseVisualStyleBackColor = false;
             this.btnVehicles.Click += new System.EventHandler(this.btnVehicles_Click);
             // 
@@ -162,7 +162,7 @@
             this.btnCustomers.Name = "btnCustomers";
             this.btnCustomers.Size = new System.Drawing.Size(120, 52);
             this.btnCustomers.TabIndex = 6;
-            this.btnCustomers.Text = "Customers";
+            this.btnCustomers.Text = "👤 Customers";
             this.btnCustomers.UseVisualStyleBackColor = false;
             this.btnCustomers.Click += new System.EventHandler(this.btnCustomers_Click);
             // 

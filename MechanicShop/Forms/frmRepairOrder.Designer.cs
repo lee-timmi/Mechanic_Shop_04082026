@@ -633,6 +633,7 @@
             this.Controls.Add(this.gboParts);
             this.Controls.Add(this.gboOrderInformation);
             this.Controls.Add(this.gboLabor);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmRepairOrder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
