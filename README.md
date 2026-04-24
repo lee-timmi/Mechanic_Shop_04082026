@@ -19,6 +19,7 @@ A desktop application for mechanic shops to manage customers, vehicles, repair o
 | Repair Order History | Edwin |
 | Authentication System | Edwin |
 | Audit Log | Edwin |
+| UI Design & Styling | Thimmy & Edwin |
 
 ---
 
@@ -118,7 +119,17 @@ Go to **Audit Log** on the dashboard to see a full history of all actions taken 
 - Read-only display form with a full history grid
 - Color-coded rows by action type — green (Created), blue (Updated), red (Deleted)
 
-### Database Integration (Thimmy)
+### UI Design & Styling (Thimmy & Edwin)
+- Consistent color scheme applied across all forms
+- Dark navy header panels on every form with title and subtitle
+- Color-coded buttons by action type — orange (save), green (add), blue (search/info), red (delete/danger), gray (cancel/neutral)
+- Flat button style with hand cursor throughout
+- Light gray form backgrounds with white input fields
+- Dynamic `FlowLayoutPanel` displays replacing DataGridView on key forms
+- Picture box icons per labor and parts line item in repair orders
+- Repair order history cards with status badges and per-card action buttons
+- Workflow instruction label on main dashboard guiding users through the correct flow
+- Professional logo and background image on main dashboard
 - Microsoft Access backend (`.accdb`)
 - Repository pattern — each table has its own dedicated repository class
 - `DBHelper` acts as a facade delegating to individual repositories
@@ -237,10 +248,3 @@ The `MechanicShopDB.accdb` file is included in the repository. Place it in the p
 - Microsoft Access Database Engine (ACE OLEDB 12.0)
   - Download: [Microsoft Access Database Engine 2016](https://www.microsoft.com/en-us/download/details.aspx?id=54920)
 - Visual Studio 2019 or later
-
----
-
-## Known Limitations
-
-- Authentication uses hardcoded credentials for testing
-- `IsActive` field exists on the Mechanics table but is not yet used in the UI
