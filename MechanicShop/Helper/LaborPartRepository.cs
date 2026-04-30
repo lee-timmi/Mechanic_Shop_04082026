@@ -1,10 +1,7 @@
-﻿using MechanicShop.Classes;
+using MechanicShop.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Helper
 {
@@ -12,59 +9,86 @@ namespace MechanicShop.Helper
     {
         public List<LaborLineItem> GetLaborByRepairOrder(int repairOrderId)
         {
-            var items = new List<LaborLineItem>();
-            string query = "SELECT * FROM LaborLineItems WHERE RepairOrderId = @RepairOrderId";
+            List<LaborLineItem> items = new List<LaborLineItem>();
+            string query = "SELECT * FROM LaborLineItems WHERE RepairOrderID = @RepairOrderID";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(query, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
-                cmd.Parameters.AddWithValue("@RepairOrderId", repairOrderId);
+                cmd.Parameters.AddWithValue("@RepairOrderID", repairOrderId);
                 conn.Open();
-                using (OleDbDataReader reader = cmd.ExecuteReader())
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        items.Add(new LaborLineItem
-                        {
-                            LaborLineItemId = Convert.ToInt32(reader["LaborLineItemID"]),
-                            RepairOrderId = Convert.ToInt32(reader["RepairOrderID"]),
-                            LaborDescription = reader["LaborDescription"].ToString(),
-                            LaborHours = Convert.ToDecimal(reader["LaborHours"]),
-                            LaborHourlyRate = Convert.ToDecimal(reader["LaborHourlyRate"]),
-                            MechanicID = reader["MechanicID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["MechanicID"])
-                        });
-                    }
+                    LaborLineItem item = new LaborLineItem();
+                    item.LaborLineItemId  = Convert.ToInt32(reader["LaborLineItemID"]);
+                    item.RepairOrderId    = Convert.ToInt32(reader["RepairOrderID"]);
+                    item.LaborDescription = reader["LaborDescription"].ToString();
+                    item.LaborHours       = Convert.ToDecimal(reader["LaborHours"]);
+                    item.LaborHourlyRate  = Convert.ToDecimal(reader["LaborHourlyRate"]);
+
+                    if (reader["MechanicID"] == DBNull.Value)
+                        item.MechanicID = null;
+                    else
+                        item.MechanicID = Convert.ToInt32(reader["MechanicID"]);
+
+                    items.Add(item);
                 }
+
+                reader.Close();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error loading labor items: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return items;
         }
 
         public List<PartsLineItem> GetPartsByRepairOrder(int repairOrderId)
         {
-            var items = new List<PartsLineItem>();
-            string query = "SELECT * FROM PartsLineItems WHERE RepairOrderId = @RepairOrderId";
+            List<PartsLineItem> items = new List<PartsLineItem>();
+            string query = "SELECT * FROM PartsLineItems WHERE RepairOrderID = @RepairOrderID";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(query, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
-                cmd.Parameters.AddWithValue("@RepairOrderId", repairOrderId);
+                cmd.Parameters.AddWithValue("@RepairOrderID", repairOrderId);
                 conn.Open();
-                using (OleDbDataReader reader = cmd.ExecuteReader())
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        items.Add(new PartsLineItem(
-                        Convert.ToInt32(reader["PartsLineItemId"]),
+                    PartsLineItem item = new PartsLineItem(
+                        Convert.ToInt32(reader["PartsLineItemID"]),
                         reader["PartName"].ToString(),
                         Convert.ToInt32(reader["Quantity"]),
                         Convert.ToDecimal(reader["UnitCost"])
-)
-                        {
-                            RepairOrderId = Convert.ToInt32(reader["RepairOrderId"])
-                        });
-                    }
+                    );
+                    item.RepairOrderId = Convert.ToInt32(reader["RepairOrderID"]);
+                    items.Add(item);
                 }
+
+                reader.Close();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error loading parts items: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return items;
         }
     }

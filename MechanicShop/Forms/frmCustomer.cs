@@ -3,12 +3,7 @@ using MechanicShop.Helper;
 using MechanicShop.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MechanicShop.Forms
@@ -53,7 +48,22 @@ namespace MechanicShop.Forms
             lvCustomerList.BeginUpdate();
             lvCustomerList.Items.Clear();
 
-            foreach (var customer in customerList.OrderBy(c => c.LastName))
+            List<Customer> sortedCustomers = new List<Customer>(customerList);
+
+            for (int i = 0; i < sortedCustomers.Count - 1; i++)
+            {
+                for (int j = i + 1; j < sortedCustomers.Count; j++)
+                {
+                    if (string.Compare(sortedCustomers[j].LastName, sortedCustomers[i].LastName) < 0)
+                    {
+                        Customer temp = sortedCustomers[i];
+                        sortedCustomers[i] = sortedCustomers[j];
+                        sortedCustomers[j] = temp;
+                    }
+                }
+            }
+
+            foreach (Customer customer in sortedCustomers)
             {
                 string fullName = $"{customer.FirstName} {customer.LastName}";
 
@@ -229,7 +239,22 @@ namespace MechanicShop.Forms
             lvCustomerList.BeginUpdate();
             lvCustomerList.Items.Clear();
 
-            foreach (var customer in filtered.OrderBy(c => c.LastName))
+            List<Customer> sortedCustomers = new List<Customer>(customerList);
+
+            for (int i = 0; i < sortedCustomers.Count - 1; i++)
+            {
+                for (int j = i + 1; j < sortedCustomers.Count; j++)
+                {
+                    if (string.Compare(sortedCustomers[j].LastName, sortedCustomers[i].LastName) < 0)
+                    {
+                        Customer temp = sortedCustomers[i];
+                        sortedCustomers[i] = sortedCustomers[j];
+                        sortedCustomers[j] = temp;
+                    }
+                }
+            }
+
+            foreach (Customer customer in sortedCustomers)
             {
                 ListViewItem item = new ListViewItem($"{customer.FirstName} {customer.LastName}");
                 item.SubItems.Add(customer.PhoneNumber ?? "");
@@ -287,7 +312,15 @@ namespace MechanicShop.Forms
         // Helper for phone format
         private string FormatPhoneNumber(string phone)
         {
-            string digits = new string(phone.Where(char.IsDigit).ToArray());
+            string digits = "";
+
+            foreach (char c in phone)
+            {
+                if (char.IsDigit(c))
+                {
+                    digits += c;
+                }
+            }
             if (digits.Length == 10)
             {
                 return $"({digits.Substring(0,3)}) {digits.Substring(3,3)}-{digits.Substring(6,4)}";

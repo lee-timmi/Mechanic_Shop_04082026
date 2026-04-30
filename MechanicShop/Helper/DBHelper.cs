@@ -158,7 +158,7 @@ namespace MechanicShop.Helper
             {
                 string query = @"SELECT UserId, Username, [Password], [Role]
                                  FROM Users
-                                 WHERE Username = ? AND [Password] = ? AND IsActive = True";
+                                 WHERE Username = @Username AND [Password] = @Password AND IsActive = True";
 
                 using (OleDbCommand cmd = new OleDbCommand(query, conn))
                 {
@@ -195,7 +195,7 @@ namespace MechanicShop.Helper
         {
             using (OleDbConnection conn = new OleDbConnection(ConnectionString))
             {
-                string query = "SELECT COUNT(*) FROM Users WHERE Username = ?";
+                string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
 
                 using (OleDbCommand cmd = new OleDbCommand(query, conn))
                 {
@@ -213,7 +213,7 @@ namespace MechanicShop.Helper
             using (OleDbConnection conn = new OleDbConnection(ConnectionString))
             {
                 string query = @"INSERT INTO Users ([Username], [Password], [Role], [IsActive])
-                                 VALUES (?, ?, ?, ?)";
+                                 VALUES (@Username, @Password, @Role, @IsActive)";
 
                 using (OleDbCommand cmd = new OleDbCommand(query, conn))
                 {

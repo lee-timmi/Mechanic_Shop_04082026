@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Classes
 {
@@ -12,8 +9,13 @@ namespace MechanicShop.Classes
         public int MechanicID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-        public string FullName => $"{FirstName} {LastName}";
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public string Specialty { get; set; }
         public decimal HourlyRate { get; set; }
         public string Phone { get; set; }
@@ -36,7 +38,14 @@ namespace MechanicShop.Classes
 
         public decimal GetTotalLaborValue()
         {
-            return LaborLineItems.Sum(item => item.LaborCost);
+            decimal total = 0;
+
+            foreach (LaborLineItem item in LaborLineItems)
+            {
+                total += item.LaborCost;
+            }
+
+            return total;
         }
 
         public void UpdateHourlyRate(decimal newRate)

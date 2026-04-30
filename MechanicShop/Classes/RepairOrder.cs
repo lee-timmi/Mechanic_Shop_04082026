@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Classes
 {
@@ -77,21 +74,48 @@ namespace MechanicShop.Classes
 
         public decimal GetLaborTotal()
         {
-            return LaborLineItems.Sum(item => item.LaborCost);
+            decimal total = 0;
+
+            foreach (LaborLineItem item in LaborLineItems)
+            {
+                total += item.LaborCost;
+            }
+
+            return total;
         }
 
         public decimal GetPartsTotal()
         {
-            return PartsLineItems.Sum(item => item.TotalCost);
+            decimal total = 0;
+
+            foreach (PartsLineItem item in PartsLineItems)
+            {
+                total += item.TotalCost;
+            }
+
+            return total;
         }
 
         public void UpdateStatus(string newStatus)
         {
-            var validStatuses = new[] { "Pending", "In Progress", "Completed", "Closed" };
-            if (!validStatuses.Contains(newStatus))
+            bool isValid = false;
+
+            string[] validStatuses = { "Pending", "In Progress", "Completed", "Closed" };
+
+            foreach (string status in validStatuses)
+            {
+                if (status == newStatus)
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            if (!isValid)
             {
                 throw new Exception("Invalid status");
             }
+
             RepairStatus = newStatus;
         }
     }

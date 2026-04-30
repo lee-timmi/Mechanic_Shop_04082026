@@ -4,7 +4,6 @@ using MechanicShop.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace MechanicShop.Forms
@@ -55,7 +54,12 @@ namespace MechanicShop.Forms
         private void ApplyFilters()
         {
             string searchTerm = txtFilter.Text.Trim();
-            string status = cboStatusFilter.SelectedItem?.ToString() ?? "All";
+            string status = "All";
+
+            if (cboStatusFilter.SelectedItem != null)
+            {
+                status = cboStatusFilter.SelectedItem.ToString();
+            }
             DateTime fromDate = dtpFromDate.Value;
             DateTime toDate = dtpToDate.Value;
 
@@ -181,13 +185,7 @@ namespace MechanicShop.Forms
                     FlatStyle = FlatStyle.Flat,
                     AutoSize = false
                 };
-                btnView.Click += (s, e) =>
-                {
-                    var viewForm = new frmRepairOrder(
-                        repairOrderId: ((RepairOrder)((Button)s).Tag).RepairOrderId,
-                        mode: RepairOrderFormMode.View);
-                    viewForm.ShowDialog();
-                };
+                btnView.Click += btnView_Click;
 
                 // Edit button
                 Button btnEdit = new Button
@@ -200,14 +198,7 @@ namespace MechanicShop.Forms
                     FlatStyle = FlatStyle.Flat,
                     AutoSize = false
                 };
-                btnEdit.Click += (s, e) =>
-                {
-                    var editForm = new frmRepairOrder(
-                        repairOrderId: ((RepairOrder)((Button)s).Tag).RepairOrderId,
-                        mode: RepairOrderFormMode.Edit);
-                    if (editForm.ShowDialog() == DialogResult.OK)
-                        LoadRepairOrders();
-                };
+                btnEdit.Click += btnEdit_Click;
 
                 // Delete button
                 Button btnDelete = new Button
@@ -221,29 +212,7 @@ namespace MechanicShop.Forms
                     ForeColor = Color.Red,
                     AutoSize = false
                 };
-                btnDelete.Click += (s, e) =>
-                {
-                    RepairOrder selected = (RepairOrder)((Button)s).Tag;
-
-                    DialogResult result = MessageBox.Show(
-                        $"Delete repair order #{selected.RepairOrderId} for " +
-                        $"{selected.CustomerName}?\n\nThis will also delete all labor and parts.",
-                        "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        try
-                        {
-                            repairOrderService.Delete(selected.RepairOrderId);
-                            MessageBox.Show("Repair order deleted.", "Success");
-                            LoadRepairOrders();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Error: {ex.Message}", "Error");
-                        }
-                    }
-                };
+                btnDelete.Click += btnDelete_Click;
 
                 // Add all controls to card
                 card.Controls.Add(lblOrderNum);
@@ -262,6 +231,59 @@ namespace MechanicShop.Forms
             }
 
             lblTotalRecords.Text = $"Total Records: {repairOrders.Count}";
+        }
+
+        // Button event handlers for View, Edit, Delete
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            RepairOrder repair = (RepairOrder)button.Tag;
+
+            frmRepairOrder viewForm = new frmRepairOrder(
+                repairOrderId: repair.RepairOrderId,
+                mode: RepairOrderFormMode.View);
+
+            viewForm.ShowDialog();
+        }
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            RepairOrder repair = (RepairOrder)button.Tag;
+
+            frmRepairOrder editForm = new frmRepairOrder(
+                repairOrderId: repair.RepairOrderId,
+                mode: RepairOrderFormMode.Edit);
+
+            if (editForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadRepairOrders();
+            }
+        }
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            RepairOrder selected = (RepairOrder)button.Tag;
+
+            DialogResult result = MessageBox.Show(
+                "Delete repair order #" + selected.RepairOrderId + " for " +
+                selected.CustomerName + "?\n\nThis will also delete all labor and parts.",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    repairOrderService.Delete(selected.RepairOrderId);
+                    MessageBox.Show("Repair order deleted.", "Success");
+                    LoadRepairOrders();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Error");
+                }
+            }
         }
 
         // Event Handlers

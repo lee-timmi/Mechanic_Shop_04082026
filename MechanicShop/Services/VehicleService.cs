@@ -22,7 +22,10 @@ namespace MechanicShop.Services
         {
             return _repo.GetAll();
         }
-        public List<Vehicle> GetByCustomer(int customerId) => _repo.GetByCustomer(customerId);
+        public List<Vehicle> GetByCustomer(int customerId)
+        {
+            return _repo.GetByCustomer(customerId);
+        }
         public void Add(Vehicle vehicle)
         {
             _repo.Add(vehicle);
