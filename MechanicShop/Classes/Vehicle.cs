@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Classes
 {
@@ -15,7 +12,13 @@ namespace MechanicShop.Classes
         public int Year { get; set; }
         public string LicensePlate { get; set; }
         public int CurrentMileage { get; set; }
-        public string DisplayName => $"{Year} {Make} {Model} - {LicensePlate}";
+        public string DisplayName
+        {
+            get
+            {
+                return Year + " " + Make + " " + Model + " - " + LicensePlate;
+            }
+        }
 
         // Navigation properties
         public List<RepairOrder> RepairOrders { get; set; } = new List<RepairOrder>();
@@ -34,7 +37,22 @@ namespace MechanicShop.Classes
 
         public List<RepairOrder> GetRepairHistory()
         {
-            return RepairOrders.OrderByDescending(o => o.DateOpened).ToList();
+            List<RepairOrder> sortedOrders = new List<RepairOrder>(RepairOrders);
+
+            for (int i = 0; i < sortedOrders.Count - 1; i++)
+            {
+                for (int j = i + 1; j < sortedOrders.Count; j++)
+                {
+                    if (sortedOrders[j].DateOpened > sortedOrders[i].DateOpened)
+                    {
+                        RepairOrder temp = sortedOrders[i];
+                        sortedOrders[i] = sortedOrders[j];
+                        sortedOrders[j] = temp;
+                    }
+                }
+            }
+
+            return sortedOrders;
         }
 
         public void UpdateMileage(int newMileage)
@@ -48,7 +66,14 @@ namespace MechanicShop.Classes
 
         public decimal GetTotalMaintenanceCost()
         {
-            return RepairOrders.Sum(o => o.TotalCost);
+            decimal total = 0;
+
+            foreach (RepairOrder order in RepairOrders)
+            {
+                total += order.TotalCost;
+            }
+
+            return total;
         }
     }
 }

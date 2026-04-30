@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MechanicShop.Helper;
 using MechanicShop.Classes;
 
@@ -26,9 +23,21 @@ namespace MechanicShop.Services
                 EntityID = entityID,
                 Description = description,
                 Timestamp = DateTime.Now,
-                PerformedBy = UserSession.currentUser?.Username ?? "Unknown"
+                PerformedBy = GetCurrentUsername()
             });
         }
-        public List<AuditLog> GetAll() => _auditRepository.GetAll();
+        public List<AuditLog> GetAll()
+        {
+            return _auditRepository.GetAll();
+        }
+        private string GetCurrentUsername()
+        {
+            if (UserSession.currentUser != null)
+            {
+                return UserSession.currentUser.Username;
+            }
+
+            return "Unknown";
+        }
     }
 }

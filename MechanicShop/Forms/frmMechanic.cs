@@ -2,7 +2,6 @@
 using MechanicShop.Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using MechanicShop.Services;
 
@@ -38,9 +37,34 @@ namespace MechanicShop.Forms
         {
             lvMechanicList.Items.Clear();
 
-            foreach (var mechanic in mechanicList
-                .OrderBy(m => m.LastName)
-                .ThenBy(m => m.FirstName))
+            List<Mechanic> sortedMechanics = new List<Mechanic>(mechanicList);
+
+            for (int i = 0; i < sortedMechanics.Count - 1; i++)
+            {
+                for (int j = i + 1; j < sortedMechanics.Count; j++)
+                {
+                    bool swap = false;
+
+                    if (string.Compare(sortedMechanics[j].LastName, sortedMechanics[i].LastName) < 0)
+                    {
+                        swap = true;
+                    }
+                    else if (sortedMechanics[j].LastName == sortedMechanics[i].LastName &&
+                             string.Compare(sortedMechanics[j].FirstName, sortedMechanics[i].FirstName) < 0)
+                    {
+                        swap = true;
+                    }
+
+                    if (swap)
+                    {
+                        Mechanic temp = sortedMechanics[i];
+                        sortedMechanics[i] = sortedMechanics[j];
+                        sortedMechanics[j] = temp;
+                    }
+                }
+            }
+
+            foreach (Mechanic mechanic in sortedMechanics)
             {
                 ListViewItem item = new ListViewItem(mechanic.FirstName);
                 item.SubItems.Add(mechanic.LastName);

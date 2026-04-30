@@ -1,9 +1,5 @@
 ﻿using MechanicShop.Classes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Services
 {
@@ -11,14 +7,23 @@ namespace MechanicShop.Services
     {
         public List<object> ProjectForGrid(List<PartsLineItem> items)
         {
-            return items.Select(p => (object)new
+            List<object> result = new List<object>();
+
+            foreach (PartsLineItem p in items)
             {
-                p.PartsLineItemId,
-                p.PartName,
-                p.Quantity,
-                UnitCost = p.UnitCost.ToString("C"),
-                TotalCost = p.TotalCost.ToString("C")
-            }).ToList();
+                var row = new
+                {
+                    PartsLineItemId = p.PartsLineItemId,
+                    PartName = p.PartName,
+                    Quantity = p.Quantity,
+                    UnitCost = p.UnitCost.ToString("C"),
+                    TotalCost = p.TotalCost.ToString("C")
+                };
+
+                result.Add(row);
+            }
+
+            return result;
         }
     }
 }

@@ -1,10 +1,7 @@
-﻿using MechanicShop.Classes;
+using MechanicShop.Classes;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Helper
 {
@@ -12,152 +9,213 @@ namespace MechanicShop.Helper
     {
         public List<Vehicle> GetAll()
         {
-            var vehicles = new List<Vehicle>();
-            string queryGet =
-                @"SELECT v.*, c.FirstName, c.LastName
-                  FROM Vehicles v
-                  INNER JOIN Customers c ON v.CustomerID = c.CustomerID
-                  ORDER BY c.LastName, v.Year DESC";
+            List<Vehicle> vehicles = new List<Vehicle>();
+            string query = @"SELECT v.*, c.FirstName, c.LastName
+                             FROM Vehicles v
+                             INNER JOIN Customers c ON v.CustomerID = c.CustomerID
+                             ORDER BY c.LastName, v.Year DESC";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(queryGet, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
                 conn.Open();
-                using (OleDbDataReader reader = cmd.ExecuteReader())
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        vehicles.Add(new Vehicle
-                        {
-                            VehicleID = Convert.ToInt32(reader["VehicleID"]),
-                            CustomerID = Convert.ToInt32(reader["CustomerID"]),
-                            VIN = reader["VIN"].ToString(),
-                            Make = reader["Make"].ToString(),
-                            Model = reader["Model"].ToString(),
-                            Year = Convert.ToInt32(reader["Year"]),
-                            LicensePlate = reader["LicensePlate"].ToString(),
-                            CurrentMileage = Convert.ToInt32(reader["CurrentMileage"]),
-                        });
-                    }
+                    Vehicle v = new Vehicle();
+                    v.VehicleID      = Convert.ToInt32(reader["VehicleID"]);
+                    v.CustomerID     = Convert.ToInt32(reader["CustomerID"]);
+                    v.VIN            = reader["VIN"].ToString();
+                    v.Make           = reader["Make"].ToString();
+                    v.Model          = reader["Model"].ToString();
+                    v.Year           = Convert.ToInt32(reader["Year"]);
+                    v.LicensePlate   = reader["LicensePlate"].ToString();
+                    v.CurrentMileage = Convert.ToInt32(reader["CurrentMileage"]);
+                    vehicles.Add(v);
                 }
+
+                reader.Close();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error loading vehicles: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return vehicles;
         }
+
         public List<Vehicle> GetByCustomer(int customerId)
         {
-            var vehicles = new List<Vehicle>();
-            string queryGetByID =
-                "SELECT * FROM Vehicles WHERE CustomerID = @CustomerID ORDER BY Year DESC";
+            List<Vehicle> vehicles = new List<Vehicle>();
+            string query = "SELECT * FROM Vehicles WHERE CustomerID = @CustomerID ORDER BY Year DESC";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(queryGetByID, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
                 cmd.Parameters.AddWithValue("@CustomerID", customerId);
                 conn.Open();
-                using (OleDbDataReader reader = cmd.ExecuteReader())
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        vehicles.Add(new Vehicle
-                        {
-                            VehicleID = Convert.ToInt32(reader["VehicleID"]),
-                            CustomerID = Convert.ToInt32(reader["CustomerID"]),
-                            VIN = reader["VIN"].ToString(),
-                            Make = reader["Make"].ToString(),
-                            Model = reader["Model"].ToString(),
-                            Year = Convert.ToInt32(reader["Year"]),
-                            LicensePlate = reader["LicensePlate"].ToString(),
-                            CurrentMileage = Convert.ToInt32(reader["CurrentMileage"])
-                        });
-                    }
+                    Vehicle v = new Vehicle();
+                    v.VehicleID      = Convert.ToInt32(reader["VehicleID"]);
+                    v.CustomerID     = Convert.ToInt32(reader["CustomerID"]);
+                    v.VIN            = reader["VIN"].ToString();
+                    v.Make           = reader["Make"].ToString();
+                    v.Model          = reader["Model"].ToString();
+                    v.Year           = Convert.ToInt32(reader["Year"]);
+                    v.LicensePlate   = reader["LicensePlate"].ToString();
+                    v.CurrentMileage = Convert.ToInt32(reader["CurrentMileage"]);
+                    vehicles.Add(v);
                 }
+
+                reader.Close();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error loading vehicles by customer: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return vehicles;
         }
+
         public Vehicle GetById(int vehicleId)
         {
             string query = "SELECT * FROM Vehicles WHERE VehicleID = @VehicleID";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(query, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
                 cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
                 conn.Open();
+                OleDbDataReader reader = cmd.ExecuteReader();
 
-                using (OleDbDataReader reader = cmd.ExecuteReader())
+                if (reader.Read())
                 {
-                    if (reader.Read())
-                    {
-                        return new Vehicle
-                        {
-                            VehicleID = Convert.ToInt32(reader["VehicleID"]),
-                            CustomerID = Convert.ToInt32(reader["CustomerID"]),
-                            VIN = reader["VIN"]?.ToString() ?? "",
-                            Make = reader["Make"].ToString(),
-                            Model = reader["Model"].ToString(),
-                            Year = Convert.ToInt32(reader["Year"]),
-                            LicensePlate = reader["LicensePlate"]?.ToString() ?? "",
-                            CurrentMileage = Convert.ToInt32(reader["CurrentMileage"])
-                        };
-                    }
+                    Vehicle v = new Vehicle();
+                    v.VehicleID      = Convert.ToInt32(reader["VehicleID"]);
+                    v.CustomerID     = Convert.ToInt32(reader["CustomerID"]);
+                    v.VIN            = reader["VIN"] == DBNull.Value ? "" : reader["VIN"].ToString();
+                    v.Make           = reader["Make"].ToString();
+                    v.Model          = reader["Model"].ToString();
+                    v.Year           = Convert.ToInt32(reader["Year"]);
+                    v.LicensePlate   = reader["LicensePlate"] == DBNull.Value ? "" : reader["LicensePlate"].ToString();
+                    v.CurrentMileage = Convert.ToInt32(reader["CurrentMileage"]);
+                    reader.Close();
+                    return v;
                 }
+
+                reader.Close();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error getting vehicle: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
             return null;
         }
+
         public void Add(Vehicle vehicle)
         {
-            string queryAdd =
-                "INSERT INTO Vehicles (CustomerID, VIN, Make, Model, [Year], LicensePlate, CurrentMileage) " +
-                "VALUES (@CustomerID, @VIN, @Make, @Model, @Year, @LicensePlate, @CurrentMileage)";
+            string query = "INSERT INTO Vehicles (CustomerID, VIN, Make, Model, [Year], LicensePlate, CurrentMileage) " +
+                           "VALUES (@CustomerID, @VIN, @Make, @Model, @Year, @LicensePlate, @CurrentMileage)";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(queryAdd, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
-                cmd.Parameters.AddWithValue("@CustomerID", vehicle.CustomerID);
-                cmd.Parameters.AddWithValue("@VIN", vehicle.VIN);
-                cmd.Parameters.AddWithValue("@Make", vehicle.Make);
-                cmd.Parameters.AddWithValue("@Model", vehicle.Model);
-                cmd.Parameters.AddWithValue("@Year", vehicle.Year);
-                cmd.Parameters.AddWithValue("@LicensePlate", (object)vehicle.LicensePlate ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@CustomerID",     vehicle.CustomerID);
+                cmd.Parameters.AddWithValue("@VIN",            vehicle.VIN);
+                cmd.Parameters.AddWithValue("@Make",           vehicle.Make);
+                cmd.Parameters.AddWithValue("@Model",          vehicle.Model);
+                cmd.Parameters.AddWithValue("@Year",           vehicle.Year);
+                cmd.Parameters.AddWithValue("@LicensePlate",   vehicle.LicensePlate);
                 cmd.Parameters.AddWithValue("@CurrentMileage", vehicle.CurrentMileage);
-
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error adding vehicle: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
+
         public void Update(Vehicle vehicle)
         {
-            string updateQuery = @"UPDATE Vehicles
-                                   SET CustomerID = ?, VIN = ?, Make = ?, Model = ?, [Year] = ?,
-                                       LicensePlate = ?, CurrentMileage = ?
-                                   WHERE VehicleID = ?";
+            string query = "UPDATE Vehicles SET CustomerID = @CustomerID, VIN = @VIN, Make = @Make, Model = @Model, [Year] = @Year, " +
+                           "LicensePlate = @LicensePlate, CurrentMileage = @CurrentMileage WHERE VehicleID = @VehicleID";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(updateQuery, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
-                cmd.Parameters.Add(new OleDbParameter("@CustomerID", OleDbType.Integer) { Value = vehicle.CustomerID });
-                cmd.Parameters.Add(new OleDbParameter("@VIN", OleDbType.VarWChar) { Value = (object)vehicle.VIN ?? DBNull.Value });
-                cmd.Parameters.Add(new OleDbParameter("@Make", OleDbType.VarWChar) { Value = vehicle.Make });
-                cmd.Parameters.Add(new OleDbParameter("@Model", OleDbType.VarWChar) { Value = vehicle.Model });
-                cmd.Parameters.Add(new OleDbParameter("@Year", OleDbType.Integer) { Value = vehicle.Year });
-                cmd.Parameters.Add(new OleDbParameter("@LicensePlate", OleDbType.VarWChar) { Value = (object)vehicle.LicensePlate ?? DBNull.Value });
-                cmd.Parameters.Add(new OleDbParameter("@CurrentMileage", OleDbType.Integer) { Value = vehicle.CurrentMileage });
-                cmd.Parameters.Add(new OleDbParameter("@VehicleID", OleDbType.Integer) { Value = vehicle.VehicleID });
-
+                cmd.Parameters.AddWithValue("@CustomerID",     vehicle.CustomerID);
+                cmd.Parameters.AddWithValue("@VIN",            vehicle.VIN);
+                cmd.Parameters.AddWithValue("@Make",           vehicle.Make);
+                cmd.Parameters.AddWithValue("@Model",          vehicle.Model);
+                cmd.Parameters.AddWithValue("@Year",           vehicle.Year);
+                cmd.Parameters.AddWithValue("@LicensePlate",   vehicle.LicensePlate);
+                cmd.Parameters.AddWithValue("@CurrentMileage", vehicle.CurrentMileage);
+                cmd.Parameters.AddWithValue("@VehicleID",      vehicle.VehicleID);
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error updating vehicle: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
+
         public void Delete(int vehicleId)
         {
-            string queryDelete = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
+            string query = "DELETE FROM Vehicles WHERE VehicleID = @VehicleID";
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
-            using (OleDbCommand cmd = new OleDbCommand(queryDelete, conn))
+            OleDbConnection conn = new OleDbConnection(connectionString);
+            OleDbCommand cmd = new OleDbCommand(query, conn);
+
+            try
             {
                 cmd.Parameters.AddWithValue("@VehicleID", vehicleId);
                 conn.Open();
                 cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error deleting vehicle: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
     }

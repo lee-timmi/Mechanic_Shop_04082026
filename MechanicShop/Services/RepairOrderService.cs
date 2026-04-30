@@ -1,10 +1,7 @@
-﻿using MechanicShop.Classes;
+using MechanicShop.Classes;
 using MechanicShop.Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MechanicShop.Services
 {
@@ -15,7 +12,7 @@ namespace MechanicShop.Services
 
         public RepairOrderService(RepairOrderRepository repo, AuditService audit)
         {
-            _repo = repo;
+            _repo  = repo;
             _audit = audit;
         }
 
@@ -23,55 +20,93 @@ namespace MechanicShop.Services
         {
             string year = DateTime.Now.Year.ToString();
             int next = _repo.GetNextOrderNumber(year);
-            return $"RO-{year}-{next:D4}";
+            return "RO-" + year + "-" + next.ToString("D4");
         }
 
         public List<RepairOrder> GetAll()
-            => _repo.GetAll();
+        {
+            return _repo.GetAll();
+        }
 
         public void Save(RepairOrder order, List<LaborLineItem> labor, List<PartsLineItem> parts)
         {
             _repo.Save(order, labor, parts);
-            _audit.Log("Created", "RepairOrder", order.RepairOrderId,
-                $"Order {order.OrderNumber} created for customer {order.CustomerId}");
+            if (_audit != null)
+            {
+                _audit.Log("Created", "RepairOrder", order.RepairOrderId,
+                    "Order " + order.OrderNumber + " created for customer " + order.CustomerId);
+            }
         }
 
         public void Update(RepairOrder order, List<LaborLineItem> labor, List<PartsLineItem> parts)
-        { 
+        {
             _repo.Update(order, labor, parts);
-            _audit.Log("Updated", "RepairOrder", order.RepairOrderId,
-                $"Order {order.OrderNumber} was updated");
-        } 
+            if (_audit != null)
+            {
+                _audit.Log("Created", "RepairOrder", order.RepairOrderId,
+                    "Order " + order.OrderNumber + " created for customer " + order.CustomerId);
+            }
+        }
 
         public List<RepairOrder> Filter(string searchTerm, string status, DateTime fromDate, DateTime toDate)
         {
-            var filtered = _repo.GetAll().AsEnumerable();
+            List<RepairOrder> allOrders = _repo.GetAll();
+            List<RepairOrder> filtered  = new List<RepairOrder>();
 
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            for (int i = 0; i < allOrders.Count; i++)
             {
-                searchTerm = searchTerm.ToLower();
-                filtered = filtered.Where(r =>
-                    r.RepairOrderId.ToString().Contains(searchTerm) ||
-                    r.CustomerName.ToLower().Contains(searchTerm) ||
-                    r.VehicleDisplay.ToLower().Contains(searchTerm) ||
-                    r.RepairStatus.ToLower().Contains(searchTerm));
+                RepairOrder r = allOrders[i];
+                bool matchesSearch = true;
+                bool matchesStatus = true;
+                bool matchesDate   = true;
+
+                if (!string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    string term = searchTerm.ToLower();
+                    matchesSearch =
+                        r.RepairOrderId.ToString().Contains(term) ||
+                        r.CustomerName.ToLower().Contains(term) ||
+                        r.VehicleDisplay.ToLower().Contains(term) ||
+                        r.RepairStatus.ToLower().Contains(term);
+                }
+
+                if (!string.IsNullOrWhiteSpace(status) && status != "All")
+                {
+                    matchesStatus = r.RepairStatus == status;
+                }
+
+                matchesDate = r.DateOpened.Date >= fromDate.Date &&
+                              r.DateOpened.Date <= toDate.Date;
+
+                if (matchesSearch && matchesStatus && matchesDate)
+                    filtered.Add(r);
             }
 
-            if (!string.IsNullOrWhiteSpace(status) && status != "All")
-                filtered = filtered.Where(r => r.RepairStatus == status);
+            // Sort by date descending (newest first) using simple bubble sort
+            for (int i = 0; i < filtered.Count - 1; i++)
+            {
+                for (int j = 0; j < filtered.Count - i - 1; j++)
+                {
+                    if (filtered[j].DateOpened < filtered[j + 1].DateOpened)
+                    {
+                        RepairOrder temp = filtered[j];
+                        filtered[j]     = filtered[j + 1];
+                        filtered[j + 1] = temp;
+                    }
+                }
+            }
 
-            filtered = filtered.Where(r =>
-                r.DateOpened.Date >= fromDate.Date &&
-                r.DateOpened.Date <= toDate.Date);
-
-            return filtered.OrderByDescending(r => r.DateOpened).ToList();
+            return filtered;
         }
 
-        public void Delete(int repairOrderId) 
+        public void Delete(int repairOrderId)
         {
             _repo.Delete(repairOrderId);
-            _audit.Log("Deleted", "RepairOrder", repairOrderId,
-                $"Order {repairOrderId} was deleted");
-        } 
+            if (_audit != null)
+            {
+                _audit.Log("Deleted", "RepairOrder", repairOrderId,
+                    "Order " + repairOrderId + " was deleted");
+            }
+        }
     }
 }

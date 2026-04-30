@@ -1,6 +1,7 @@
-﻿using MechanicShop.Helper;
+﻿using MechanicShop.Classes;
+using MechanicShop.Helper;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace MechanicShop.Forms
@@ -31,35 +32,59 @@ namespace MechanicShop.Forms
 
         private void LoadAuditLogs()
         {
-            string selectedEntity = cboEntity.SelectedItem?.ToString();
+            string selectedEntity = "";
+
+            if (cboEntity.SelectedItem != null)
+            {
+                selectedEntity = cboEntity.SelectedItem.ToString();
+            }
+
             string userFilter = txtUser.Text.Trim().ToLower();
 
-            var logs = dbHelper.GetAllAuditLogs();
+            List<AuditLog> logs = dbHelper.GetAllAuditLogs();
+            List<AuditLog> filteredLogs = new List<AuditLog>();
 
-            if (!string.IsNullOrEmpty(selectedEntity) && selectedEntity != "All")
+            foreach (AuditLog log in logs)
             {
-                logs = logs.Where(l => l.EntityType == selectedEntity).ToList();
-            }
+                bool addLog = true;
 
-            if (!string.IsNullOrEmpty(userFilter))
-            {
-                logs = logs.Where(l =>
-                    !string.IsNullOrEmpty(l.PerformedBy) &&
-                    l.PerformedBy.ToLower().Contains(userFilter)).ToList();
-            }
-
-            dgvAuditLog.DataSource = logs
-                .OrderByDescending(l => l.Timestamp)
-                .Select(l => new
+                if (!string.IsNullOrEmpty(selectedEntity) && selectedEntity != "All")
                 {
-                    l.ActionType,
-                    l.EntityType,
-                    l.EntityID,
-                    l.Description,
-                    l.Timestamp,
-                    User = l.PerformedBy
-                })
-                .ToList();
+                    if (log.EntityType != selectedEntity)
+                    {
+                        addLog = false;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(userFilter))
+                {
+                    if (string.IsNullOrEmpty(log.PerformedBy) ||
+                        !log.PerformedBy.ToLower().Contains(userFilter))
+                    {
+                        addLog = false;
+                    }
+                }
+
+                if (addLog)
+                {
+                    filteredLogs.Add(log);
+                }
+            }
+
+            for (int i = 0; i < filteredLogs.Count - 1; i++)
+            {
+                for (int j = i + 1; j < filteredLogs.Count; j++)
+                {
+                    if (filteredLogs[j].Timestamp > filteredLogs[i].Timestamp)
+                    {
+                        AuditLog temp = filteredLogs[i];
+                        filteredLogs[i] = filteredLogs[j];
+                        filteredLogs[j] = temp;
+                    }
+                }
+            }
+
+            dgvAuditLog.DataSource = filteredLogs;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)

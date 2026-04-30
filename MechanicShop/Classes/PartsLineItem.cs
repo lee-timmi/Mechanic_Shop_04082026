@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace MechanicShop.Classes
 {
     public class PartsLineItem
@@ -13,7 +7,13 @@ namespace MechanicShop.Classes
         public string PartName { get; set; }
         public int Quantity { get; set; }
         public decimal UnitCost { get; set; }
-        public decimal TotalCost => Quantity * UnitCost;
+        public decimal TotalCost
+        {
+            get
+            {
+                return Quantity * UnitCost;
+            }
+        }
 
         // Constructor
         public PartsLineItem(int ID, string partName, int quantity, decimal unitCost)
